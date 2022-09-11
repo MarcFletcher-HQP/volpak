@@ -4,11 +4,7 @@
  */
 
 
-#include "volpak.h"
-#include <iostream>
-
-
-const int STUMPHT = 0.15;
+#include "volpak_tree.h"
 
 
 #define DEBUG
@@ -82,46 +78,14 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     
     
     
-    // Set ground and stump radius
-    neiloid_stump = false;
-    Section tmpbase(measpoints[0], measpoints[1], measpoints[2]);
-    tmpbase.set_base_section();
-    this->base = tmpbase;
+    /* Set ground and stump radius - do what for measures == 2? */
 
-    
-    if (measures > 2 && base.a < 0.0){
-
-        double stumprad = base.radius_at(stumpht);
-
-        Point tmpground(0.0, base.radius_at(0.0));
-        ground = tmpground;
-
-        if (stumpht == 0.0){
-            Point tmpstump(stumpht, ground.radius);
-            stump = tmpstump;
-        }
-        else if (base.discriminant(0.0) >= 0.0 &&
-                 ground.radius >= base.first.radius &&
-                 ground.radius < base.p / 2){	                    // Unnecessarily fancy upper bound on ground radius (1.57m)
-
-                Point tmpstump(stumpht, stumprad);
-                stump = tmpstump;
-        }
-        else {
-            set_neiloid_stump(stumpht);
-        }
-        
-    }
-    else {
-
-        set_neiloid_stump(stumpht);
-
-    }
-
+    std::unique_ptr<Stump> stump = StumpFactory::createStump(measpoints[0], measpoints[1], measpoints[2]);
 
 
     
-    // Create logs within a tree
+    /* Create logs within a tree */
+
     if (measures == 2 && measures == numpts){	/* two measures and no tree height */
         
 		Point mid12 = average(measpoints[0], measpoints[1]);
@@ -132,63 +96,42 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     else {
         
 		/* C++ Note: declare variables within the scope of the for-loop to allow the variable to be re-used on each iteration */
-        for (int i = 0; i < numpts - 2; i += 1){
 
-            // Create mid-points and calculate mid-point radius using the shape of the coarser stem section.
-            Section coarse(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
+        for (int i = 0; i < numpts - 2; i++){
+
+            /* Create mid-points and calculate mid-point radius using the shape of the coarser stem section. */
+
+            std::unique_ptr<Section> coarse = SectionFactory::createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
 
 
-            // Create section from each half of the coarse representation
-            Section log12 = coarse;
-            Section log23 = coarse;
+            /* Create section from each half of the coarse representation */
 
-            Point mid12 = coarse.midpoint(coarse.first, coarse.second);
-            Point mid23 = coarse.midpoint(coarse.second, coarse.third);
+            std::vector<std::unique_ptr<Section>> logs = SectionFactory::splitSection(coarse);
 
 
             if(sections.begin() != sections.end()){
 
-                log12 = sections.back();
-                log12.second = average(mid12, log12.second);
+                std::unique_ptr<Section> log12 = sections.back();
+                log12->second = average(logs[0]->second, log12->second);
 
                 sections.back() = log12;
 
             } else {
 
-                log12.set_points(coarse.first, mid12, coarse.second);
-                sections.push_back(log12);
+                sections.push_back(logs[0]);
 
             }
 
-            log23.set_points(coarse.second, mid23, coarse.third);
-            sections.push_back(log23);
+            sections.push_back(logs[1]);
 
         }
         
     }
 
-
-    /* Loop over sections and re-calculate parameters */
-    
-    for(auto it = sections.begin(); it != sections.end(); it++){
-        it->param();
-    }
-
     
 }
 
 
-
-
-
-double Tree::stump_ht(){
-    
-    if (!stump.is_valid()){
-        return 0.0;
-    }
-    
-    return stump.hag;
-}
 
 
 
@@ -227,227 +170,44 @@ bool Tree::check_totht(){
 
 
 
-/* Extrapolation of ground radius using newtons' method.
- 
- Assuming a neiloid shape for the base of the tree:
- a * r^2 = ht^3
- 
- Not knowing an appropriate value of 'a', newtons' method is
- used to estimate the rate of change in r^(2/3). 
- */
-void Tree::set_neiloid_stump(double ht){			// formerly void nloid()
-
-    if (ht > measpoints[1].hag){
-        throw std::invalid_argument("Tree::set_neiloid_stump: Neiloid model is not appropriate for heights above the second measure.");
-    }
-    
-    
-    double rad = neiloid_radius(0.0);
-
-    Point tmpground(0.0, rad);
-    ground = tmpground;
-    
-    
-    if (ht > 0.0){
-        rad = neiloid_radius(ht);
-    }
-    else {
-        rad = ground.radius;
-    }
-    
-    
-    if (rad < 0.0){
-		throw std::domain_error("Tree::set_neiloid_stump: Neiloid model produced a stump radius < 0.0");
-    }
-    
-    Point tmpstump(ht, rad);
-    stump = tmpstump;
-
-    neiloid_stump = true;
-    
-    return;
-}
-
-
-
-
-/* Calculate the radius of a neiloid shaped stump at the given height */
-double Tree::neiloid_radius(double ht){
-    
-	std::ostringstream msg;
-
-    if (!measpoints[0].is_valid()){
-        throw std::invalid_argument("Tree::neiloid_radius: First measure point has not been initialised\n");
-    }
-    
-    if (!measpoints[1].is_valid()){
-        throw std::invalid_argument("Tree::neiloid_radius: Second measure point has not been initialised\n");
-    }
-    
-    if (ht > measpoints[1].hag){
-        throw std::invalid_argument("Tree::neiloid_radius: Neiloid model is not appropriate for heights above the second measure\n");
-    }
-    
-    Point mid12 = average(measpoints[0], measpoints[1]);
-
-    double twothirds = 2.0 / 3.0;
-    double rtrans = pow(measpoints[0].radius, twothirds);
-    double dif = (rtrans - pow(mid12.radius, twothirds)) / (mid12.hag - measpoints[0].hag);
-    if (dif < 0.0){
-        dif = 0.0;
-    }
-    
-    double rad = pow(rtrans + dif * (measpoints[0].hag - ht), 1.5);
-    
-    
-    if (rad < 0.0){
-		msg << "Tree::neiloid_radius: Neiloid model produced a stump radius < 0.0;  rad = " << rad << "  ht = " << ht << "  dif = " << dif
-			<< "  rtrans = " << rtrans << std::endl;
-		throw std::domain_error(msg.str());
-    }
-    
-/*     if (rad < measpoints[1].radius){
-		msg << "Tree::neiloid_radius: Neiloid model produced a smaller radius (" << rad << ") than the second measure (" << measpoints[1].radius << ")" << std::endl;
-        throw std::domain_error(msg.str());
-    } */
-    
-    return rad;
-}
-
-
-
-/* Calculate the height at which a neiloid shaped stump reaches the given radius */
-double Tree::neiloid_height(double rad){
-
-	std::ostringstream msg;
-    
-    if (!measpoints[0].is_valid()){
-        throw std::invalid_argument("Tree::neiloid_height: First measure point has not been initialised\n");
-    }
-    
-    if (!measpoints[1].is_valid()){
-        throw std::invalid_argument("Tree::neiloid_height: Second measure point has not been initialised\n");
-    }
-    
-    
-    // For a neiloid, the height is proportional to radius^(2/3)
-    double twothirds = 2.0 / 3.0;
-    double r0Lin = pow(ground.radius, twothirds);
-    double radiLin = pow(rad, twothirds);
-    double ht = measpoints[0].hag * (r0Lin - radiLin) / (r0Lin - pow(measpoints[0].radius, twothirds));
-    
-    
-    if (ht < 0.0){
-		msg << "Tree::neiloid_height: Neiloid model produced a stump height < 0.0;  rad = " << rad << "  ht = " << ht << std::endl;
-        throw std::domain_error(msg.str());
-    }
-    
-    return ht;
-}
-
-
-
-
-
-/* Calculate the volume for a point below the first measure */
-double Tree::neiloid_vol(Point point){	
-    
-    if (!ground.is_valid()){
-        throw std::invalid_argument("Tree::neiloid_vol: ground has not been initialised.\n");
-    }
-
-	if (!point.is_valid()){
-		throw std::invalid_argument("Tree::neiloid_vol: input point has not been initialised.\n");
-	}
-    
-    
-    double vol = 0.0;
-	double radi = point.radius, ht = point.hag;
-    double r0Lin = 0.0, radiLin = 0.0;
-    double twothirds = 2.0 / 3.0;
-    
-    if (radi == 0.0 && ht == 0.0){
-        return -HUGE_VAL;
-    }
-    
-    /* Now either, a1 == 0 or (a1 < 0 && ground.radius >= p1 / 2.0) */
-
-    // For a neiloid, the height is proportional to radius^(2/3)
-    r0Lin = pow(ground.radius, twothirds);
-
-
-    if (radi > 0.0){
-        radiLin = pow(radi, twothirds);
-    }
-    else {
-        /* Calculate what percentage of the length between the ground and the first measure is occupied by the given height.
-            Scale the difference in radius^(2/3), between the ground and the first measure point, by the same amount.
-            */
-        radiLin = r0Lin - ht / measpoints[0].hag * (r0Lin - pow(measpoints[0].radius, twothirds));
-    }
-
-
-    if (ht == 0.0){
-        /* Similar logic as per the missing radius; scale the height of the first measure based on the change in radius^(2/3)
-            as a percentage of the total change between ground and the first measure.
-            */
-        ht = measpoints[0].hag * (r0Lin - radiLin) / (r0Lin - pow(measpoints[0].radius, twothirds));
-    }
-
-
-    /* Equation obtained from the volume of revolution of a neiloid, using the shell method (as per the equivalent calculation
-        for a paraboloid and hyperboloid in Section::vpara and Section::vhyper, respectively.
-        */
-    vol = M_PI_4 * ht * (r0Lin * r0Lin + radiLin * radiLin) * (r0Lin + radiLin);
-    return vol;
-
-}
-
-
-
-
 
 
 
 
 /* Height at which the tree has the given radius */
-double Tree::height_when(double rad){			// formerly double htd(double d1);
+double Tree::height(double rad){			// formerly double htd(double d1);
     
 	std::ostringstream msg;
 
     if (!ground.is_valid()){
-        throw std::invalid_argument("Tree::height_when: Ground has not been initialised\n");
+        throw std::invalid_argument("Tree::height: Ground has not been initialised\n");
     }
     
     if (rad < 0.0){
-		msg << "Tree::height_when: Supplied radius (" << rad << ") less than zero" << std::endl;
+		msg << "Tree::height: Supplied radius (" << rad << ") less than zero" << std::endl;
         throw std::invalid_argument(msg.str());
     }
     
-    if (rad > ground.radius || rad < (measpoints.back()).radius){
+    if (rad > (stump->ground).radius || rad < (measpoints.back()).radius){
 		return -HUGE_VAL;
     }
     
     
     // Find the section with first.radius < rad < third.radius
     auto it = std::find_if(sections.begin(), sections.end(), 
-		[rad](Section &elem){return elem.contains_radius(rad); });
+		[rad](Section &elem){return elem->contains_radius(rad); });
     
     
     if (it == sections.end()){
 
         if (rad > measpoints[0].radius){     // Check whether radius is between ground and the first measure
 
-            if (neiloid_stump){
-                return neiloid_height(rad);
-            } else {
-                return base.height_when(rad);
-            }
+            return stump->height(rad);
 
         } else {  // If the radius couldn't be found in the tree, then throw a tantrum
 
-            msg << "Tree::height_when: Could not find radius (" << rad << ") in tree: " << std::endl; 
-            msg << "\t" << "ground - " << ground.radius << "  stump - " << stump.radius << "  first - " << measpoints[0].radius << "  last - " << (measpoints.back()).radius << std::endl;
+            msg << "Tree::height: Could not find radius (" << rad << ") in tree: " << std::endl; 
+            msg << this->print() << std::endl;
             throw std::domain_error(msg.str());
 
         }
@@ -456,19 +216,19 @@ double Tree::height_when(double rad){			// formerly double htd(double d1);
 
     
     // Calculate the height corresponding to the radius in the given section
-    double ht = it->height_when(rad);
+    double ht = it->height(rad);
     
     
     // If the returned height is greater than the tree height, then pitch a fit.
-    if (ht > total_height()){
-		msg << "Tree::height_when: Calculated height (" << ht << ") exceeds the tree height (" << total_height() << ")" << std::endl;
+    if (ht > this->total_height()){
+		msg << "Tree::height: Calculated height (" << ht << ") exceeds the tree height (" << total_height() << ")" << std::endl;
         throw std::domain_error(msg.str());
     }
     
     
     // If the returned height is not in the section, then cry about it.
     if (!(it->contains_height(ht))){
-		msg << "Tree::height_when: Calculated height (" << ht << ") does not lie in section: [" << 
+		msg << "Tree::height: Calculated height (" << ht << ") does not lie in section: [" << 
         it->first.hag << ", " << it->third.hag << "]" << "  ht = " << ht << std::endl;
         throw std::domain_error(msg.str());
     }
@@ -481,20 +241,20 @@ double Tree::height_when(double rad){			// formerly double htd(double d1);
 
 
 /* Calculate the radius of the tree at the given height above ground */
-double Tree::radius_at(double ht){			// formerly double dht(double h1);
+double Tree::radius(double ht){			// formerly double dht(double h1);
     
 	std::ostringstream msg;
 
     if (!ground.is_valid()){
-        throw std::invalid_argument("Tree::radius_at: Ground has not been initialised\n");
+        throw std::invalid_argument("Tree::radius: Ground has not been initialised\n");
     }
     
     if (!stump.is_valid()){
-        throw std::invalid_argument("Tree::radius_at: Stump has not been initialised\n");
+        throw std::invalid_argument("Tree::radius: Stump has not been initialised\n");
     }
     
     if (ht < 0.0){
-		msg << "Tree::radius_at: Supplied height (" << ht << ") less than zero" << std::endl;
+		msg << "Tree::radius: Supplied height (" << ht << ") less than zero" << std::endl;
 		throw std::invalid_argument(msg.str());
     }
     
@@ -507,34 +267,30 @@ double Tree::radius_at(double ht){			// formerly double dht(double h1);
     double rad = 0.0;
     if (ht < measpoints[0].hag){
 
-        if(neiloid_stump){
-            return neiloid_radius(ht);
-        } else {
-            return base.radius_at(ht);
-        }
+        return stump->radius(ht);
 
     }
     else {
         
         // Find the section with first.radius < rad < third.radius
         auto jt = std::find_if(sections.begin(), sections.end(),
-                          [ht](Section &elem){return elem.contains_height(ht); });
+                          [ht](Section &elem){return elem->contains_height(ht); });
         
         
         // If a section could not be found, then throw a wobbly.
         if (jt == sections.end()){
-			msg << "Tree::radius_at: Stem section could not be located for height " << ht << std::endl;
+			msg << "Tree::radius: Stem section could not be located for height " << ht << std::endl;
             throw std::invalid_argument(msg.str());
         }
         
         
         // Calculate the radius for the corresponding height in the given section
-        rad = jt->radius_at(ht);
+        rad = jt->radius(ht);
         
         
         // If the returned radius is not in the section, then light the beacons and call for aid.
         if (!(jt->contains_radius(rad))){
-			msg << "Tree::radius_at: Calculated radius (" << rad << ") does not lie in section:\n\tmin = " << jt->third.radius 
+			msg << "Tree::radius: Calculated radius (" << rad << ") does not lie in section:\n\tmin = " << jt->third.radius 
 				<< "  max = " << jt->first.radius << "  ht = " << ht << std::endl;
 
 			throw std::domain_error(msg.str());
@@ -543,122 +299,6 @@ double Tree::radius_at(double ht){			// formerly double dht(double h1);
     
     
     return rad;
-}
-
-
-
-/* Calculate the total stump volume */
-
-double Tree::stump_vol(Point point){       // formerly calcv
-
-    double vol = 0.0;
-
-    if (!point.is_valid()){
-        throw std::invalid_argument("Tree::stump_vol: point has not been initialised\n");
-    }
-
-    if (!stump.is_valid()){
-        throw std::invalid_argument("Tree::stump_vol: stump has not been initialised\n");
-    }
-    
-    if (!ground.is_valid()){
-        throw std::invalid_argument("Tree::stump_vol: ground has not been initialised\n");
-    }
-
-    if (!measpoints[0].is_valid()){
-        throw std::invalid_argument("Tree::stump_vol: measpoints have not been initialised\n");
-    }
-
-/*     if(point.radius < measpoints[0].radius){
-        throw std::invalid_argument("Tree::stump_vol: supplied radius exceeds the first measure point\n");
-    } */
-
-    if(point.radius > ground.radius){
-        throw std::invalid_argument("Tree::stump_vol: supplied radius exceeds the ground radius\n");
-    }
-
-
-    if(neiloid_stump){
-
-        vol = neiloid_vol(point);
-
-    } else {
-
-        vol = base.volume(ground, point);
-
-    }
-
-    return vol;
-
-}
-
-
-
-
-Point Tree::first_point_above_height(double ht){
-
-    Point ptr;
-
-
-    if((ht < measpoints[0].hag)){
-        return measpoints[0];
-    }
-
-
-    auto it = std::find_if(sections.begin(), sections.end(),
-                          [ht](Section &elem){return elem.contains_height(ht); });
-
-
-    if(it != sections.end()){
-        
-        if((it->first).hag == ht){
-            ptr = it->first;
-        } else if ((it->second).hag > ht){
-            ptr = it->second;
-        } else {
-            ptr = it->third;
-        }  
-
-    } 
-
-    return ptr;
-
-}
-
-
-
-
-/* Calculate the total volume of stem above the stump */
-double Tree::vol_above_stump(){  // formerly double vtm(void)
-    
-    if (!stump.is_valid()){
-        throw std::invalid_argument("Tree::vol_above_stump: stump has not been initialised\n");
-    }
-    
-    if (!measpoints[0].is_valid()){
-        throw std::invalid_argument("Tree::vol_above_stump: first measure point has not been initialised\n");
-    }
-    
-
-    /* Vol to first measure - minus the stump volume */
-
-    double stumpv = stump_vol(stump);
-    double firstv = stump_vol(measpoints[0]);
-    double vt = firstv - stumpv;
-    
-    
-    /*
-     Calculate the volumes for each log, from the first measure point on the
-     tree to the total height using Newtons method which is:
-     V = 6.0/(SAbot + 4SAmid + SAtop)*Length
-     */
-
-    for (auto it = sections.begin(); it != sections.end(); ++it){
-        vt += it->total_volume();
-    }
-    
-
-    return vt;
 }
 
 

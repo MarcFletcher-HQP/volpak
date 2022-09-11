@@ -1,5 +1,6 @@
 
-#include "volpak.h"
+
+#include "volpak_point.h"
 
 
 
@@ -65,3 +66,13 @@ bool Point::above(const Point & point){
 }
 
 
+
+std::string print(){
+
+	std::ostringstream msg;
+
+	msg << "(" << hag << ", " << radius << ")";
+
+	return msg.str();
+
+}
