@@ -190,3 +190,19 @@ double NeiloidStump::vol_stump_to_first_meas(){
 }
 
 
+
+
+bool NeiloidStump::contains_radius(double rad){
+
+	return ((rad >= first.radius) && (rad <= ground.radius)) || (abs(ground.radius - rad) < RADTOL) || (abs(first.radius - rad) < RADTOL);
+
+}
+
+
+
+
+bool NeiloidStump::contains_height(double ht){
+
+	return ((ht <= first.hag) && (ht >= ground.hag)) || (abs(first.hag - ht) < HTTOL) || (abs(ground.hag - ht) < HTTOL);
+
+}

@@ -30,6 +30,9 @@ class Stump {
         virtual double volume(Point point);
         virtual double vol_stump_to_first_meas();
 
+        virtual bool contains_radius(double rad);
+	    virtual bool contains_height(double ht);
+
         virtual ~Stump(){};
 
 };
@@ -46,6 +49,9 @@ class NeiloidStump : public Stump {
         virtual double height(double radius);
         virtual double volume(Point point);
         virtual double vol_stump_to_first_meas();
+
+        virtual bool contains_radius(double rad);
+	    virtual bool contains_height(double ht);
 
         NeiloidStump(const Point& first, const Point& second);
         virtual ~NeiloidStump(){};
@@ -70,6 +76,9 @@ class ParaboloidStump : public Stump {
         virtual double height(double radius);
         virtual double volume(Point point);
         virtual double vol_stump_to_first_meas();
+
+        virtual bool contains_radius(double rad);
+	    virtual bool contains_height(double ht);
 
         ParaboloidStump(const Point& ground, const Point& stump, const Section& base);
         virtual ~ParaboloidStump(){};

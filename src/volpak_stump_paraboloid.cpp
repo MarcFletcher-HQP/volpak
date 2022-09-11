@@ -72,3 +72,18 @@ double ParaboloidStump::vol_stump_to_first_meas(){
 
 
 
+
+bool ParaboloidStump::contains_radius(double rad){
+
+    return base.contains_radius(rad);
+
+}
+
+
+
+
+bool ParaboloidStump::contains_height(double ht){
+
+    return base.contains_height(ht);
+
+}
