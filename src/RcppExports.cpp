@@ -10,367 +10,21 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// r_formcall
-Rcpp::NumericVector r_formcall(Rcpp::CharacterVector formmod_SEXP, Rcpp::CharacterVector formsubmod_SEXP, Rcpp::IntegerVector ts_SEXP, Rcpp::NumericVector dbh_SEXP, Rcpp::NumericVector dbhba_SEXP, Rcpp::IntegerVector pltfinyr_SEXP, Rcpp::IntegerVector maxpltfinyr_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_formcall(SEXP formmod_SEXPSEXP, SEXP formsubmod_SEXPSEXP, SEXP ts_SEXPSEXP, SEXP dbh_SEXPSEXP, SEXP dbhba_SEXPSEXP, SEXP pltfinyr_SEXPSEXP, SEXP maxpltfinyr_SEXPSEXP, SEXP trace_SEXPSEXP) {
+// times
+Rcpp::NumericVector times(Rcpp::NumericVector x, Rcpp::NumericVector y);
+RcppExport SEXP _volpak_times(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type formmod_SEXP(formmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type formsubmod_SEXP(formsubmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type ts_SEXP(ts_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh_SEXP(dbh_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbhba_SEXP(dbhba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pltfinyr_SEXP(pltfinyr_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type maxpltfinyr_SEXP(maxpltfinyr_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_formcall(formmod_SEXP, formsubmod_SEXP, ts_SEXP, dbh_SEXP, dbhba_SEXP, pltfinyr_SEXP, maxpltfinyr_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_moddbhinccall
-Rcpp::NumericVector r_moddbhinccall(Rcpp::CharacterVector dbhincmod_SEXP, Rcpp::NumericVector age_SEXP, Rcpp::NumericVector si_SEXP, Rcpp::NumericVector sba_SEXP, Rcpp::NumericVector dbh_SEXP, Rcpp::NumericVector dbhba_SEXP, Rcpp::NumericVector east_SEXP, Rcpp::NumericVector north_SEXP, Rcpp::IntegerVector sf_SEXP, Rcpp::NumericVector mgaaveyearrain_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_moddbhinccall(SEXP dbhincmod_SEXPSEXP, SEXP age_SEXPSEXP, SEXP si_SEXPSEXP, SEXP sba_SEXPSEXP, SEXP dbh_SEXPSEXP, SEXP dbhba_SEXPSEXP, SEXP east_SEXPSEXP, SEXP north_SEXPSEXP, SEXP sf_SEXPSEXP, SEXP mgaaveyearrain_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type dbhincmod_SEXP(dbhincmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type age_SEXP(age_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type si_SEXP(si_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type sba_SEXP(sba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh_SEXP(dbh_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbhba_SEXP(dbhba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type east_SEXP(east_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type north_SEXP(north_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type sf_SEXP(sf_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mgaaveyearrain_SEXP(mgaaveyearrain_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_moddbhinccall(dbhincmod_SEXP, age_SEXP, si_SEXP, sba_SEXP, dbh_SEXP, dbhba_SEXP, east_SEXP, north_SEXP, sf_SEXP, mgaaveyearrain_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modmortcall
-Rcpp::NumericVector r_modmortcall(Rcpp::CharacterVector mortmod_SEXP, Rcpp::NumericVector dbh_SEXP, Rcpp::NumericVector dbhba_SEXP, Rcpp::NumericVector balmod_SEXP, Rcpp::NumericVector age_SEXP, Rcpp::NumericVector si_SEXP, Rcpp::NumericVector sba_SEXP, Rcpp::NumericVector mgaaveyearrain_SEXP, Rcpp::IntegerVector sfno_SEXP, Rcpp::IntegerVector x75pcstkgone_SEXP, Rcpp::IntegerVector thinatfirst_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_modmortcall(SEXP mortmod_SEXPSEXP, SEXP dbh_SEXPSEXP, SEXP dbhba_SEXPSEXP, SEXP balmod_SEXPSEXP, SEXP age_SEXPSEXP, SEXP si_SEXPSEXP, SEXP sba_SEXPSEXP, SEXP mgaaveyearrain_SEXPSEXP, SEXP sfno_SEXPSEXP, SEXP x75pcstkgone_SEXPSEXP, SEXP thinatfirst_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type mortmod_SEXP(mortmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh_SEXP(dbh_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbhba_SEXP(dbhba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type balmod_SEXP(balmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type age_SEXP(age_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type si_SEXP(si_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type sba_SEXP(sba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mgaaveyearrain_SEXP(mgaaveyearrain_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type sfno_SEXP(sfno_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type x75pcstkgone_SEXP(x75pcstkgone_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type thinatfirst_SEXP(thinatfirst_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modmortcall(mortmod_SEXP, dbh_SEXP, dbhba_SEXP, balmod_SEXP, age_SEXP, si_SEXP, sba_SEXP, mgaaveyearrain_SEXP, sfno_SEXP, x75pcstkgone_SEXP, thinatfirst_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_need_balmod
-Rcpp::IntegerVector r_need_balmod(Rcpp::CharacterVector model);
-RcppExport SEXP _GAMERoutines_r_need_balmod(SEXP modelSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type model(modelSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_need_balmod(model));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modprunefreqcall
-Rcpp::NumericVector r_modprunefreqcall(Rcpp::CharacterVector prunefreqmod_SEXP, Rcpp::NumericVector dbh_SEXP, Rcpp::NumericVector dbhba_SEXP, Rcpp::NumericVector prunedstk_SEXP, Rcpp::NumericVector totstk_SEXP, Rcpp::CharacterVector sopu_SEXP, Rcpp::NumericVector sawlogprop_SEXP, Rcpp::IntegerVector sfno_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_modprunefreqcall(SEXP prunefreqmod_SEXPSEXP, SEXP dbh_SEXPSEXP, SEXP dbhba_SEXPSEXP, SEXP prunedstk_SEXPSEXP, SEXP totstk_SEXPSEXP, SEXP sopu_SEXPSEXP, SEXP sawlogprop_SEXPSEXP, SEXP sfno_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type prunefreqmod_SEXP(prunefreqmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh_SEXP(dbh_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbhba_SEXP(dbhba_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type prunedstk_SEXP(prunedstk_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type totstk_SEXP(totstk_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type sopu_SEXP(sopu_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type sawlogprop_SEXP(sawlogprop_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type sfno_SEXP(sfno_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modprunefreqcall(prunefreqmod_SEXP, dbh_SEXP, dbhba_SEXP, prunedstk_SEXP, totstk_SEXP, sopu_SEXP, sawlogprop_SEXP, sfno_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modsiphtphtcall
-Rcpp::NumericVector r_modsiphtphtcall(Rcpp::CharacterVector phtmod_SEXP, Rcpp::NumericVector age_SEXP, Rcpp::NumericVector si_SEXP, Rcpp::NumericVector north_SEXP, Rcpp::NumericVector mgaaveyearrain_SEXP, Rcpp::IntegerVector sf_SEXP, Rcpp::CharacterVector laname_SEXP, Rcpp::IntegerVector pltfinyr_SEXP, Rcpp::IntegerVector is1R_SEXP, Rcpp::IntegerVector isclone_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_modsiphtphtcall(SEXP phtmod_SEXPSEXP, SEXP age_SEXPSEXP, SEXP si_SEXPSEXP, SEXP north_SEXPSEXP, SEXP mgaaveyearrain_SEXPSEXP, SEXP sf_SEXPSEXP, SEXP laname_SEXPSEXP, SEXP pltfinyr_SEXPSEXP, SEXP is1R_SEXPSEXP, SEXP isclone_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type phtmod_SEXP(phtmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type age_SEXP(age_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type si_SEXP(si_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type north_SEXP(north_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mgaaveyearrain_SEXP(mgaaveyearrain_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type sf_SEXP(sf_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type laname_SEXP(laname_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pltfinyr_SEXP(pltfinyr_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type is1R_SEXP(is1R_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type isclone_SEXP(isclone_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modsiphtphtcall(phtmod_SEXP, age_SEXP, si_SEXP, north_SEXP, mgaaveyearrain_SEXP, sf_SEXP, laname_SEXP, pltfinyr_SEXP, is1R_SEXP, isclone_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modsiphtsicall
-Rcpp::NumericVector r_modsiphtsicall(Rcpp::CharacterVector phtmod_SEXP, Rcpp::NumericVector age_SEXP, Rcpp::NumericVector pht_SEXP, Rcpp::NumericVector north_SEXP, Rcpp::NumericVector mgaaveyearrain_SEXP, Rcpp::IntegerVector sf_SEXP, Rcpp::CharacterVector laname_SEXP, Rcpp::IntegerVector pltfinyr_SEXP, Rcpp::IntegerVector is1R_SEXP, Rcpp::IntegerVector isclone_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_modsiphtsicall(SEXP phtmod_SEXPSEXP, SEXP age_SEXPSEXP, SEXP pht_SEXPSEXP, SEXP north_SEXPSEXP, SEXP mgaaveyearrain_SEXPSEXP, SEXP sf_SEXPSEXP, SEXP laname_SEXPSEXP, SEXP pltfinyr_SEXPSEXP, SEXP is1R_SEXPSEXP, SEXP isclone_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type phtmod_SEXP(phtmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type age_SEXP(age_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht_SEXP(pht_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type north_SEXP(north_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mgaaveyearrain_SEXP(mgaaveyearrain_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type sf_SEXP(sf_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type laname_SEXP(laname_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pltfinyr_SEXP(pltfinyr_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type is1R_SEXP(is1R_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type isclone_SEXP(isclone_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modsiphtsicall(phtmod_SEXP, age_SEXP, pht_SEXP, north_SEXP, mgaaveyearrain_SEXP, sf_SEXP, laname_SEXP, pltfinyr_SEXP, is1R_SEXP, isclone_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modsiphtsiminsi
-Rcpp::NumericVector r_modsiphtsiminsi(Rcpp::CharacterVector phtmod_SEXP);
-RcppExport SEXP _GAMERoutines_r_modsiphtsiminsi(SEXP phtmod_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type phtmod_SEXP(phtmod_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modsiphtsiminsi(phtmod_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modsiphtsimaxsi
-Rcpp::NumericVector r_modsiphtsimaxsi(Rcpp::CharacterVector phtmod_SEXP);
-RcppExport SEXP _GAMERoutines_r_modsiphtsimaxsi(SEXP phtmod_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type phtmod_SEXP(phtmod_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modsiphtsimaxsi(phtmod_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_treehtcall
-Rcpp::NumericVector r_treehtcall(Rcpp::CharacterVector treehtmod_SEXP, Rcpp::NumericVector dbh_SEXP, Rcpp::NumericVector pht_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_treehtcall(SEXP treehtmod_SEXPSEXP, SEXP dbh_SEXPSEXP, SEXP pht_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type treehtmod_SEXP(treehtmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh_SEXP(dbh_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht_SEXP(pht_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_treehtcall(treehtmod_SEXP, dbh_SEXP, pht_SEXP, trace_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvolinit
-Rcpp::List r_modvolinit(Rcpp::CharacterVector volcode, Rcpp::IntegerVector volmeasday, Rcpp::IntegerVector volmeasmth, Rcpp::IntegerVector volmeasyear);
-RcppExport SEXP _GAMERoutines_r_modvolinit(SEXP volcodeSEXP, SEXP volmeasdaySEXP, SEXP volmeasmthSEXP, SEXP volmeasyearSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type volcode(volcodeSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type volmeasday(volmeasdaySEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type volmeasmth(volmeasmthSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type volmeasyear(volmeasyearSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvolinit(volcode, volmeasday, volmeasmth, volmeasyear));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoldbhpht
-Rcpp::List r_modvoldbhpht(Rcpp::IntegerVector tdub, Rcpp::NumericVector dbh, Rcpp::NumericVector pht, Rcpp::NumericVector mganorth, Rcpp::NumericVector buttdefect, Rcpp::NumericVector topdefect);
-RcppExport SEXP _GAMERoutines_r_modvoldbhpht(SEXP tdubSEXP, SEXP dbhSEXP, SEXP phtSEXP, SEXP mganorthSEXP, SEXP buttdefectSEXP, SEXP topdefectSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type tdub(tdubSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht(phtSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mganorth(mganorthSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type buttdefect(buttdefectSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type topdefect(topdefectSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoldbhpht(tdub, dbh, pht, mganorth, buttdefect, topdefect));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoldbhtht
-Rcpp::List r_modvoldbhtht(Rcpp::IntegerVector tdub, Rcpp::NumericVector dbh, Rcpp::NumericVector tht, Rcpp::NumericVector pht, Rcpp::NumericVector mganorth, Rcpp::NumericVector buttdefect, Rcpp::NumericVector topdefect);
-RcppExport SEXP _GAMERoutines_r_modvoldbhtht(SEXP tdubSEXP, SEXP dbhSEXP, SEXP thtSEXP, SEXP phtSEXP, SEXP mganorthSEXP, SEXP buttdefectSEXP, SEXP topdefectSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type tdub(tdubSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tht(thtSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht(phtSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mganorth(mganorthSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type buttdefect(buttdefectSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type topdefect(topdefectSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoldbhtht(tdub, dbh, tht, pht, mganorth, buttdefect, topdefect));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltvp
-Rcpp::NumericVector r_modvoltvp(Rcpp::NumericVector dbh, Rcpp::NumericVector pht);
-RcppExport SEXP _GAMERoutines_r_modvoltvp(SEXP dbhSEXP, SEXP phtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht(phtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltvp(dbh, pht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltvt
-Rcpp::NumericVector r_modvoltvt(Rcpp::NumericVector dbh, Rcpp::NumericVector treeht);
-RcppExport SEXP _GAMERoutines_r_modvoltvt(SEXP dbhSEXP, SEXP treehtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type treeht(treehtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltvt(dbh, treeht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltht
-Rcpp::NumericVector r_modvoltht(Rcpp::NumericVector dbh, Rcpp::NumericVector pht);
-RcppExport SEXP _GAMERoutines_r_modvoltht(SEXP dbhSEXP, SEXP phtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pht(phtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltht(dbh, pht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltprdub
-Rcpp::NumericVector r_modvoltprdub(Rcpp::NumericVector ht, Rcpp::NumericVector dbh, Rcpp::NumericVector tht);
-RcppExport SEXP _GAMERoutines_r_modvoltprdub(SEXP htSEXP, SEXP dbhSEXP, SEXP thtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type ht(htSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tht(thtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltprdub(ht, dbh, tht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltprht
-Rcpp::NumericVector r_modvoltprht(Rcpp::NumericVector dub, Rcpp::NumericVector dbh, Rcpp::NumericVector tht);
-RcppExport SEXP _GAMERoutines_r_modvoltprht(SEXP dubSEXP, SEXP dbhSEXP, SEXP thtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dub(dubSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tht(thtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltprht(dub, dbh, tht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvoltprvol
-Rcpp::NumericVector r_modvoltprvol(Rcpp::NumericVector htMin, Rcpp::NumericVector htMax, Rcpp::NumericVector dbh, Rcpp::NumericVector tht);
-RcppExport SEXP _GAMERoutines_r_modvoltprvol(SEXP htMinSEXP, SEXP htMaxSEXP, SEXP dbhSEXP, SEXP thtSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type htMin(htMinSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type htMax(htMaxSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tht(thtSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvoltprvol(htMin, htMax, dbh, tht));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_modvolmvldub
-Rcpp::NumericVector r_modvolmvldub(Rcpp::NumericVector hag, Rcpp::NumericVector tht, Rcpp::NumericVector dbh);
-RcppExport SEXP _GAMERoutines_r_modvolmvldub(SEXP hagSEXP, SEXP thtSEXP, SEXP dbhSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type hag(hagSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tht(thtSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type dbh(dbhSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_modvolmvldub(hag, tht, dbh));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_SOPUDictSweep
-Rcpp::RObject r_SOPUDictSweep(Rcpp::CharacterVector sweepcode_SEXP);
-RcppExport SEXP _GAMERoutines_r_SOPUDictSweep(SEXP sweepcode_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type sweepcode_SEXP(sweepcode_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_SOPUDictSweep(sweepcode_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_SOPUDictBranch
-Rcpp::RObject r_SOPUDictBranch(Rcpp::CharacterVector branchcode_SEXP);
-RcppExport SEXP _GAMERoutines_r_SOPUDictBranch(SEXP branchcode_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type branchcode_SEXP(branchcode_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_SOPUDictBranch(branchcode_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_SOPUDictFeature
-Rcpp::RObject r_SOPUDictFeature(Rcpp::CharacterVector featurecode_SEXP);
-RcppExport SEXP _GAMERoutines_r_SOPUDictFeature(SEXP featurecode_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type featurecode_SEXP(featurecode_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_SOPUDictFeature(featurecode_SEXP));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_sstcall
-Rcpp::List r_sstcall(Rcpp::CharacterVector sstmod_SEXP, Rcpp::NumericVector age_SEXP, Rcpp::NumericVector si_SEXP, Rcpp::NumericVector stk_SEXP, Rcpp::NumericVector rain_SEXP, Rcpp::NumericVector north_SEXP, Rcpp::IntegerVector pcted_SEXP, Rcpp::IntegerVector hybf2_SEXP, Rcpp::LogicalVector donotadjust_SEXP, Rcpp::LogicalVector trace_SEXP);
-RcppExport SEXP _GAMERoutines_r_sstcall(SEXP sstmod_SEXPSEXP, SEXP age_SEXPSEXP, SEXP si_SEXPSEXP, SEXP stk_SEXPSEXP, SEXP rain_SEXPSEXP, SEXP north_SEXPSEXP, SEXP pcted_SEXPSEXP, SEXP hybf2_SEXPSEXP, SEXP donotadjust_SEXPSEXP, SEXP trace_SEXPSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type sstmod_SEXP(sstmod_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type age_SEXP(age_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type si_SEXP(si_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stk_SEXP(stk_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type rain_SEXP(rain_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type north_SEXP(north_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pcted_SEXP(pcted_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type hybf2_SEXP(hybf2_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type donotadjust_SEXP(donotadjust_SEXPSEXP);
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type trace_SEXP(trace_SEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_sstcall(sstmod_SEXP, age_SEXP, si_SEXP, stk_SEXP, rain_SEXP, north_SEXP, pcted_SEXP, hybf2_SEXP, donotadjust_SEXP, trace_SEXP));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(times(x, y));
     return rcpp_result_gen;
 END_RCPP
 }
 // r_volpak_tree
 Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_volpak_tree(SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
+RcppExport SEXP _volpak_r_volpak_tree(SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -382,59 +36,59 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// r_volpak_section
-Rcpp::S4 r_volpak_section(Rcpp::S4 base, Rcpp::S4 mid, Rcpp::S4 top);
-RcppExport SEXP _GAMERoutines_r_volpak_section(SEXP baseSEXP, SEXP midSEXP, SEXP topSEXP) {
+// r_total_vol
+Rcpp::NumericVector r_total_vol(Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_total_vol(SEXP abovestumpSEXP, SEXP treeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type base(baseSEXP);
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type mid(midSEXP);
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type top(topSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_volpak_section(base, mid, top));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_total_vol(abovestump, tree));
     return rcpp_result_gen;
 END_RCPP
 }
-// r_volpak_point
-Rcpp::List r_volpak_point(Rcpp::NumericVector hag, Rcpp::NumericVector radius);
-RcppExport SEXP _GAMERoutines_r_volpak_point(SEXP hagSEXP, SEXP radiusSEXP) {
+// r_get_hag
+Rcpp::NumericVector r_get_hag(Rcpp::NumericVector search_radius, Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_get_hag(SEXP search_radiusSEXP, SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type search_radius(search_radiusSEXP);
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_get_hag(search_radius, tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_vol_to_tdub
+Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_vol_to_tdub(SEXP tdubSEXP, SEXP abovestumpSEXP, SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tdub(tdubSEXP);
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_vol_to_tdub(tdub, abovestump, tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_vol_to_hag
+Rcpp::NumericVector r_vol_to_hag(Rcpp::NumericVector hag, Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_vol_to_hag(SEXP hagSEXP, SEXP abovestumpSEXP, SEXP treeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type hag(hagSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_volpak_point(hag, radius));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_vol_section
-Rcpp::NumericVector r_vol_section(Rcpp::S4 log);
-RcppExport SEXP _GAMERoutines_r_vol_section(SEXP logSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type log(logSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_vol_section(log));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_total_vol
-Rcpp::NumericVector r_total_vol(Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_total_vol(SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stump_height(stump_heightSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_total_vol(height, radius, total_height, stump_height));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_vol_to_hag(hag, abovestump, tree));
     return rcpp_result_gen;
 END_RCPP
 }
 // r_vtm
 Rcpp::NumericVector r_vtm(Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
-RcppExport SEXP _GAMERoutines_r_vtm(SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
+RcppExport SEXP _volpak_r_vtm(SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -445,106 +99,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// r_get_hag
-Rcpp::NumericVector r_get_hag(Rcpp::NumericVector search_radius, Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_get_hag(SEXP search_radiusSEXP, SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type search_radius(search_radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stump_height(stump_heightSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_get_hag(search_radius, height, radius, total_height, stump_height));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_vol_to_tdub
-Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_vol_to_tdub(SEXP tdubSEXP, SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tdub(tdubSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stump_height(stump_heightSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_vol_to_tdub(tdub, height, radius, total_height, stump_height));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_vol_to_hag
-Rcpp::NumericVector r_vol_to_hag(Rcpp::NumericVector hag, Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_vol_to_hag(SEXP hagSEXP, SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type hag(hagSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stump_height(stump_heightSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_vol_to_hag(hag, height, radius, total_height, stump_height));
-    return rcpp_result_gen;
-END_RCPP
-}
-// r_treeht_est
-Rcpp::NumericVector r_treeht_est(Rcpp::IntegerVector method, Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
-RcppExport SEXP _GAMERoutines_r_treeht_est(SEXP methodSEXP, SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type stump_height(stump_heightSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_treeht_est(method, height, radius, total_height, stump_height));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_GAMERoutines_r_formcall", (DL_FUNC) &_GAMERoutines_r_formcall, 8},
-    {"_GAMERoutines_r_moddbhinccall", (DL_FUNC) &_GAMERoutines_r_moddbhinccall, 11},
-    {"_GAMERoutines_r_modmortcall", (DL_FUNC) &_GAMERoutines_r_modmortcall, 12},
-    {"_GAMERoutines_r_need_balmod", (DL_FUNC) &_GAMERoutines_r_need_balmod, 1},
-    {"_GAMERoutines_r_modprunefreqcall", (DL_FUNC) &_GAMERoutines_r_modprunefreqcall, 9},
-    {"_GAMERoutines_r_modsiphtphtcall", (DL_FUNC) &_GAMERoutines_r_modsiphtphtcall, 11},
-    {"_GAMERoutines_r_modsiphtsicall", (DL_FUNC) &_GAMERoutines_r_modsiphtsicall, 11},
-    {"_GAMERoutines_r_modsiphtsiminsi", (DL_FUNC) &_GAMERoutines_r_modsiphtsiminsi, 1},
-    {"_GAMERoutines_r_modsiphtsimaxsi", (DL_FUNC) &_GAMERoutines_r_modsiphtsimaxsi, 1},
-    {"_GAMERoutines_r_treehtcall", (DL_FUNC) &_GAMERoutines_r_treehtcall, 4},
-    {"_GAMERoutines_r_modvolinit", (DL_FUNC) &_GAMERoutines_r_modvolinit, 4},
-    {"_GAMERoutines_r_modvoldbhpht", (DL_FUNC) &_GAMERoutines_r_modvoldbhpht, 6},
-    {"_GAMERoutines_r_modvoldbhtht", (DL_FUNC) &_GAMERoutines_r_modvoldbhtht, 7},
-    {"_GAMERoutines_r_modvoltvp", (DL_FUNC) &_GAMERoutines_r_modvoltvp, 2},
-    {"_GAMERoutines_r_modvoltvt", (DL_FUNC) &_GAMERoutines_r_modvoltvt, 2},
-    {"_GAMERoutines_r_modvoltht", (DL_FUNC) &_GAMERoutines_r_modvoltht, 2},
-    {"_GAMERoutines_r_modvoltprdub", (DL_FUNC) &_GAMERoutines_r_modvoltprdub, 3},
-    {"_GAMERoutines_r_modvoltprht", (DL_FUNC) &_GAMERoutines_r_modvoltprht, 3},
-    {"_GAMERoutines_r_modvoltprvol", (DL_FUNC) &_GAMERoutines_r_modvoltprvol, 4},
-    {"_GAMERoutines_r_modvolmvldub", (DL_FUNC) &_GAMERoutines_r_modvolmvldub, 3},
-    {"_GAMERoutines_r_SOPUDictSweep", (DL_FUNC) &_GAMERoutines_r_SOPUDictSweep, 1},
-    {"_GAMERoutines_r_SOPUDictBranch", (DL_FUNC) &_GAMERoutines_r_SOPUDictBranch, 1},
-    {"_GAMERoutines_r_SOPUDictFeature", (DL_FUNC) &_GAMERoutines_r_SOPUDictFeature, 1},
-    {"_GAMERoutines_r_sstcall", (DL_FUNC) &_GAMERoutines_r_sstcall, 10},
-    {"_GAMERoutines_r_volpak_tree", (DL_FUNC) &_GAMERoutines_r_volpak_tree, 4},
-    {"_GAMERoutines_r_volpak_section", (DL_FUNC) &_GAMERoutines_r_volpak_section, 3},
-    {"_GAMERoutines_r_volpak_point", (DL_FUNC) &_GAMERoutines_r_volpak_point, 2},
-    {"_GAMERoutines_r_vol_section", (DL_FUNC) &_GAMERoutines_r_vol_section, 1},
-    {"_GAMERoutines_r_total_vol", (DL_FUNC) &_GAMERoutines_r_total_vol, 4},
-    {"_GAMERoutines_r_vtm", (DL_FUNC) &_GAMERoutines_r_vtm, 3},
-    {"_GAMERoutines_r_get_hag", (DL_FUNC) &_GAMERoutines_r_get_hag, 5},
-    {"_GAMERoutines_r_vol_to_tdub", (DL_FUNC) &_GAMERoutines_r_vol_to_tdub, 5},
-    {"_GAMERoutines_r_vol_to_hag", (DL_FUNC) &_GAMERoutines_r_vol_to_hag, 5},
-    {"_GAMERoutines_r_treeht_est", (DL_FUNC) &_GAMERoutines_r_treeht_est, 5},
+    {"_volpak_times", (DL_FUNC) &_volpak_times, 2},
+    {"_volpak_r_volpak_tree", (DL_FUNC) &_volpak_r_volpak_tree, 4},
+    {"_volpak_r_total_vol", (DL_FUNC) &_volpak_r_total_vol, 2},
+    {"_volpak_r_get_hag", (DL_FUNC) &_volpak_r_get_hag, 2},
+    {"_volpak_r_vol_to_tdub", (DL_FUNC) &_volpak_r_vol_to_tdub, 3},
+    {"_volpak_r_vol_to_hag", (DL_FUNC) &_volpak_r_vol_to_hag, 3},
+    {"_volpak_r_vtm", (DL_FUNC) &_volpak_r_vtm, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_GAMERoutines(DllInfo *dll) {
+RcppExport void R_init_volpak(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

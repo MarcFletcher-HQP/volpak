@@ -19,13 +19,31 @@
 /* Cone Methods */
 
 
-ConeSection::ConeSection(Point first, Point second, Point third, double p, double q) : Section(first, second, third, p, q){
+/* ConeSection::ConeSection() : Section(){
+
+} */
+
+
+ConeSection::ConeSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
 	double taper = (third.hag - first.hag) / (first.radius - third.radius);
 
 	if (taper == 0.0){ 	// shouldn't ever be true, should this be an error?
 		throw std::domain_error("ConeSection has zero taper (Cylinder)");
 	}
+
+}
+
+
+
+std::string ConeSection::print(){
+
+	std::ostringstream msg;
+
+	msg << "ConeSection: " << std::endl;
+	msg << Section::print();
+
+	return msg.str();
 
 }
 

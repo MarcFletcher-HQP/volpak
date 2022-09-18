@@ -12,6 +12,11 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LinkingTo: 
+    cpp11,
     Rcpp
 Imports: 
     Rcpp
+SystemRequirements: C++11
+Depends: 
+    R (>= 2.10)
+LazyData: true

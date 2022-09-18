@@ -5,20 +5,8 @@
 setClass(
   Class = "volpak_tree",
   slots = list(
-    points = "data.frame",
-    base = "volpak_section",
-    sections = "list",
-    neiloid_stump = "logical",
     xptr = "externalptr"
-  ),
-  validity = function(object){
-    check.type <- vapply(object@sections, inherits, logical(1), "volpak_section")
-    if(any(!check.type)){
-      return("'sections' slot contains entries that are not 'volpak_section'")
-    }
-
-    return(TRUE)
-  }
+  )
 )
 
 
@@ -93,7 +81,72 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
 
   idx <- order(heights, decreasing = FALSE)
   r_volpak_tree(heights[idx], radius[idx], total.height[1], stump.height[1])
+
 }
+
+
+
+
+
+
+#' @export
+#' @rdname volpak_tree
+volpak_vol_to_tdub <- function(tdubs, tree){
+
+  if(!inherits(tree, "volpak_tree")){
+    stop("Argument 'tree' must inherit from 'volpak_tree'")
+  }
+
+  r_vol_to_tdub(tdubs/200, tree)
+
+}
+
+
+
+
+#' @export
+#' @rdname volpak_tree
+volpak_vol_to_hag <- function(hags, tree){
+
+  if(!inherits(tree, "volpak_tree")){
+    stop("Argument 'tree' must inherit from 'volpak_tree'")
+  }
+
+  r_vol_to_hag(hags, tree)
+
+}
+
+
+
+
+
+#' @export
+#' @rdname volpak_tree
+volpak_total_vol <- function(tree){
+
+  r_total_vol(tree)
+
+}
+
+
+
+
+
+#' @export
+#' @rdname volpak_tree
+volpak_get_hag <- function(search.diam, tree){
+
+  search.radii <- search.diam / 200
+
+  hags <- r_get_hag(search.radii, tree)
+
+  if(any(hags < 0)){
+    hags[hags < 0] <- NA_real_
+  }
+
+  return(hags)
+}
+
 
 
 

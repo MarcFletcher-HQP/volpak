@@ -17,7 +17,19 @@
 /* Section Methods - Shared by all derived classes */
 
 
-Section::Section(Point first, Point second, Point third, double p, double q){
+
+Section::Section(){
+
+	this->first = Point();
+	this->second = Point();
+	this->third = Point();
+	this->p = -HUGE_VAL;
+	this->q = -HUGE_VAL;
+
+}
+
+
+Section::Section(const Point &  first, const Point &  second, const Point &  third, double & p, double & q){
 
 	this->first = first;
 	this->second = second;
@@ -42,8 +54,8 @@ double Section::calcx(double ht){
 
 double Section::total_volume(){
 
-	double vol = (M_PI / 6.0) * 
-		(pow(first.radius, 2.0) + 4.0 * pow(second.radius, 2.0) + pow(third.radius, 2.0)) * 
+	double vol = (M_PI / 6.0) *
+		(pow(first.radius, 2.0) + 4.0 * pow(second.radius, 2.0) + pow(third.radius, 2.0)) *
 		(third.hag - first.hag);
 
 	return vol;
@@ -71,11 +83,10 @@ bool Section::contains_height(double ht){
 
 
 
-std::string print(){
+std::string Section::print(){
 
 	std::ostringstream msg;
 
-	msg << "Section: " << std::endl;
 	msg << "\t" << "first:  " << first.print() << std::endl;
 	msg << "\t" << "second: " << second.print() << std::endl;
 	msg << "\t" << "third:  " << third.print() << std::endl;
@@ -89,11 +100,11 @@ std::string print(){
 
 
 
-Point Section::midpoint(Point base, Point top){
+Point Section::midpoint(const Point &  base, const Point &  top){
 
-	double midht = average(base.hag, top.hag);	
+	double midht = average(base.hag, top.hag);
 	double midR = this->radius(midht);
-	
+
 	return Point(midht, midR);
 
 }
@@ -101,3 +112,10 @@ Point Section::midpoint(Point base, Point top){
 
 
 
+double Section::discriminant(double ht){
+
+	double x = this->calcx(ht);
+
+	return p * p - 4.0 * q * x;
+
+}

@@ -10,10 +10,8 @@
 /* ParaboloidStump Methods */
 
 
-ParaboloidStump::ParaboloidStump(const Point& ground, const Point& stump, const Section& base){
+ParaboloidStump::ParaboloidStump(const Point& ground, const Point& stump, ParaboloidSection & base) : Stump(ground, stump){
 
-    this->ground = ground;
-    this->stump = stump;
     this->base = base;
 
 }
@@ -23,7 +21,6 @@ ParaboloidStump::ParaboloidStump(const Point& ground, const Point& stump, const 
 std::string ParaboloidStump::print(){
 
     std::ostringstream msg;
-
 
     msg << "ParaboloidStump: " << std::endl;
     msg << "\t" << "ground: " << ground.print() << std::endl;
@@ -55,18 +52,18 @@ double ParaboloidStump::height(double rad){
 
 
 
-double ParaboloidStump::volume(Point point){
+double ParaboloidStump::volume(double r1, double r2){
 
-    return base.volume(rad);
+    return base.volume(r1, r2);
 
 }
 
 
 
 
-double ParaboloidStump::vol_stump_to_first_meas(){
+double ParaboloidStump::total_volume(){
 
-    return base.volume(base.first) - base.volume(stump);
+    return base.volume(ground.radius, base.first.radius);
 
 }
 

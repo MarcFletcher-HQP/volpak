@@ -15,33 +15,33 @@ Point::Point(){
 
 
 Point::Point(double ht, double rad){
-		
+
     hag = ht;
     radius = rad;
-    
+
 }
 
 
 
 /* Copy constructor */
-Point::Point(const Point &rhs){
-	
+/* Point::Point(const Point &rhs){
+
 	this->hag = rhs.hag;
 	this->radius = rhs.radius;
 
-}
+} */
 
 
 
 /* Assignment constructor */
-Point& Point::operator=(const Point &rhs){
+/* Point& Point::operator=(const Point &rhs){
 
 	this->hag = rhs.hag;
 	this->radius = rhs.radius;
 
 	return *this;
 
-}
+} */
 
 
 
@@ -67,7 +67,7 @@ bool Point::above(const Point & point){
 
 
 
-std::string print(){
+std::string Point::print(){
 
 	std::ostringstream msg;
 

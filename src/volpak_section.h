@@ -8,27 +8,24 @@ value of 'a' determines whether the section is represented by a cone
 In the original volpak; each stem section had a locally defined position
 along the stem, calculated with reference to the total length of the stem.
 The stem length is extrapolated using the shape of the curve defining the
-radius of the section, which is not expected to be the same for each 
+radius of the section, which is not expected to be the same for each
 section.
 
 */
-
-#include <math.h>
-#include <memory>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <exception>
-
-
-#include "volpak.h"
-#include "volpak_point.h"
-#include "volpak_section_factory.h"
 
 
 
 #ifndef SECTION_H
 #define SECTION_H
+
+
+#include <memory>
+
+
+#include "volpak.h"
+#include "volpak_point.h"
+
+
 
 class Section {
 
@@ -36,24 +33,29 @@ public:
 
 	// Methods shared with derived classes
 
-    std::string print();
     double total_volume();
     double calcx(double ht);
     bool contains_radius(double rad);
 	bool contains_height(double ht);
-    Point Section::midpoint(Point base, Point top)
+    Point midpoint(const Point &  base, const Point &  top);
+    double discriminant(double ht);
 
 
 	// Virtual methods, different for each derived class
-    
-	virtual double radius(double ht);
-	virtual double height(double radius);
-    virtual double volume(double r1, double r2);
-    virtual double length_above(double radius);
+
+    virtual std::string print();
+	virtual double radius(double ht) = 0;
+	virtual double height(double radius) = 0;
+    virtual double volume(double r1, double r2) = 0;
+    virtual double length_above(double radius) = 0;
 
 
-	// Destructor, apparently required for the derived class destructors to be called
-	Section(Point first, Point second, Point third, double p, double q);
+    // All the ways of making a Section
+    Section();
+	Section(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
+
+
+    // Destructor must be virtual for the derived class destructors to be called
     virtual ~Section(){};
 
 
@@ -62,7 +64,7 @@ public:
 	Point first;
 	Point second;
 	Point third;
-	
+
 	double p = 0.0;
 	double q = 0.0;
 
@@ -73,8 +75,9 @@ public:
 
 class ConeSection : public Section {
 
-    public: 
+    public:
 
+        virtual std::string print();
         virtual double radius(double ht);
         virtual double height(double radius);
         virtual double volume(double r1, double r2);
@@ -82,7 +85,8 @@ class ConeSection : public Section {
 
 
         // Destructor, apparently required for the derived class destructors to be called
-        ConeSection(Point first, Point second, Point third, double p, double q);
+        ConeSection() : Section() {};
+        ConeSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
         virtual ~ConeSection(){};
 
 };
@@ -91,8 +95,9 @@ class ConeSection : public Section {
 
 class ParaboloidSection : public Section {
 
-    public: 
+    public:
 
+        virtual std::string print();
         virtual double volume(double r1, double r2);
         virtual double radius(double ht);
         virtual double height(double radius);
@@ -100,7 +105,8 @@ class ParaboloidSection : public Section {
 
 
         // Destructor, apparently required for the derived class destructors to be called
-        ParaboloidSection(Point first, Point second, Point third, double p, double q);
+        ParaboloidSection() : Section() {};
+        ParaboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
         virtual ~ParaboloidSection(){};
 
 };
@@ -109,8 +115,9 @@ class ParaboloidSection : public Section {
 
 class HyperboloidSection : public Section {
 
-    public: 
+    public:
 
+        virtual std::string print();
         virtual double volume(double r1, double r2);
         virtual double radius(double ht);
         virtual double height(double radius);
@@ -118,7 +125,8 @@ class HyperboloidSection : public Section {
 
 
         // Destructor, apparently required for the derived class destructors to be called
-        HyperboloidSection(Point first, Point second, Point third, double p, double q);
+        HyperboloidSection() : Section() {};
+        HyperboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
         virtual ~HyperboloidSection(){};
 
 };

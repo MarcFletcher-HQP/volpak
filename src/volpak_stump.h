@@ -1,12 +1,7 @@
 /*  */
 
 
-#include <math.h>
 #include <memory>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <exception>
 
 
 #include "volpak.h"
@@ -24,16 +19,27 @@ class Stump {
 
     public:
 
-        virtual std::string print();
-        virtual double radius(double height);
-        virtual double height(double radius);
-        virtual double volume(Point point);
-        virtual double vol_stump_to_first_meas();
+        double stump_vol();
 
-        virtual bool contains_radius(double rad);
-	    virtual bool contains_height(double ht);
+        Stump();
+        Stump(const Point & ground, const Point & stump);
+
+        virtual std::string print() = 0;
+        virtual double radius(double height) = 0;
+        virtual double height(double radius) = 0;
+        virtual double volume(double r1, double r2) = 0;
+        virtual double total_volume() = 0;
+
+        virtual bool contains_radius(double rad) = 0;
+	    virtual bool contains_height(double ht) = 0;
 
         virtual ~Stump(){};
+
+
+    public:
+
+        Point ground;              // as written on the can
+        Point stump;               // top of the stump
 
 };
 
@@ -47,8 +53,8 @@ class NeiloidStump : public Stump {
         virtual std::string print();
         virtual double radius(double height);
         virtual double height(double radius);
-        virtual double volume(Point point);
-        virtual double vol_stump_to_first_meas();
+        virtual double volume(double r1, double r2);
+        virtual double total_volume();
 
         virtual bool contains_radius(double rad);
 	    virtual bool contains_height(double ht);
@@ -58,8 +64,6 @@ class NeiloidStump : public Stump {
 
     public:
 
-        Point ground;           // as written on the can
-        Point stump;            // top of the stump
         Point first;            // lowest stem measure on the tree
         Point second;           // second stem measure
 
@@ -74,19 +78,17 @@ class ParaboloidStump : public Stump {
         virtual std::string print();
         virtual double radius(double height);
         virtual double height(double radius);
-        virtual double volume(Point point);
-        virtual double vol_stump_to_first_meas();
+        virtual double volume(double r1, double r2);
+        virtual double total_volume();
 
         virtual bool contains_radius(double rad);
 	    virtual bool contains_height(double ht);
 
-        ParaboloidStump(const Point& ground, const Point& stump, const Section& base);
+        ParaboloidStump(const Point& ground, const Point& stump, ParaboloidSection & base);
         virtual ~ParaboloidStump(){};
 
     public:
 
-        Point ground;              // as written on the can
-        Point stump;               // top of the stump
         ParaboloidSection base;    // ParaboloidSection defined by the first three measures
 
 };

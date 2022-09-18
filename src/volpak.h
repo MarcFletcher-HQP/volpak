@@ -1,5 +1,21 @@
 
 
+#ifndef VOLPAK_H
+#define VOLPAK_H
+
+
+#include <cmath>
+#include <math.h>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <exception>
+
+
+//[[Rcpp::plugins("cpp11")]]
+
+
+
 /* Defines */
 
 #define NEWTON
@@ -17,6 +33,7 @@ static double RADTOL = 0.05/200;
 /* Various functions */
 
 double average(double low, double high);
-Point average(Point, Point); 					// Surely this could be a template (combinations of std::shared_ptr<Point> and Point)
-Point midpoint(Point base, Point top);
 
+
+
+#endif

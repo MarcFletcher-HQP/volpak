@@ -9,13 +9,10 @@ consecutive measures.
 */
 
 
-#include <math.h>
-#include <utility>
+
 #include <memory>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <exception>
+#include <utility>
+#include <algorithm>
 
 
 #include "volpak.h"
@@ -32,31 +29,36 @@ class Tree {
 
 public:
 
+	std::string print();
 	double radius(double ht);
 	double height(double rad);
-	double volume_to_height(double ht);
-	double volume_to_radius(double rad);
+	double volume_to_height(double ht, bool abovestump);
+	double volume_to_radius(double rad, bool abovestump);
 	
-	double stump_ht();
 	double stump_vol();
+	double stump_radius();
+	double stump_height();
+	double ground_radius();
+
     double vol_to_first_measure();
-	double vol_above_stump();
+	double total_volume();
 
 	bool check_totht();
-	double total_height();
 
-	void set_stump(double ht);
+	Point first_measure();
+	Point last_measure();
 
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
-
+	Tree(const Tree & t) = delete;
+	Tree& operator=(const Tree & t) = delete;
+	~Tree() = default;
 
 public:
 
-    bool treeht_measured;
+    double treeht;
 
-	Stump* stump;
-	std::vector<Point> measpoints;
-	std::vector<Section*> sections;
+	std::unique_ptr<Stump> stump;
+	std::vector<std::unique_ptr<Section>> sections;
 
 };
 

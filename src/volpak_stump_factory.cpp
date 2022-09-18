@@ -12,17 +12,20 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
 
     double stumprad = 0.0;
     double groundrad = 0.0;
+    StumpType stumptype;
+
 
 
     /* Get the shape of the section related to the first three measures */
+    SectionFactory factory;
 
-    std::unique_ptr<Section> base = SectionFactory::createSection(first, second, third);
+    std::unique_ptr<Section> base = factory.createSection(first, second, third);
 
 
-    if (base->type == Paraboloid){
+    if (factory.getSectionType(base) == SectionFactory::Paraboloid){
 
         groundrad = base->radius(0.0);
-        stumptype = ParaboloidStump;
+        stumptype = Paraboloid;
 
         if (STUMPHT == 0.0){
             stumprad = groundrad;
@@ -34,29 +37,35 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
                 stumprad = base->radius(STUMPHT);
         }
         else {
-            stumptype = NeiloidStump;
+            stumptype = Neiloid;
         }
     }
     else {
-        stumptype = NeiloidStump;
+        stumptype = Neiloid;
     }
 
 
     switch(stumptype){
 
-        case ParaboloidStump:
-            Point ground(0.0, groundrad);
-            Point stump(STUMPHT, stumprad);
-            return std::make_shared<ParaboloidStump>(ground, stump, base);
-
-        case NeiloidStump:
-            return std::make_shared<NeiloidStump>(first, second);
-
+        case Paraboloid:
+        {
+            const Point ground(0.0, groundrad);
+            const Point stump(STUMPHT, stumprad);
+            return std::make_unique<ParaboloidStump>(ground, stump, dynamic_cast<ParaboloidSection&>(*base));
+        }
+        case Neiloid:
+        {
+            return std::make_unique<NeiloidStump>(first, second);
+        }
         case Unknown:
+        {
             return nullptr;
-        
-        case default:
+        }
+        default:
+        {
             return nullptr;
+        }
+
 
     }
 

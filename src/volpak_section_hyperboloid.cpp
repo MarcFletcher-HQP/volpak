@@ -20,11 +20,24 @@
 
 
 
-HyperboloidSection::HyperboloidSection(Point first, Point second, Point third, double p, double q) : Section(first, second, third, p, q){
+HyperboloidSection::HyperboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
 	if (q == 0.0){
 		throw std::domain_error("HyperboloidSection not defined for q == 0.0");
 	}
+
+}
+
+
+
+std::string HyperboloidSection::print(){
+
+	std::ostringstream msg;
+
+	msg << "HyperboloidSection: " << std::endl;
+	msg << Section::print();
+
+	return msg.str();
 
 }
 

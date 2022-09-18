@@ -2,10 +2,6 @@
 
 
 #include <memory>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <exception>
 
 #include "volpak.h"
 #include "volpak_stump.h"

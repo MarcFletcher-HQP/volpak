@@ -6,7 +6,9 @@
 
 
 
-std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, const Point& second, const Point& third){
+std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const Point& second, const Point& third){
+
+  std::ostringstream msg;
 
 
     SectionType sectiontype = Unknown;
@@ -15,13 +17,13 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 	double q = 0.0;
 	double a = 0.0;
 
-	double r1 = first->radius,  h1 = first->hag;
-	double r2 = second->radius, h2 = second->hag;
-	double r3 = third->radius,  h3 = third->hag;
+	double r1 = first.radius;
+	double r2 = second.radius;
+	double r3 = third.radius;
 
-
-	/* "Current Marc" would like "Future Marc" to know that he's really not a fan of this "lets make all the 
-	derivatives positive numbers" approach */
+	double h1 = first.hag;
+	double h2 = second.hag;
+	double h3 = third.hag;
 
 	double rdif1 = r1 - r2;
 	double rdif2 = r2 - r3;
@@ -29,13 +31,13 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 	double t2 = (h3 - h2) / rdif2;
 
 
-	if (rdif1 < 0 || t1 <= 0.0){ 
+	if (rdif1 < 0 || t1 <= 0.0){
         sectiontype = Cone;
         return std::make_unique<ConeSection>(first, second, third, p, q);
 	}
 
 
-	if (rdif2 < 0 || t2 <= 0.0){ 
+	if (rdif2 < 0 || t2 <= 0.0){
         sectiontype = Cone;
 		return std::make_unique<ConeSection>(first, second, third, p, q);
 	}
@@ -72,17 +74,17 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 	Where 'x' is the distance from the top of the tree (TotalHt - HAG) and P & Q are
 	coefficients calculated in this function (hence why it was originally named 'param').
 
-	In the parabolic case the coefficients have the same impact as for any quadratic, made 
+	In the parabolic case the coefficients have the same impact as for any quadratic, made
 	complicated by a scale factor 'Q'. 'P/Q' is the taper at the tip of the tree, which has to
-	be estimated from the measures available in the lower section of the stem. '2/Q' doubles as 
-	an estimate of the rate at which the taper is changing along the paraboloid. 
-	
-	The expression for P can be obtained by differentiation of 'x' w.r.t. the radius and 
-	expressing the derivative in terms of the central finite difference, as well as describing 
-	the radius as being approximately the average of the two end points. The expression for Q 
+	be estimated from the measures available in the lower section of the stem. '2/Q' doubles as
+	an estimate of the rate at which the taper is changing along the paraboloid.
+
+	The expression for P can be obtained by differentiation of 'x' w.r.t. the radius and
+	expressing the derivative in terms of the central finite difference, as well as describing
+	the radius as being approximately the average of the two end points. The expression for Q
 	is obtained by obtaining a finite difference approximation for the second derivative.
 
-	In the hyperbolic case the parameters have a different interpretation. 'Q' is the maximum 
+	In the hyperbolic case the parameters have a different interpretation. 'Q' is the maximum
 	possible radius, atained at the base of an infinitely tall tree (absurd, right). The value
 	of 'P' represents the position along the stem where the radius reaches half of the maximum.
 	The expression used to estimate 'P' is obtained using a similar method for the Parabolic
@@ -95,16 +97,16 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 
 		if (fabs(a) >= 1 && a > -300){
 			if (a >= 0.0) {	/* Hyperbola. */
-				
+
                 q = (t1 * r1 - t2 * r3) / (a);
 				p = (h3 - h1) / (r1 - r3) * (q - r1) * (q - r3) / (q);
 
-                sectiontype = Hyperboloid;          /* SectionType::Hyperboloid? */
+                sectiontype = Hyperboloid;
 
 			}
 			else	{		/* Parabola. */
-				
-                q = fabs((r1 - r3) / (a)); 
+
+                q = fabs((r1 - r3) / (a));
 				p = ((h3 - h1) / (r1 - r3)) * q + (r1 + r3);
 
                 sectiontype = Paraboloid;
@@ -112,7 +114,7 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 			}
 		}
 		else {
-			
+
             a = 0.0;		/* Conical. */
 
             sectiontype = Cone;
@@ -131,8 +133,8 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 	}
 
 
-	/* The taper of a paraboloid switches sign, from increasing to decreasing with height, 
-	when r > p/2. In this instance, the original volpak code reverts to a cone for 
+	/* The taper of a paraboloid switches sign, from increasing to decreasing with height,
+	when r > p/2. In this instance, the original volpak code reverts to a cone for
 	interpolation.*/
 
 	if ((sectiontype == Paraboloid) && (r1 >= p/2)){
@@ -144,12 +146,7 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 	}
 
 
-
-
     switch(sectiontype){
-
-        case Neiloid:
-            return std::make_unique<NeiloidSection>(first, second, third, p, q);
 
         case Paraboloid:
             return std::make_unique<ParaboloidSection>(first, second, third, p, q);
@@ -162,8 +159,8 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 
         case Unknown:
             return nullptr;
-        
-        case default:
+
+        default:
             return nullptr;
 
     }
@@ -174,18 +171,46 @@ std::unique_ptr<Section> SectionFactory::getSectionType(const Point& first, cons
 
 
 
+
+SectionFactory::SectionType SectionFactory::getSectionType(std::unique_ptr<Section> & ptr){
+
+	SectionType type = Unknown;
+
+	if(dynamic_cast<ParaboloidSection*>(ptr.get()) != NULL){
+
+		type = Paraboloid;
+
+	} else if (dynamic_cast<HyperboloidSection*>(ptr.get()) != NULL){
+
+		type = Hyperboloid;
+
+	} else if (dynamic_cast<ConeSection*>(ptr.get()) != NULL){
+
+		type = Cone;
+
+	}
+
+	return type;
+
+}
+
+
+
+
+
+
 /* Split a section into two sub-sections, each containing two of the original measure points and a new mid-point */
 
-std::vector<std::unique_ptr<Section>> SectionFactory::splitSection(const Section& log){
+/* std::vector<std::unique_ptr<Section>> SectionFactory::splitSection(std::unique_ptr<Section> log){
 
-	std::vector<std::unique_ptr<Section>> newlogs(2, std::unique_ptr<Section>);
+	std::vector<std::unique_ptr<Section>> newlogs(2);
 
 	Point mid12 = log->midpoint(log->first, log->second);
 	Point mid23 = log->midpoint(log->second, log->third);
 
-	std::unique_ptr<Section> newlogs[0] = createSection(log->first, mid12, log->second);
-	std::unique_ptr<Section> newlogs[1] = createSection(log->second, mid23, log->third);
+	newlogs[0] = createSection(log->first, mid12, log->second);
+	newlogs[1] = createSection(log->second, mid23, log->third);
 
 	return newlogs;
 
-}
+} */
