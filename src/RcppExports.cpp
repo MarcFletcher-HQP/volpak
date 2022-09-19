@@ -10,18 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// times
-Rcpp::NumericVector times(Rcpp::NumericVector x, Rcpp::NumericVector y);
-RcppExport SEXP _volpak_times(SEXP xSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(times(x, y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // r_volpak_tree
 Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height, Rcpp::NumericVector radius, Rcpp::NumericVector total_height, Rcpp::NumericVector stump_height);
 RcppExport SEXP _volpak_r_volpak_tree(SEXP heightSEXP, SEXP radiusSEXP, SEXP total_heightSEXP, SEXP stump_heightSEXP) {
@@ -101,7 +89,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_volpak_times", (DL_FUNC) &_volpak_times, 2},
     {"_volpak_r_volpak_tree", (DL_FUNC) &_volpak_r_volpak_tree, 4},
     {"_volpak_r_total_vol", (DL_FUNC) &_volpak_r_total_vol, 2},
     {"_volpak_r_get_hag", (DL_FUNC) &_volpak_r_get_hag, 2},

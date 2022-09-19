@@ -8,7 +8,7 @@
 
 
 #define DEBUG
-#undef DEBUG
+//#undef DEBUG
 
 #ifdef DEBUG
 #include <Rcpp.h>
@@ -17,6 +17,9 @@
 
 
 Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, const double &treeht, double stumpht){
+
+    std::ostringstream msg;
+
 
     // Check arguments
     if (radii.size() != hts.size()){
@@ -94,6 +97,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
 
 
+
     /* Create logs within a tree */
 
     SectionFactory section_factory;
@@ -118,6 +122,13 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
             std::unique_ptr<Section> coarse = section_factory.createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
 
 
+#ifdef DEBUG
+    Rcpp::Rcout << "Coarse Section " << i << " out of " << numpts - 2 << std::endl;
+    Rcpp::Rcout << coarse->print() << std::endl;
+#endif
+
+
+
             /* Create section from each half of the coarse representation */
 
             std::vector<std::unique_ptr<Section>> logs(2);
@@ -125,15 +136,44 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
             Point mid12 = coarse->midpoint(coarse->first, coarse->second);
         	Point mid23 = coarse->midpoint(coarse->second, coarse->third);
 
+
+
+
             logs[0] = section_factory.createSection(coarse->first, mid12, coarse->second);
+
+            if (logs[0] == nullptr){
+
+                msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
+                msg << coarse->print();
+                msg << "mid12: " << mid12.print() << std::endl;
+
+                throw std::runtime_error(msg.str());
+            }
+
+
+
             logs[1] = section_factory.createSection(coarse->second, mid23, coarse->third);
+
+            if (logs[1] == nullptr){
+
+                msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
+                msg << coarse->print();
+                msg << "mid23: " << mid23.print() << std::endl;
+
+                throw std::runtime_error(msg.str());
+            }
+
 
 
             if(sections.begin() != sections.end()){
 
-                Section* log12 = (sections.back()).get();
+                auto it = sections.end() - 1;
 
-                log12->second = average(logs[0]->second, log12->second);
+                (*it)->second = average(logs[0]->second, (*it)->second);
+
+#ifdef DEBUG
+    Rcpp::Rcout << "Updating second point in previous log" << std::endl;
+#endif
 
             } else {
 

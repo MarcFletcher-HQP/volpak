@@ -121,6 +121,10 @@ std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const
 
 		}
 
+	} else {
+
+		sectiontype = Cone;
+
 	}
 
 

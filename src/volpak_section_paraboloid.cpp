@@ -20,12 +20,16 @@
 
 ParaboloidSection::ParaboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
+	std::ostringstream msg;
+
 	if (q == 0.0){
 		throw std::domain_error("ParaboloidSection not defined for q == 0.0");
 	}
 
-	if ( pow(p, 2.0) - 4 * q * calcx(first.radius) <= 0.0 ){
-		throw std::domain_error("ParaboloidSection: no real solution for radius along entire section.");
+	if ( first.radius >= (p / 2) ){
+		msg << "ParaboloidSection: taper is not positive along entire section." << std::endl;
+		msg << print();
+		throw std::domain_error(msg.str());
 	}
 
 }
@@ -74,7 +78,7 @@ double ParaboloidSection::radius(double ht){
 
 	std::ostringstream msg;
 
-	double z = pow(p, 2.0) - 4 * q * calcx(ht);
+	double z = discriminant(ht);
 	double rad = (p - sqrt(z)) / 2.0;
 
 	if (rad < 0.0){
@@ -117,17 +121,6 @@ double ParaboloidSection::volume(double R, double r){
 
 	return vol;
 }
-
-
-
-
-/* double ParaboloidSection::discriminant(double ht){
-
-	double x = this->length_above(ht);
-
-	return p * p - 4.0 * q * x;
-
-} */
 
 
 

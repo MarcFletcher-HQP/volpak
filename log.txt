@@ -1,0 +1,42 @@
+Tree::Tree: stump created: 
+NeiloidStump: 
+	ground: (0, 0.126932)
+	stump: (0.15, 0.122097)
+	first: (0.2, 0.1205)
+	second: (0.5, 0.111)
+Tree::Tree: coarse log 0: 
+ParaboloidSection: 
+	first:  (0.2, 0.1205)
+	second: (0.5, 0.111)
+	third:  (1.3, 0.101)
+	p: 0.244217
+	q: 0.000402717
+Tree::Tree: split first half: 
+ParaboloidSection: 
+	first:  (0.2, 0.1205)
+	second: (0.35, 0.114172)
+	third:  (0.5, 0.111)
+	p: 0.244217
+	q: 0.000402717
+Tree::Tree: split second half: 
+ParaboloidSection: 
+	first:  (0.5, 0.111)
+	second: (0.9, 0.105242)
+	third:  (1.3, 0.101)
+	p: 0.244217
+	q: 0.000402717
+Tree::Tree: coarse log 1: 
+ConeSection: 
+	first:  (0.5, 0.111)
+	second: (1.3, 0.101)
+	third:  (4.9, 0.0915)
+	p: 0
+	q: 0
+Tree::Tree: split first half: 
+HyperboloidSection: 
+	first:  (0.5, 0.111)
+	second: (0.9, 0.109227)
+	third:  (1.3, 0.101)
+	p: 0.0246217
+	q: 0.113746
+Tree::Tree: split second half: 

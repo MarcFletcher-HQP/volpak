@@ -19,7 +19,7 @@ data(hags)
 
 
 
-context("Test creation of volpak_tree")
+# context("Test creation of volpak_tree")
 
 
 
@@ -28,7 +28,7 @@ test_that("Creation of volpak_tree succeeds", {
 
   tree <- hags[hags$TreeSeq == hags$TreeSeq[1], ]
 
-  expect_success(volpak_tree(hags$HAG, hags$DUB, hags$TreeHt))
+  expect_success(volpak_tree(tree$HAG, tree$DUB, tree$TreeHt))
 
 })
 
