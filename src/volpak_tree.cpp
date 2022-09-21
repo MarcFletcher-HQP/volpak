@@ -8,7 +8,7 @@
 
 
 #define DEBUG
-//#undef DEBUG
+#undef DEBUG
 
 #ifdef DEBUG
 #include <Rcpp.h>
@@ -51,7 +51,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 	/* rather than use std::vector::push_back, which potentially copies the existing array to
 	ensure contiguous storage, just allocate up-front.*/
 
-    int numpts = radii.size() + (int) (treeht > 0.0);
+	int numpts = radii.size() + (int) (treeht > 0);
 
     std::vector<Point> measpoints(numpts);
 
@@ -76,7 +76,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
         Point top(treeht, 0.0);
 
-        measpoints.back() = top;
+        measpoints[numpts-1] = top;
 
     }
 
@@ -93,7 +93,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     /* Set ground and stump radius - do what for measures == 2? */
 
     StumpFactory stump_factory;
-    std::unique_ptr<Stump> stump = stump_factory.createStump(measpoints[0], measpoints[1], measpoints[2]);
+    stump = stump_factory.createStump(measpoints[0], measpoints[1], measpoints[2]);
 
 
 
@@ -120,12 +120,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
             /* Create mid-points and calculate mid-point radius using the shape of the coarser stem section. */
 
             std::unique_ptr<Section> coarse = section_factory.createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
-
-
-#ifdef DEBUG
-    Rcpp::Rcout << "Coarse Section " << i << " out of " << numpts - 2 << std::endl;
-    Rcpp::Rcout << coarse->print() << std::endl;
-#endif
 
 
 
@@ -171,10 +165,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
                 (*it)->second = average(logs[0]->second, (*it)->second);
 
-#ifdef DEBUG
-    Rcpp::Rcout << "Updating second point in previous log" << std::endl;
-#endif
-
             } else {
 
                 sections.push_back(std::move(logs[0]));
@@ -187,7 +177,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
     }
 
-
 }
 
 
@@ -198,11 +187,11 @@ std::string Tree::print(){
     std::ostringstream msg;
 
     msg << "Tree: " << std::endl;
-    msg << "\t" << stump->print();
+    msg << stump->print();
 
     for(auto it = sections.begin(); it != sections.end(); it++){
 
-        msg << "\t" << (*it)->print();
+        msg << (*it)->print() << std::endl;
 
     }
 

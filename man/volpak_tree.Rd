@@ -10,11 +10,11 @@
 \usage{
 volpak_tree(heights, diameters, total.height, stump.height = 0.15)
 
-volpak_vol_to_tdub(tdubs, tree)
+volpak_vol_to_tdub(tdubs, tree, abovestump = FALSE)
 
-volpak_vol_to_hag(hags, tree)
+volpak_vol_to_hag(hags, tree, abovestump = FALSE)
 
-volpak_total_vol(tree)
+volpak_total_vol(tree, abovestump = FALSE)
 
 volpak_get_hag(search.diam, tree)
 }
@@ -27,6 +27,8 @@ measurement.}
 \item{total.height}{The total height of the tree.}
 
 \item{stump.height}{The height (in metres above ground) of the stump.}
+
+\item{abovestump}{Should calculated volumes exclude the 15cm stump.}
 }
 \value{
 \code{volpak_tree} returns NULL, \code{volpak_total_vol} returns a

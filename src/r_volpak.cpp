@@ -33,14 +33,14 @@ Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
 
 
 #ifdef DEBUG
-    Rprintf("%s", tree.print());
+    Rcpp::Rcout << tree.print() << std::endl;;
 #endif
 
 
-	Tree* treeptr = &tree;
+	  Tree* treeptr = &tree;
 
     Rcpp::S4 Rtree("volpak_tree");
-	Rtree.slot("xptr") = Rcpp::XPtr<Tree>(treeptr, true);
+	  Rtree.slot("xptr") = Rcpp::XPtr<Tree>(treeptr, true);
 
     return Rtree;
 

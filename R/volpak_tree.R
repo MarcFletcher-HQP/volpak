@@ -42,6 +42,7 @@ setClass(
 #' @param diameters The under-bark diameter measured along the tree.
 #' @param total.height The total height of the tree.
 #' @param stump.height The height (in metres above ground) of the stump.
+#' @param abovestump Should calculated volumes exclude the 15cm stump.
 #'
 #' @return \code{volpak_tree} returns NULL, \code{volpak_total_vol} returns a
 #'   single numeric value, all remaining functions return a numeric vector with
@@ -91,13 +92,15 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
 
 #' @export
 #' @rdname volpak_tree
-volpak_vol_to_tdub <- function(tdubs, tree){
+volpak_vol_to_tdub <- function(tdubs, tree, abovestump = FALSE){
 
   if(!inherits(tree, "volpak_tree")){
     stop("Argument 'tree' must inherit from 'volpak_tree'")
   }
 
-  r_vol_to_tdub(tdubs/200, tree)
+  abovestump <- as.logical(abovestump)
+
+  r_vol_to_tdub(tdubs/200, abovestump, tree)
 
 }
 
@@ -106,13 +109,15 @@ volpak_vol_to_tdub <- function(tdubs, tree){
 
 #' @export
 #' @rdname volpak_tree
-volpak_vol_to_hag <- function(hags, tree){
+volpak_vol_to_hag <- function(hags, tree, abovestump = FALSE){
 
   if(!inherits(tree, "volpak_tree")){
     stop("Argument 'tree' must inherit from 'volpak_tree'")
   }
 
-  r_vol_to_hag(hags, tree)
+  abovestump <- as.logical(abovestump)
+
+  r_vol_to_hag(hags, abovestump, tree)
 
 }
 
@@ -122,9 +127,11 @@ volpak_vol_to_hag <- function(hags, tree){
 
 #' @export
 #' @rdname volpak_tree
-volpak_total_vol <- function(tree){
+volpak_total_vol <- function(tree, abovestump = FALSE){
 
-  r_total_vol(tree)
+  abovestump <- as.logical(abovestump)
+
+  r_total_vol(abovestump, abovestump, tree)
 
 }
 

@@ -28,8 +28,13 @@ test_that("Creation of volpak_tree succeeds", {
 
   tree <- hags[hags$TreeSeq == hags$TreeSeq[1], ]
 
-  expect_success(volpak_tree(tree$HAG, tree$DUB, tree$TreeHt))
+  expect_error(volpak_tree(tree$HAG, tree$DUB, tree$TreeHt), NA)
 
 })
+
+
+
+
+test_that()
 
 
