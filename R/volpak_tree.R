@@ -100,7 +100,7 @@ volpak_vol_to_tdub <- function(tdubs, tree, abovestump = FALSE){
 
   abovestump <- as.logical(abovestump)
 
-  r_vol_to_tdub(tdubs/200, abovestump, tree)
+  r_vol_to_tdub(tree, tdubs/200, abovestump)
 
 }
 
@@ -109,7 +109,7 @@ volpak_vol_to_tdub <- function(tdubs, tree, abovestump = FALSE){
 
 #' @export
 #' @rdname volpak_tree
-volpak_vol_to_hag <- function(hags, tree, abovestump = FALSE){
+volpak_vol_to_hag <- function(tree, hags, abovestump = FALSE){
 
   if(!inherits(tree, "volpak_tree")){
     stop("Argument 'tree' must inherit from 'volpak_tree'")
@@ -117,7 +117,7 @@ volpak_vol_to_hag <- function(hags, tree, abovestump = FALSE){
 
   abovestump <- as.logical(abovestump)
 
-  r_vol_to_hag(hags, abovestump, tree)
+  r_vol_to_hag(tree, hags, abovestump)
 
 }
 
@@ -131,7 +131,7 @@ volpak_total_vol <- function(tree, abovestump = FALSE){
 
   abovestump <- as.logical(abovestump)
 
-  r_total_vol(abovestump, abovestump, tree)
+  r_total_vol(tree, abovestump)
 
 }
 
@@ -141,11 +141,11 @@ volpak_total_vol <- function(tree, abovestump = FALSE){
 
 #' @export
 #' @rdname volpak_tree
-volpak_get_hag <- function(search.diam, tree){
+volpak_get_hag <- function(tree, search.diam){
 
   search.radii <- search.diam / 200
 
-  hags <- r_get_hag(search.radii, tree)
+  hags <- r_get_hag(tree, search.radii)
 
   if(any(hags < 0)){
     hags[hags < 0] <- NA_real_

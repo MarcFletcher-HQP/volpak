@@ -78,11 +78,9 @@ double NeiloidStump::radius(double ht){
         throw std::invalid_argument("NeiloidStump::radius: Neiloid model is not appropriate for points above the second measure\n");
     }
 
-    Point mid12 = average(first, second);
-
     double twothirds = 2.0 / 3.0;
     double rtrans = pow(first.radius, twothirds);
-    double dif = (rtrans - pow(mid12.radius, twothirds)) / (mid12.hag - first.hag);
+    double dif = (rtrans - pow(second.radius, twothirds)) / (second.hag - first.hag);
 
     if (dif < 0.0){
         dif = 0.0;
@@ -92,9 +90,9 @@ double NeiloidStump::radius(double ht){
 
 
     if (rad < 0.0){
-		  msg << "NeiloidStump::radius: stump radius < 0.0;  rad: " << rad << "  ht: " << ht << std::endl;
-      msg << "\tdif = " << dif << "  rtrans = " << rtrans << std::endl;
-      msg << this->print();
+		msg << "NeiloidStump::radius: stump radius < 0.0;  rad: " << rad << "  ht: " << ht << std::endl;
+        msg << "\tdif = " << dif << "  rtrans = " << rtrans << std::endl;
+        msg << this->print();
 		throw std::domain_error(msg.str());
     }
 

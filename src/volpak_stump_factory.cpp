@@ -55,7 +55,8 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
         }
         case Neiloid:
         {
-            return std::make_unique<NeiloidStump>(first, second);
+            const Point mid12 = base->midpoint(first, second);
+            return std::make_unique<NeiloidStump>(first, mid12);
         }
         case Unknown:
         {

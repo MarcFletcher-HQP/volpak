@@ -13,34 +13,41 @@
 
 
 
+class TreeContainer{
 
+public:
+
+  std::shared_ptr<Tree> tree;
+
+  TreeContainer(std::vector<double> height, std::vector<double> radius, double total_height, double stump_height) :
+    tree(std::make_shared<Tree>(height, radius, total_height, stump_height)){}
+
+};
 
 
 
 // [[Rcpp::export]]
 Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
-                       Rcpp::NumericVector radius,
-                       Rcpp::NumericVector total_height,
-                       Rcpp::NumericVector stump_height){
+              Rcpp::NumericVector radius,
+              Rcpp::NumericVector total_height,
+              Rcpp::NumericVector stump_height){
 
-    // Initialise the tree
-    Tree tree(
-            Rcpp::as<std::vector<double>>(radius),
-            Rcpp::as<std::vector<double>>(height),
-            total_height[0],
-            stump_height[0]
-    );
-
+  Rcpp::XPtr<TreeContainer> ptr(
+    new TreeContainer(
+      Rcpp::as<std::vector<double>>(radius),
+      Rcpp::as<std::vector<double>>(height),
+      total_height[0],
+      stump_height[0]
+    ),
+    true
+  );
 
 #ifdef DEBUG
-    Rcpp::Rcout << tree.print() << std::endl;;
+    Rcpp::Rcout << (ptr->tree)->print() << std::endl;
 #endif
 
-
-	  Tree* treeptr = &tree;
-
     Rcpp::S4 Rtree("volpak_tree");
-	  Rtree.slot("xptr") = Rcpp::XPtr<Tree>(treeptr, true);
+    Rtree.slot("xptr") = ptr;
 
     return Rtree;
 
@@ -51,13 +58,13 @@ Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_total_vol(Rcpp::LogicalVector abovestump, Rcpp::S4 tree){
+Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump){
 
     if(!tree.hasSlot("xptr")){
         Rcpp::stop("Argument 'tree' does not have slot 'xptr'");
     }
 
-    Rcpp::XPtr<Tree> xptr = tree.slot("xptr");
+    Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
 
 
     if(abovestump.size() > 1){
@@ -71,13 +78,13 @@ Rcpp::NumericVector r_total_vol(Rcpp::LogicalVector abovestump, Rcpp::S4 tree){
 
     if(abovestump[0]){
 
-      stumpvol = xptr->stump_vol();
+      stumpvol = xptr->tree->stump_vol();
 
     }
 
 
     Rcpp::NumericVector vol(1);
-    vol[0] = xptr->total_volume() - stumpvol;
+    vol[0] = xptr->tree->total_volume() - stumpvol;
 
     return vol;
 }
@@ -88,20 +95,20 @@ Rcpp::NumericVector r_total_vol(Rcpp::LogicalVector abovestump, Rcpp::S4 tree){
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_get_hag(Rcpp::NumericVector search_radius, Rcpp::S4 tree){
+Rcpp::NumericVector r_get_hag(Rcpp::S4 tree, Rcpp::NumericVector search_radius){
 
-    Rcpp::NumericVector hag(search_radius.size());
-  Rcpp::XPtr<Tree> xptr = tree.slot("xptr");
+  Rcpp::NumericVector hag(search_radius.size());
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
 
-    for (auto it = hag.begin(); it != hag.end(); it++){
+  for (auto it = hag.begin(); it != hag.end(); it++){
 
-		int i = std::distance(hag.begin(), it);
+    int i = std::distance(hag.begin(), it);
 
-        *it = xptr->height(search_radius[i]);
+    *it = xptr->tree->height(search_radius[i]);
 
-    }
+  }
 
-    return hag;
+  return hag;
 
 }
 
@@ -111,10 +118,10 @@ Rcpp::NumericVector r_get_hag(Rcpp::NumericVector search_radius, Rcpp::S4 tree){
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump, Rcpp::S4 tree){
+Rcpp::NumericVector r_vol_to_tdub(Rcpp::S4 tree, Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump){
 
     Rcpp::NumericVector vol(tdub.size());
-  Rcpp::XPtr<Tree> xptr = tree.slot("xptr");
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
 
 
   if(abovestump.size() > 1){
@@ -128,7 +135,7 @@ Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector 
 
   if(abovestump[0]){
 
-    stumpvol = xptr->stump_vol();
+    stumpvol = xptr->tree->stump_vol();
 
   }
 
@@ -137,12 +144,12 @@ Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector 
 
         if (tdub[i] > 0){
 
-            vol[i] = xptr->volume_to_radius(tdub[i], abovestump[0]);
+            vol[i] = xptr->tree->volume_to_radius(tdub[i], abovestump[0]);
 
         }
         else {
 
-            vol[i] = xptr->total_volume() - stumpvol;
+            vol[i] = xptr->tree->total_volume() - stumpvol;
 
         }
 
@@ -157,10 +164,10 @@ Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector 
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_vol_to_hag(Rcpp::NumericVector hag, Rcpp::LogicalVector abovestump, Rcpp::S4 tree){
+Rcpp::NumericVector r_vol_to_hag(Rcpp::S4 tree, Rcpp::NumericVector hag, Rcpp::LogicalVector abovestump){
 
     Rcpp::NumericVector vol(hag.size());
-  Rcpp::XPtr<Tree> xptr = tree.slot("xptr");
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
 
 
   if(abovestump.size() > 1){
@@ -174,20 +181,20 @@ Rcpp::NumericVector r_vol_to_hag(Rcpp::NumericVector hag, Rcpp::LogicalVector ab
 
   if(abovestump[0]){
 
-    stumpvol = xptr->stump_vol();
+    stumpvol = xptr->tree->stump_vol();
 
   }
 
 
     for(int i = 0; i < vol.size(); i++){
 
-        if(hag[i] >= xptr->treeht){
+        if(hag[i] >= xptr->tree->treeht){
 
-          vol[i] = xptr->total_volume() - stumpvol;
+          vol[i] = xptr->tree->total_volume() - stumpvol;
 
         } else {
 
-          vol[i] = xptr->volume_to_height(hag[i], abovestump[0]) - stumpvol;
+          vol[i] = xptr->tree->volume_to_height(hag[i], abovestump[0]) - stumpvol;
 
         }
 

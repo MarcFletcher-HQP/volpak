@@ -25,53 +25,65 @@ BEGIN_RCPP
 END_RCPP
 }
 // r_total_vol
-Rcpp::NumericVector r_total_vol(Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
-RcppExport SEXP _volpak_r_total_vol(SEXP abovestumpSEXP, SEXP treeSEXP) {
+Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump);
+RcppExport SEXP _volpak_r_total_vol(SEXP treeSEXP, SEXP abovestumpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
     Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_total_vol(abovestump, tree));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_total_vol(tree, abovestump));
     return rcpp_result_gen;
 END_RCPP
 }
 // r_get_hag
-Rcpp::NumericVector r_get_hag(Rcpp::NumericVector search_radius, Rcpp::S4 tree);
-RcppExport SEXP _volpak_r_get_hag(SEXP search_radiusSEXP, SEXP treeSEXP) {
+Rcpp::NumericVector r_get_hag(Rcpp::S4 tree, Rcpp::NumericVector search_radius);
+RcppExport SEXP _volpak_r_get_hag(SEXP treeSEXP, SEXP search_radiusSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type search_radius(search_radiusSEXP);
     Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_get_hag(search_radius, tree));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type search_radius(search_radiusSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_get_hag(tree, search_radius));
     return rcpp_result_gen;
 END_RCPP
 }
 // r_vol_to_tdub
-Rcpp::NumericVector r_vol_to_tdub(Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
-RcppExport SEXP _volpak_r_vol_to_tdub(SEXP tdubSEXP, SEXP abovestumpSEXP, SEXP treeSEXP) {
+Rcpp::NumericVector r_vol_to_tdub(Rcpp::S4 tree, Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump);
+RcppExport SEXP _volpak_r_vol_to_tdub(SEXP treeSEXP, SEXP tdubSEXP, SEXP abovestumpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tdub(tdubSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_vol_to_tdub(tdub, abovestump, tree));
+    rcpp_result_gen = Rcpp::wrap(r_vol_to_tdub(tree, tdub, abovestump));
     return rcpp_result_gen;
 END_RCPP
 }
 // r_vol_to_hag
-Rcpp::NumericVector r_vol_to_hag(Rcpp::NumericVector hag, Rcpp::LogicalVector abovestump, Rcpp::S4 tree);
-RcppExport SEXP _volpak_r_vol_to_hag(SEXP hagSEXP, SEXP abovestumpSEXP, SEXP treeSEXP) {
+Rcpp::NumericVector r_vol_to_hag(Rcpp::S4 tree, Rcpp::NumericVector hag, Rcpp::LogicalVector abovestump);
+RcppExport SEXP _volpak_r_vol_to_hag(SEXP treeSEXP, SEXP hagSEXP, SEXP abovestumpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type hag(hagSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
-    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_vol_to_hag(hag, abovestump, tree));
+    rcpp_result_gen = Rcpp::wrap(r_vol_to_hag(tree, hag, abovestump));
     return rcpp_result_gen;
+END_RCPP
+}
+// r_vpakinit
+void r_vpakinit(Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
+RcppExport SEXP _volpak_r_vpakinit(SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diameter(diameterSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
+    r_vpakinit(height, diameter, total_height);
+    return R_NilValue;
 END_RCPP
 }
 // r_vtm
@@ -94,6 +106,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_volpak_r_get_hag", (DL_FUNC) &_volpak_r_get_hag, 2},
     {"_volpak_r_vol_to_tdub", (DL_FUNC) &_volpak_r_vol_to_tdub, 3},
     {"_volpak_r_vol_to_hag", (DL_FUNC) &_volpak_r_vol_to_hag, 3},
+    {"_volpak_r_vpakinit", (DL_FUNC) &_volpak_r_vpakinit, 3},
     {"_volpak_r_vtm", (DL_FUNC) &_volpak_r_vtm, 3},
     {NULL, NULL, 0}
 };

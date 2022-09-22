@@ -5,6 +5,30 @@
 
 
 #' @export
+volpak_vpakinit <- function(heights, diameters, total.height){
+
+  total.height <- unique(total.height)
+
+  if(any(heights > total.height[1])){
+    warning("heights in excess of total tree height in data")
+  }
+
+  if(length(heights) != length(diameters)){
+    stop("length mismatch between heights and diameters")
+  }
+
+  if(length(total.height) > 1){
+    stop("total.height must be unique")
+  }
+
+  idx <- order(heights, decreasing = FALSE)
+  r_vpakinit(heights[idx], diameters[idx], total.height[1])
+}
+
+
+
+
+#' @export
 volpak_vtm <- function(heights, diameters, total.height){
 
   total.height <- unique(total.height)

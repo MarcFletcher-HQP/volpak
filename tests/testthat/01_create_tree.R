@@ -19,22 +19,17 @@ data(hags)
 
 
 
-# context("Test creation of volpak_tree")
+
+neiloidstump <- hags[hags$TreeSeq == hags$TreeSeq[1], ]
+
+sink(file = "volpak_tree.txt")
+tree <- volpak_tree(neiloidstump$HAG, neiloidstump$DUB, neiloidstump$TreeHt)
+sink()
+
+sink(file = "volpak_vpakinit.txt")
+volpak_vpakinit(neiloidstump$HAG, neiloidstump$DUB, neiloidstump$TreeHt)
+sink()
 
 
-
-test_that("Creation of volpak_tree succeeds", {
-
-
-  tree <- hags[hags$TreeSeq == hags$TreeSeq[1], ]
-
-  expect_error(volpak_tree(tree$HAG, tree$DUB, tree$TreeHt), NA)
-
-})
-
-
-
-
-test_that()
-
+volpak_total_vol(tree, TRUE)
 

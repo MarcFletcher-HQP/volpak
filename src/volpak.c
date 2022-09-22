@@ -5,7 +5,7 @@ Original FORTRAN source by Vanclay
 Converted by Peter Gordon to C with strigent consistence checking done
 See copy volpak.c-peter for his original conversion.
 
-Modified:  Eric  18/02/00  math.h's M_PI, M_PI_4, etc used instead of 
+Modified:  Eric  18/02/00  math.h's M_PI, M_PI_4, etc used instead of
 				pi = 3.14159... hard code
 
 Modified:  Eric  18/02/00  vhyper() routine test for slight negitive
@@ -24,11 +24,12 @@ Modified:  Eric  04/09/06  Increase max. hts to 100.
 #include "volpak_c.h"
 
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
-#define MAIN
+#include <R.h>
 #endif
+
 
 static int	numpts;	/* Highest element number + 1 in hr & r arrays. */
 static double	sh = 0.15;	/* Default stump height. */
@@ -37,6 +38,60 @@ static double	p1, q1, a1;	/* Constants from function param. */
 static double	hr[NORELTS];
 static double	r[NORELTS];
 static double	vpaktht;
+
+
+
+
+#ifdef DEBUG
+
+void point_str(int i, char buff[]){
+
+	sprintf(buff, "(%.2f, %.6f)", hr[i], r[i]);
+
+	return;
+
+}
+
+
+void print_section(int i, int j, int k, double a, double p, double q){
+
+	char ptbuff[16];
+
+	if((fabs(a) >= 1.0) && (a > -300.0)){
+		if(a > 0.0){
+			Rprintf("HyperboloidSection:\n");
+		} else {
+			Rprintf("ParaboloidSection:\n");
+		}
+	} else {
+		Rprintf("ConeSection:\n");
+	}
+
+	point_str(i, ptbuff);
+	Rprintf("\tFirst: %s\n", ptbuff);
+
+	point_str(j, ptbuff);
+	Rprintf("\tSecond: %s\n", ptbuff);
+
+	point_str(k, ptbuff);
+	Rprintf("\tThird: %s\n", ptbuff);
+
+	Rprintf("\tp: %.6f\n", p);
+	Rprintf("\tq: %.9f\n", q);
+
+	Rprintf("\n");
+
+	return;
+}
+
+
+
+
+#endif
+
+
+
+
 
 /*  Calculate the height of the frustrum above the passed radius.
     This height + the height of the radius = theoretical height
@@ -191,21 +246,19 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	double	p, q, a;
 	int	i;
 	int	n;
+	int neiloidstump;
+
+#ifdef DEBUG
+	char ptbuff[16];
+	Rprintf("vpakinit: \n");
+#endif
+
 
 /* Clear Arrays & tht for a new tree. */
 	for(i = 0; i < NORELTS; ++i)
 		hr[i] = r[i] = 0.0;
 	vpaktht = 0.0;
 
-
-#ifdef DEBUG
-	fprintf(stderr, "vpakinit: Inputs\n");
-	fprintf(stderr, "\t(i, hag, radius)\n");
-	for(i = 0; i < noelts; i++){
-		fprintf(stderr, "\t(%i, %.2f, %.6f)\n", i, h[i], d[i]/200);
-	}
-	fprintf(stderr, "\n");
-#endif
 
 	/* check if too many ht:dia pairs */
 
@@ -238,7 +291,7 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	{
 		hr[numpts -1] = vpaktht;
 		r[numpts -1] = 0.0;
-		
+
 
 		/* check total height to last HAG */
 
@@ -261,15 +314,6 @@ vpakinit( double h[], double d[], double tht, int noelts)
     If numpts is equal to 5, the tree has two measures & a total height.
 */
 
-#ifdef DEBUG
-	fprintf(stderr, "vpakinit: loaded volpak arrays\n");
-	fprintf(stderr, "\t(i, hag, radius)\n");
-	for(i = 0; i < numpts; i++){
-		fprintf(stderr, "\t(%i, %.2f, %.6f)\n", i, hr[i], r[i]);
-	}
-	fprintf(stderr, "\n");
-#endif
-
 
 	if(numpts < 6 )
 	{
@@ -282,10 +326,7 @@ vpakinit( double h[], double d[], double tht, int noelts)
     Also find the first estimate of the second mid point radius.   (temp).
 */
 	param(hr[1],r[1], hr[3],r[3], hr[5],r[5], &p1, &q1, &a1);
-
-#ifdef DEBUG
-	fprintf(stderr, "vpakinit: (a1, p1, q1): (%.6f, %.6f, %.6f)\n\n", a1, p1, q1);
-#endif
+	neiloidstump = 0;
 
 	if( a1 != 0.0)	/* Conic model. */
 	{		/* Hyperbolic or parabolic model. */
@@ -304,9 +345,11 @@ vpakinit( double h[], double d[], double tht, int noelts)
 					sr = radius(x - sh, p1, q1, a1);
 				else
 					nloid();	/* Calcs r[0] & stump rad by neloid method. */
+					neiloidstump = 1;
 			}
 			else
 				nloid();	/* Calcs r[0] & stump radius by neloid method. */
+				neiloidstump = 1;
 		}
 	}
 	else
@@ -314,7 +357,38 @@ vpakinit( double h[], double d[], double tht, int noelts)
 		temp = ( r[3] + r[5] ) / 2.0;
 		r[2] = ( r[1] + r[3]) / 2.0;
 		nloid();
+		neiloidstump = 1;
 	}
+
+
+#ifdef DEBUG
+
+	if(neiloidstump){
+
+		Rprintf("NeiloidStump:\n");
+
+		point_str(0, ptbuff);
+		Rprintf("\tGround: %s\n", ptbuff);
+
+		Rprintf("\tStump: (%.2f, %.6f)\n", sh, sr);
+
+		point_str(1, ptbuff);
+		Rprintf("\tFirst: %s\n", ptbuff);
+
+		point_str(2, ptbuff);
+		Rprintf("\tSecond: %s\n", ptbuff);
+
+	} else {
+
+		print_section(1, 3, 5, a1, p1, q1);
+
+	}
+
+	print_section(1, 2, 3, a1, p1, q1);
+
+#endif
+
+
 	if( numpts == 6 )
 	{
 		r[numpts-2] = temp;
@@ -323,30 +397,32 @@ vpakinit( double h[], double d[], double tht, int noelts)
 /*  Calculate the mid point radii for the remainder of the tree. */
 	for( i = 3; i < numpts-4; i +=2)
 	{
+
 		param(hr[i],r[i], hr[i+2],r[i+2], hr[i+4],r[i+4], &p,&q,&a);
+
 		if(a != 0.0)		/* Hyperbolic or parabolic model. */
 		{
+
 			x = calcx(r[i], p,q,a) + hr[i];
 			r[i+1] = ( radius(x - hr[i+1], p, q, a) + temp) / 2.0;
 			temp = radius(x - hr[i+3], p, q ,a);
+
 		}
 		else	/*  Conic model. */
 		{
+
 			r[i+1] = ( (r[i] + r[i+2]) / 2.0 + temp)/2.0;
 			temp = ( r[i+2] + r[i+4]) / 2.0;
+
 		}
-	}
-	r[numpts-2] = temp;	/* Mid point radius between last measure & tht. */
 
 #ifdef DEBUG
-	fprintf(stderr, "vpakinit: Final array\n");
-	fprintf(stderr, "\t(i, hag, radius)\n");
-	for(i = 0; i < numpts; i++){
-		fprintf(stderr, "\t(%i, %.2f, %.6f)\n", i, hr[i], r[i]);
-	}
-	fprintf(stderr, "\n");
+	print_section(i, i+1, i+2, a, p, q);
 #endif
 
+	}
+
+	r[numpts-2] = temp;	/* Mid point radius between last measure & tht. */
 
 }
 /*	**********************************************************************	*/
@@ -709,7 +785,7 @@ volh( double htl)
 	{
 		sumv += (M_PI / 6.0) * (r[i-2] * r[i-2] + 4.0 * r[i-1] * r[i-1]
 				+ r[i] * r[i]) * (hr[i] - hr[i-2]);
-				
+
 /* #ifdef DEBUG
 	fprintf(stderr, "volh:  i: %i  vol = %.6f\n", (i-1)/2, sumv);
 #endif */
@@ -746,7 +822,7 @@ volh( double htl)
 
 /* #ifdef DEBUG
 	fprintf(stderr, "volh:  i: %i  vol = %.6f\n", (i-1)/2, sumv);
-    fprintf(stderr, "volh:  section 'last': \na: %.6f  p: %.6f  q:%.6f\nfirst: (%.2f, %.6f) \nsecond: (%.2f, %.6f) \nthird: (%.2f, %.6f)\n", 
+    fprintf(stderr, "volh:  section 'last': \na: %.6f  p: %.6f  q:%.6f\nfirst: (%.2f, %.6f) \nsecond: (%.2f, %.6f) \nthird: (%.2f, %.6f)\n",
         		avlh, pvlh, qvlh, hr[i-2], r[i-2], hr[i-1], r[i-1], hr[i], r[i]);
     fprintf(stderr, "volh:  lastpoint: (%.2f, %.6f)\n", htl, rl);
 #endif */
@@ -756,7 +832,7 @@ volh( double htl)
 /*	**********************************************************************	*/
 /*
 	For a passed diameter in centimetres , the volume in cubic metres
-	is calculated from above the stump height to the height of the 
+	is calculated from above the stump height to the height of the
 	supplied diameter.
 	Returns:
 		The volume in cubic metres
@@ -810,69 +886,3 @@ vold( double dl )
 	return(sumv);
 }
 
-#ifdef	DEBUG
-/* #include	"treeread.h" */
-main(int argc, char *argv[])
-{
-	/* FILE	*fi;
-	tree_T	t;
-	int	i;
-	double	h7, d7, vt, v7, v7h;
-	char	*usage = "Usage: volpak InputFileName > OutputFile\n";
-	if(argc != 2)
-	{
-		fprintf(stderr, usage);
-		exit(1);
-	}
-	if( (fi = fopen(argv[1], "r")) == (FILE *)0 )
-	{
-		fprintf(stderr,"volpak: main: Could not open %s\n", argv[1]);
-		exit(1);
-	}
-	while( read_head( &t, fi) == 0 )
-	{
-		while(read_tree( &t, fi, 0) == 0 )
-		{
-			vpakinit(t.hag, t.dub, t.tht, t.nom);
-			vt = volt();
-			h7 = htd(7.0);
-			if( h7 > 0.0 )
-			{
-				d7 = dht(h7);
-				v7 = vold(7.0);
-				v7h = volh(h7);
-			}
-			else
-				h7 = v7h = d7 = v7 = 0.0;
-			printf("%4d%6.2lf%6.2lf%7.4lf%7.4lf%7.4lf\n",
-				t.iid, h7, d7, vt, v7h, v7);
-		}
-	} */
-
-/* 	double hr[6] = {0.2, 0.5, 1.3, 4.7, 7.2, 10.3};
-	double d[6] = {17.5, 16.4, 14.2, 8.7, 4.8, 0}; */
-	double hr[13] = {0.2, 0.5, 1.3, 5, 8, 11.1, 13.2, 17.2, 20, 21.2, 24.3};
-	double d[13] = {21.2, 22.3, 18.7, 15.5, 13.6, 11.7, 11, 7.7, 5.2, 2.8, 0.0};
-	double tht, vtotal;
-	int noelts;
-
-	tht = 24.3;
-
-
-	noelts = 11;
-	fprintf(stderr, "Volpak Tree (vpakinit):\n", noelts);
-
-	vpakinit(hr, d, tht, noelts);
-
-	fprintf(stderr, "vtm(): %.6f\n", vtm());
-
-	fprintf(stderr, "volh(3.0): %.6f\n", volh(3.0));
-	fprintf(stderr, "volh(6.0): %.6f\n", volh(6.0));
-
-	fprintf(stderr, "vold(15.0): %.6f\n", vold(15.0));
-	fprintf(stderr, "vold(7.0): %.6f\n", vold(7.0));
-
-	fprintf(stderr, "\n");
-
-}
-#endif
