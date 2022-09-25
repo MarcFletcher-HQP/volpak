@@ -1,10 +1,10 @@
 vpakinit: 
 NeiloidStump:
 	Ground: (0.00, 0.129113)
-	Stump: (0.15, 0.122635)
+	Stump: (0.00, 0.000000)
 	First: (0.20, 0.120500)
 	Second: (0.35, 0.114172)
-ConeSection:
+ParaboloidSection:
 	First: (0.20, 0.120500)
 	Second: (0.35, 0.114172)
 	Third: (0.50, 0.111000)
@@ -15,55 +15,62 @@ ParaboloidSection:
 	First: (0.50, 0.111000)
 	Second: (0.90, 0.104106)
 	Third: (1.30, 0.101000)
-	p: 0.217218
-	q: 0.000065229
+	p: 0.000000
+	q: 0.000000000
 
-HyperboloidSection:
+ParaboloidSection:
 	First: (1.30, 0.101000)
 	Second: (3.10, 0.095834)
 	Third: (4.90, 0.091500)
-	p: 146.236450
-	q: 0.561956522
+	p: 0.000000
+	q: 0.000000000
 
 ParaboloidSection:
 	First: (4.90, 0.091500)
 	Second: (6.45, 0.087214)
 	Third: (8.00, 0.083000)
-	p: 0.339833
-	q: 0.000453333
+	p: 0.000000
+	q: 0.000000000
 
 HyperboloidSection:
 	First: (8.00, 0.083000)
 	Second: (9.50, 0.079336)
 	Third: (11.00, 0.075500)
-	p: 9.298893
-	q: 0.135500000
+	p: 0.000000
+	q: 0.000000000
 
-ParaboloidSection:
+HyperboloidSection:
 	First: (11.00, 0.075500)
 	Second: (12.50, 0.070636)
 	Third: (14.00, 0.065500)
-	p: 0.363300
-	q: 0.000741000
+	p: 0.000000
+	q: 0.000000000
 
 HyperboloidSection:
 	First: (14.00, 0.065500)
 	Second: (15.55, 0.060895)
 	Third: (17.10, 0.056000)
-	p: 9.391645
-	q: 0.119616071
+	p: 0.000000
+	q: 0.000000000
 
 HyperboloidSection:
 	First: (17.10, 0.056000)
 	Second: (18.55, 0.050440)
 	Third: (20.00, 0.043500)
-	p: 5.307628
-	q: 0.097356185
+	p: 0.000000
+	q: 0.000000000
 
 HyperboloidSection:
 	First: (20.00, 0.043500)
 	Second: (21.50, 0.032851)
 	Third: (23.00, 0.019000)
-	p: 16.409302
-	q: 0.192209302
+	p: 0.000000
+	q: 0.000000000
+
+HyperboloidSection:
+	First: (23.00, 0.019000)
+	Second: (23.90, 0.009994)
+	Third: (24.80, 0.000000)
+	p: 0.000000
+	q: 0.000000000
 

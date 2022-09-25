@@ -24,7 +24,8 @@ Modified:  Eric  04/09/06  Increase max. hts to 100.
 #include "volpak_c.h"
 
 
-#define DEBUG
+//#define DEBUG
+#define PRINT
 
 #ifdef DEBUG
 #include <R.h>
@@ -42,7 +43,7 @@ static double	vpaktht;
 
 
 
-#ifdef DEBUG
+#if defined(DEBUG) || defined(PRINT)
 
 void point_str(int i, char buff[]){
 
@@ -53,9 +54,20 @@ void point_str(int i, char buff[]){
 }
 
 
-void print_section(int i, int j, int k, double a, double p, double q){
+void print_section(int i, int j, int k){
 
-	char ptbuff[16];
+	double a, p, q;
+
+	if((i > j) || (i > k) || (j > k)){
+		Rprintf("The indexes are all out of order! (i, j, k): (%i, %i, %i)\n", i, j, k);
+		return;
+	}
+
+
+	param(hr[i], r[i], hr[j], r[j], hr[k], r[k], &p, &q, &a);
+
+
+	char ptbuff[32];
 
 	if((fabs(a) >= 1.0) && (a > -300.0)){
 		if(a > 0.0){
@@ -83,8 +95,6 @@ void print_section(int i, int j, int k, double a, double p, double q){
 
 	return;
 }
-
-
 
 
 #endif
@@ -249,7 +259,11 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	int neiloidstump;
 
 #ifdef DEBUG
-	char ptbuff[16];
+	char ptbuff0[32];
+#endif
+
+#ifdef PRINT
+	char ptbuff[32];
 	Rprintf("vpakinit: \n");
 #endif
 
@@ -326,6 +340,11 @@ vpakinit( double h[], double d[], double tht, int noelts)
     Also find the first estimate of the second mid point radius.   (temp).
 */
 	param(hr[1],r[1], hr[3],r[3], hr[5],r[5], &p1, &q1, &a1);
+
+#ifdef DEBUG
+	print_section(1, 3, 5);
+#endif
+
 	neiloidstump = 0;
 
 	if( a1 != 0.0)	/* Conic model. */
@@ -361,7 +380,7 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	}
 
 
-#ifdef DEBUG
+#ifdef PRINT
 
 	if(neiloidstump){
 
@@ -380,11 +399,11 @@ vpakinit( double h[], double d[], double tht, int noelts)
 
 	} else {
 
-		print_section(1, 3, 5, a1, p1, q1);
+	  print_section(1, 3, 5);
 
 	}
 
-	print_section(1, 2, 3, a1, p1, q1);
+	print_section(1, 2, 3);
 
 #endif
 
@@ -417,12 +436,24 @@ vpakinit( double h[], double d[], double tht, int noelts)
 		}
 
 #ifdef DEBUG
-	print_section(i, i+1, i+2, a, p, q);
+	print_section(i, i+2, i+4);
+
+	point_str(i+1, ptbuff0);
+	Rprintf("first midpoint: %s\n", ptbuff0);
+	Rprintf("second midpoint: (%.2f, %.6f)\n", hr[i+3], temp);
+#endif
+
+#ifdef PRINT
+	print_section(i, i+1, i+2);
 #endif
 
 	}
 
 	r[numpts-2] = temp;	/* Mid point radius between last measure & tht. */
+
+#ifdef PRINT
+	print_section(numpts - 3 , numpts - 2, numpts - 1);
+#endif
 
 }
 /*	**********************************************************************	*/

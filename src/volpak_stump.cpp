@@ -28,3 +28,13 @@ double Stump::stump_vol(){
 
 }
 
+
+
+Point Stump::midpoint(const Point &  base, const Point &  top){
+
+	double midht = average(base.hag, top.hag);
+	double midR = radius(midht);
+
+	return Point(midht, midR);
+
+}

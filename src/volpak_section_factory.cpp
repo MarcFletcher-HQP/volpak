@@ -141,13 +141,13 @@ std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const
 	when r > p/2. In this instance, the original volpak code reverts to a cone for
 	interpolation.*/
 
-	if ((sectiontype == Paraboloid) && (r1 >= p/2)){
+/* 	if ((sectiontype == Paraboloid) && (r1 >= p/2)){
 
 		sectiontype = Cone;
 		p = 0.0;
 		q = 0.0;
 
-	}
+	} */
 
 
     switch(sectiontype){

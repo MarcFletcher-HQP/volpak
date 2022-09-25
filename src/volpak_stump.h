@@ -20,6 +20,8 @@ class Stump {
     public:
 
         double stump_vol();
+        Point midpoint(const Point &  base, const Point &  top);
+        
 
         Stump();
         Stump(const Point & ground, const Point & stump);

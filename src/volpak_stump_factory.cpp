@@ -22,7 +22,7 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
     std::unique_ptr<Section> base = factory.createSection(first, second, third);
 
 
-    if (factory.getSectionType(base) == SectionFactory::Paraboloid){
+    if ((factory.getSectionType(base) == SectionFactory::Paraboloid) && (base->discriminant(0.0) >= 0.0)){
 
         groundrad = base->radius(0.0);
         stumptype = Paraboloid;
@@ -30,8 +30,7 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
         if (STUMPHT == 0.0){
             stumprad = groundrad;
         }
-        else if (base->discriminant(0.0) >= 0.0 &&
-                 groundrad >= base->first.radius &&
+        else if (groundrad >= base->first.radius &&
                  groundrad < (base->p / 2)){
 
                 stumprad = base->radius(STUMPHT);

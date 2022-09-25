@@ -113,29 +113,35 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     }
     else {
 
-		/* C++ Note: declare variables within the scope of the for-loop to allow the variable to be re-used on each iteration */
+        Point mid12, mid23;
+        std::unique_ptr<Section> coarse;
+        std::unique_ptr<Section> log;
+
+
+        /* C++ Note: declare variables within the scope of the for-loop to allow the variable to be re-used on each iteration */
 
         for (int i = 0; i < numpts - 2; i++){
 
             /* Create mid-points and calculate mid-point radius using the shape of the coarser stem section. */
 
-            std::unique_ptr<Section> coarse = section_factory.createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
+            coarse = section_factory.createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
 
 
+            /* Midpoint between the first two measures is initially calculated from the coarse section, then averaged with the
+            midpoint between the same measures on the previous coarse log. Only the section between the first two measures is
+            stored. */
 
-            /* Create section from each half of the coarse representation */
+            mid12 = coarse->midpoint(coarse->first, coarse->second);
 
-            std::vector<std::unique_ptr<Section>> logs(2);
+            if(sections.begin() != sections.end()){
+                mid12 = average(mid12, mid23);
+            }
 
-            Point mid12 = coarse->midpoint(coarse->first, coarse->second);
-        	Point mid23 = coarse->midpoint(coarse->second, coarse->third);
+            mid23 = coarse->midpoint(coarse->second, coarse->third);
 
+            log = section_factory.createSection(coarse->first, mid12, coarse->second);
 
-
-
-            logs[0] = section_factory.createSection(coarse->first, mid12, coarse->second);
-
-            if (logs[0] == nullptr){
+            if (log == nullptr){
 
                 msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
                 msg << coarse->print();
@@ -144,36 +150,15 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
                 throw std::runtime_error(msg.str());
             }
 
-
-
-            logs[1] = section_factory.createSection(coarse->second, mid23, coarse->third);
-
-            if (logs[1] == nullptr){
-
-                msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
-                msg << coarse->print();
-                msg << "mid23: " << mid23.print() << std::endl;
-
-                throw std::runtime_error(msg.str());
-            }
-
-
-
-            if(sections.begin() != sections.end()){
-
-                auto it = sections.end() - 1;
-
-                (*it)->second = average(logs[0]->second, (*it)->second);
-
-            } else {
-
-                sections.push_back(std::move(logs[0]));
-
-            }
-
-            sections.push_back(std::move(logs[1]));
+            sections.push_back(std::move(log));
 
         }
+
+
+        /* Final section, between final measure and the tree top */
+
+        log = section_factory.createSection(coarse->second, mid23, coarse->third);
+        sections.push_back(std::move(log));
 
     }
 
