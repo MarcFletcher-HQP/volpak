@@ -99,6 +99,48 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// r_htd
+Rcpp::NumericVector r_htd(Rcpp::NumericVector diams, Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
+RcppExport SEXP _volpak_r_htd(SEXP diamsSEXP, SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diams(diamsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diameter(diameterSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_htd(diams, height, diameter, total_height));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_vold
+Rcpp::NumericVector r_vold(Rcpp::NumericVector diams, Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
+RcppExport SEXP _volpak_r_vold(SEXP diamsSEXP, SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diams(diamsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diameter(diameterSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_vold(diams, height, diameter, total_height));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_volh
+Rcpp::NumericVector r_volh(Rcpp::NumericVector hags, Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
+RcppExport SEXP _volpak_r_volh(SEXP hagsSEXP, SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type hags(hagsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type diameter(diameterSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type total_height(total_heightSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_volh(hags, height, diameter, total_height));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_volpak_r_volpak_tree", (DL_FUNC) &_volpak_r_volpak_tree, 4},
@@ -108,6 +150,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_volpak_r_vol_to_hag", (DL_FUNC) &_volpak_r_vol_to_hag, 3},
     {"_volpak_r_vpakinit", (DL_FUNC) &_volpak_r_vpakinit, 3},
     {"_volpak_r_vtm", (DL_FUNC) &_volpak_r_vtm, 3},
+    {"_volpak_r_htd", (DL_FUNC) &_volpak_r_htd, 4},
+    {"_volpak_r_vold", (DL_FUNC) &_volpak_r_vold, 4},
+    {"_volpak_r_volh", (DL_FUNC) &_volpak_r_volh, 4},
     {NULL, NULL, 0}
 };
 

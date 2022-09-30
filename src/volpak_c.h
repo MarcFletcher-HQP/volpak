@@ -30,6 +30,9 @@ extern "C" {
     double condht(int index, double hl);
     double conhtd(int index, double rl);
     double vtm( void );
+    double htd(double d1);
+    double vold(double d1);
+    double volh(double h1);
 
 #ifdef __cplusplus
 }

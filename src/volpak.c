@@ -24,10 +24,10 @@ Modified:  Eric  04/09/06  Increase max. hts to 100.
 #include "volpak_c.h"
 
 
-//#define DEBUG
+#define DEBUG
 #define PRINT
 
-#ifdef DEBUG
+#if defined(DEBUG) || defined(PRINT)
 #include <R.h>
 #endif
 
@@ -404,6 +404,7 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	}
 
 	print_section(1, 2, 3);
+	Rprintf("second midpoint: (%.2f, %.6f)\n", hr[4], temp);
 
 #endif
 

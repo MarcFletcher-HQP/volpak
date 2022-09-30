@@ -67,7 +67,7 @@ double ParaboloidSection::length_above(double radius){
 
 double ParaboloidSection::height(double radius){
 
-	return length_above(first.radius) - length_above(radius);
+	return first.hag + length_above(first.radius) - length_above(radius);
 
 }
 

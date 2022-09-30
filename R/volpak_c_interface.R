@@ -70,7 +70,7 @@ volpak_vold <- function(vol.to.diam, heights, diameters, total.height){
   }
 
   idx <- order(heights, decreasing = FALSE)
-  r_vtm(heights[idx], diameters[idx], total.height[1])
+  r_vold(vol.to.diam, heights[idx], diameters[idx], total.height[1])
 }
 
 
@@ -94,7 +94,7 @@ volpak_volh <- function(vol.to.hag, heights, diameters, total.height){
   }
 
   idx <- order(heights, decreasing = FALSE)
-  r_vtm(heights[idx], diameters[idx], total.height[1])
+  r_volh(vol.to.hag, heights[idx], diameters[idx], total.height[1])
 }
 
 

@@ -29,3 +29,15 @@ r_vtm <- function(height, diameter, total_height) {
     .Call(`_volpak_r_vtm`, height, diameter, total_height)
 }
 
+r_htd <- function(diams, height, diameter, total_height) {
+    .Call(`_volpak_r_htd`, diams, height, diameter, total_height)
+}
+
+r_vold <- function(diams, height, diameter, total_height) {
+    .Call(`_volpak_r_vold`, diams, height, diameter, total_height)
+}
+
+r_volh <- function(hags, height, diameter, total_height) {
+    .Call(`_volpak_r_volh`, hags, height, diameter, total_height)
+}
+

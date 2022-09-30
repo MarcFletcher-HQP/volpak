@@ -8,7 +8,7 @@
 
 
 #define DEBUG
-#undef DEBUG
+//#undef DEBUG
 
 #ifdef DEBUG
 #include <Rcpp.h>
@@ -138,6 +138,14 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
             }
 
             mid23 = coarse->midpoint(coarse->second, coarse->third);
+
+            #ifdef DEBUG
+
+                Rcpp::Rcout << coarse->print() << std::endl;
+                Rcpp::Rcout << "First midpoint: " << mid12.print() << std::endl;
+                Rcpp::Rcout << "Second midpoint: " << mid23.print() << std::endl;
+
+            #endif
 
             log = section_factory.createSection(coarse->first, mid12, coarse->second);
 

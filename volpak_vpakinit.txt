@@ -1,76 +1,172 @@
 vpakinit: 
+ParaboloidSection:
+	First: (0.20, 0.186000)
+	Second: (0.50, 0.173500)
+	Third: (1.30, 0.155000)
+	p: 0.398163
+	q: 0.001610955
+
 NeiloidStump:
-	Ground: (0.00, 0.129113)
-	Stump: (0.00, 0.000000)
-	First: (0.20, 0.120500)
-	Second: (0.35, 0.114172)
+	Ground: (0.00, 0.195795)
+	Stump: (0.15, 0.188433)
+	First: (0.20, 0.186000)
+	Second: (0.35, 0.178765)
 ParaboloidSection:
-	First: (0.20, 0.120500)
-	Second: (0.35, 0.114172)
-	Third: (0.50, 0.111000)
+	First: (0.20, 0.186000)
+	Second: (0.35, 0.178765)
+	Third: (0.50, 0.173500)
+	p: 0.398163
+	q: 0.001610955
+
+second midpoint: (0.90, 0.163043)
+ConeSection:
+	First: (0.50, 0.173500)
+	Second: (1.30, 0.155000)
+	Third: (4.80, 0.145000)
 	p: 0.000000
 	q: 0.000000000
+
+first midpoint: (0.90, 0.163646)
+second midpoint: (3.05, 0.150000)
+ParaboloidSection:
+	First: (0.50, 0.173500)
+	Second: (0.90, 0.163646)
+	Third: (1.30, 0.155000)
+	p: 0.469637
+	q: 0.003263789
+
+HyperboloidSection:
+	First: (1.30, 0.155000)
+	Second: (4.80, 0.145000)
+	Third: (8.10, 0.134500)
+	p: 35.843339
+	q: 0.335400000
+
+first midpoint: (3.05, 0.150067)
+second midpoint: (6.45, 0.139891)
+HyperboloidSection:
+	First: (1.30, 0.155000)
+	Second: (3.05, 0.150067)
+	Third: (4.80, 0.145000)
+	p: 92.384167
+	q: 0.520800000
+
+HyperboloidSection:
+	First: (4.80, 0.145000)
+	Second: (8.10, 0.134500)
+	Third: (11.00, 0.123000)
+	p: 11.958634
+	q: 0.234320000
+
+first midpoint: (6.45, 0.139966)
+second midpoint: (9.55, 0.129063)
+HyperboloidSection:
+	First: (4.80, 0.145000)
+	Second: (6.45, 0.139966)
+	Third: (8.10, 0.134500)
+	p: 19.086644
+	q: 0.267257549
+
+HyperboloidSection:
+	First: (8.10, 0.134500)
+	Second: (11.00, 0.123000)
+	Third: (14.00, 0.109500)
+	p: 28.794457
+	q: 0.319983871
+
+first midpoint: (9.55, 0.128993)
+second midpoint: (12.50, 0.116474)
+HyperboloidSection:
+	First: (8.10, 0.134500)
+	Second: (9.55, 0.128993)
+	Third: (11.00, 0.123000)
+	p: 17.593571
+	q: 0.264789734
 
 ParaboloidSection:
-	First: (0.50, 0.111000)
-	Second: (0.90, 0.104106)
-	Third: (1.30, 0.101000)
-	p: 0.000000
-	q: 0.000000000
+	First: (11.00, 0.123000)
+	Second: (14.00, 0.109500)
+	Third: (16.70, 0.097500)
+	p: 2.272500
+	q: 0.009180000
 
-ParaboloidSection:
-	First: (1.30, 0.101000)
-	Second: (3.10, 0.095834)
-	Third: (4.90, 0.091500)
-	p: 0.000000
-	q: 0.000000000
-
-ParaboloidSection:
-	First: (4.90, 0.091500)
-	Second: (6.45, 0.087214)
-	Third: (8.00, 0.083000)
-	p: 0.000000
-	q: 0.000000000
+first midpoint: (12.50, 0.116351)
+second midpoint: (15.35, 0.103483)
+HyperboloidSection:
+	First: (11.00, 0.123000)
+	Second: (12.50, 0.116351)
+	Third: (14.00, 0.109500)
+	p: 80.022074
+	q: 0.568925770
 
 HyperboloidSection:
-	First: (8.00, 0.083000)
-	Second: (9.50, 0.079336)
-	Third: (11.00, 0.075500)
-	p: 0.000000
-	q: 0.000000000
+	First: (14.00, 0.109500)
+	Second: (16.70, 0.097500)
+	Third: (20.00, 0.076500)
+	p: 8.177539
+	q: 0.185921053
+
+first midpoint: (15.35, 0.103710)
+second midpoint: (18.35, 0.088115)
+HyperboloidSection:
+	First: (14.00, 0.109500)
+	Second: (15.35, 0.103710)
+	Third: (16.70, 0.097500)
+	p: 24.072459
+	q: 0.275193240
 
 HyperboloidSection:
-	First: (11.00, 0.075500)
-	Second: (12.50, 0.070636)
-	Third: (14.00, 0.065500)
-	p: 0.000000
-	q: 0.000000000
+	First: (16.70, 0.097500)
+	Second: (20.00, 0.076500)
+	Third: (23.00, 0.053500)
+	p: 25.498095
+	q: 0.312383721
+
+first midpoint: (18.35, 0.087802)
+second midpoint: (21.50, 0.065535)
+HyperboloidSection:
+	First: (16.70, 0.097500)
+	Second: (18.35, 0.087802)
+	Third: (20.00, 0.076500)
+	p: 13.155976
+	q: 0.224495324
 
 HyperboloidSection:
-	First: (14.00, 0.065500)
-	Second: (15.55, 0.060895)
-	Third: (17.10, 0.056000)
-	p: 0.000000
-	q: 0.000000000
+	First: (20.00, 0.076500)
+	Second: (23.00, 0.053500)
+	Third: (25.30, 0.030500)
+	p: 15.081088
+	q: 0.227642857
+
+first midpoint: (21.50, 0.065674)
+second midpoint: (24.15, 0.042712)
+HyperboloidSection:
+	First: (20.00, 0.076500)
+	Second: (21.50, 0.065674)
+	Third: (23.00, 0.053500)
+	p: 19.163760
+	q: 0.261256523
 
 HyperboloidSection:
-	First: (17.10, 0.056000)
-	Second: (18.55, 0.050440)
-	Third: (20.00, 0.043500)
-	p: 0.000000
-	q: 0.000000000
+	First: (23.00, 0.053500)
+	Second: (25.30, 0.030500)
+	Third: (27.30, 0.000000)
+	p: 8.190476
+	q: 0.155404762
+
+first midpoint: (24.15, 0.042939)
+second midpoint: (26.30, 0.016909)
+HyperboloidSection:
+	First: (23.00, 0.053500)
+	Second: (24.15, 0.042939)
+	Third: (25.30, 0.030500)
+	p: 10.772535
+	q: 0.182798874
 
 HyperboloidSection:
-	First: (20.00, 0.043500)
-	Second: (21.50, 0.032851)
-	Third: (23.00, 0.019000)
-	p: 0.000000
-	q: 0.000000000
-
-HyperboloidSection:
-	First: (23.00, 0.019000)
-	Second: (23.90, 0.009994)
-	Third: (24.80, 0.000000)
-	p: 0.000000
-	q: 0.000000000
+	First: (25.30, 0.030500)
+	Second: (26.30, 0.016909)
+	Third: (27.30, 0.000000)
+	p: 8.190476
+	q: 0.155404762
 
