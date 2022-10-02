@@ -20,12 +20,12 @@ public:
 /* 	Point(const Point &rhs);
 	Point& operator=(const Point &rhs); */
 
-	bool is_valid();
+	bool is_valid() const;
 
-	bool below(const Point &point);
-	bool above(const Point &point);
+	bool below(const Point &point) const;
+	bool above(const Point &point) const;
 
-	std::string print();
+	std::string print() const;
 
 
 public:

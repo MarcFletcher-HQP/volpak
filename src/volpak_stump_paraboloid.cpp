@@ -18,7 +18,7 @@ ParaboloidStump::ParaboloidStump(const Point& ground, const Point& stump, Parabo
 
 
 
-std::string ParaboloidStump::print(){
+std::string ParaboloidStump::print() const {
 
     std::ostringstream msg;
 
@@ -34,7 +34,7 @@ std::string ParaboloidStump::print(){
 
 
 
-double ParaboloidStump::radius(double ht){
+double ParaboloidStump::radius(double ht) const {
 
     return base.radius(ht);
 
@@ -43,7 +43,7 @@ double ParaboloidStump::radius(double ht){
 
 
 
-double ParaboloidStump::height(double rad){
+double ParaboloidStump::height(double rad) const {
 
     return base.height(rad);
 
@@ -52,7 +52,7 @@ double ParaboloidStump::height(double rad){
 
 
 
-double ParaboloidStump::volume(double r1, double r2){
+double ParaboloidStump::volume(double r1, double r2) const {
 
     return base.volume(r1, r2);
 
@@ -61,7 +61,7 @@ double ParaboloidStump::volume(double r1, double r2){
 
 
 
-double ParaboloidStump::total_volume(){
+double ParaboloidStump::total_volume() const {
 
     return base.volume(ground.radius, base.first.radius);
 
@@ -70,7 +70,7 @@ double ParaboloidStump::total_volume(){
 
 
 
-bool ParaboloidStump::contains_radius(double rad){
+bool ParaboloidStump::contains_radius(double rad) const {
 
     return base.contains_radius(rad);
 
@@ -79,7 +79,7 @@ bool ParaboloidStump::contains_radius(double rad){
 
 
 
-bool ParaboloidStump::contains_height(double ht){
+bool ParaboloidStump::contains_height(double ht) const {
 
     return base.contains_height(ht);
 

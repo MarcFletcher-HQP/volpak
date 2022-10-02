@@ -5,7 +5,7 @@
 
 
 #define DEBUG
-#undef DEBUG
+//#undef DEBUG
 
 
 #ifdef DEBUG
@@ -17,11 +17,6 @@
 
 
 /* Cone Methods */
-
-
-/* ConeSection::ConeSection() : Section(){
-
-} */
 
 
 ConeSection::ConeSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
@@ -36,7 +31,7 @@ ConeSection::ConeSection(const Point &  first, const Point &  second, const Poin
 
 
 
-std::string ConeSection::print(){
+std::string ConeSection::print() const {
 
 	std::ostringstream msg;
 
@@ -52,7 +47,7 @@ std::string ConeSection::print(){
 
 /* Cone section was not in original volpak code (calcx) - should it really be here now? */
 
-double ConeSection::length_above(double radius){
+double ConeSection::length_above(double radius) const {
 
 	double x = radius * (third.hag - first.hag) / (first.radius - third.radius);
 
@@ -67,7 +62,7 @@ double ConeSection::length_above(double radius){
 
 
 
-double ConeSection::height(double radius){
+double ConeSection::height(double radius) const {
 
 	double ratio = (radius - third.radius) * (third.hag - first.hag) / (first.radius - third.radius);
 	return third.hag - ratio;
@@ -77,12 +72,21 @@ double ConeSection::height(double radius){
 
 
 
-double ConeSection::radius(double ht){
+double ConeSection::radius(double ht) const {
 
     std::ostringstream msg;
 	
 	double ratio =  (ht - first.hag) * (first.radius - third.radius) / (third.hag - first.hag);
 	double rad = first.radius - ratio;
+
+#ifdef DEBUG
+	
+	Rcpp::Rcout << "ConeSection::radius: " << std::endl;
+	Rcpp::Rcout << this->print() << std::endl;
+	Rcpp::Rcout << "ratio: " << ratio << std::endl;
+	Rcpp::Rcout << "rad: " << rad << std::endl;
+
+#endif
 
 	if (rad < 0.0){
 		msg << "ConeSection::radius: radius < 0.0 for ht: " << ht << std::endl;
@@ -96,7 +100,7 @@ double ConeSection::radius(double ht){
 
 
 
-double ConeSection::volume(double R, double r){
+double ConeSection::volume(double R, double r) const {
 	
 	std::ostringstream msg;
 

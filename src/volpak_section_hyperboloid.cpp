@@ -30,7 +30,7 @@ HyperboloidSection::HyperboloidSection(const Point &  first, const Point &  seco
 
 
 
-std::string HyperboloidSection::print(){
+std::string HyperboloidSection::print() const {
 
 	std::ostringstream msg;
 
@@ -44,7 +44,7 @@ std::string HyperboloidSection::print(){
 
 
 
-double HyperboloidSection::length_above(double radius){
+double HyperboloidSection::length_above(double radius) const {
 
 	double x = p * radius / (q - radius);
 
@@ -59,7 +59,7 @@ double HyperboloidSection::length_above(double radius){
 
 
 
-double HyperboloidSection::height(double radius){
+double HyperboloidSection::height(double radius) const {
 
 	return first.hag + length_above(first.radius) - length_above(radius);
 
@@ -68,7 +68,7 @@ double HyperboloidSection::height(double radius){
 
 
 
-double HyperboloidSection::radius(double ht){
+double HyperboloidSection::radius(double ht) const {
 
 	std::ostringstream msg;
 
@@ -90,7 +90,7 @@ double HyperboloidSection::radius(double ht){
 /* Formula obtained by volume of revolution using the shell method, 
 although the disk method would have been just as valid.
 */
-double HyperboloidSection::volume(double R, double r){
+double HyperboloidSection::volume(double R, double r) const {
 
     std::ostringstream msg;
     

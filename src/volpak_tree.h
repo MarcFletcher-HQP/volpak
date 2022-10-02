@@ -29,24 +29,24 @@ class Tree {
 
 public:
 
-	std::string print();
-	double radius(double ht);
-	double height(double rad);
-	double volume_to_height(double ht, bool abovestump);
-	double volume_to_radius(double rad, bool abovestump);
+	std::string print() const;
+	double radius(double ht) const;
+	double height(double rad) const;
+	double volume_to_height(double ht, bool abovestump) const;
+	double volume_to_radius(double rad, bool abovestump) const;
 	
-	double stump_vol();
-	double stump_radius();
-	double stump_height();
-	double ground_radius();
+	double stump_vol() const;
+	double stump_radius() const;
+	double stump_height() const;
+	double ground_radius() const;
 
-    double vol_to_first_measure();
-	double total_volume();
+    double vol_to_first_measure() const;
+	double total_volume() const;
 
-	bool check_totht();
+	bool check_totht() const;
 
-	Point first_measure();
-	Point last_measure();
+	Point first_measure() const;
+	Point last_measure() const;
 
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
 	Tree(const Tree & t) = delete;

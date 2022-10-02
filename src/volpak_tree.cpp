@@ -8,7 +8,7 @@
 
 
 #define DEBUG
-//#undef DEBUG
+#undef DEBUG
 
 #ifdef DEBUG
 #include <Rcpp.h>
@@ -113,7 +113,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     }
     else {
 
-        Point mid12, mid23;
+        Point mid23;
         std::unique_ptr<Section> coarse;
         std::unique_ptr<Section> log;
 
@@ -131,29 +131,34 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
             midpoint between the same measures on the previous coarse log. Only the section between the first two measures is
             stored. */
 
-            mid12 = coarse->midpoint(coarse->first, coarse->second);
-
-            if(sections.begin() != sections.end()){
-                mid12 = average(mid12, mid23);
-            }
-
-            mid23 = coarse->midpoint(coarse->second, coarse->third);
+            log = section_factory.subdivideSection(coarse, coarse->first, coarse->second);
 
             #ifdef DEBUG
 
                 Rcpp::Rcout << coarse->print() << std::endl;
-                Rcpp::Rcout << "First midpoint: " << mid12.print() << std::endl;
-                Rcpp::Rcout << "Second midpoint: " << mid23.print() << std::endl;
+                Rcpp::Rcout << "First midpoint: " << (log->second).print() << std::endl;
 
             #endif
 
-            log = section_factory.createSection(coarse->first, mid12, coarse->second);
+            if(sections.begin() != sections.end()){
+                log->second = average(log->second, mid23);
+            }
+
+            std::unique_ptr<Section> log23 = section_factory.subdivideSection(coarse, coarse->second, coarse->third);
+            mid23 = log23->second;
+
+            #ifdef DEBUG
+
+                Rcpp::Rcout << "First midpoint (updated): " << (log->second).print() << std::endl;
+                Rcpp::Rcout << "temp: " << mid23.print() << std::endl << std::endl;
+
+            #endif
+
 
             if (log == nullptr){
 
                 msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
                 msg << coarse->print();
-                msg << "mid12: " << mid12.print() << std::endl;
 
                 throw std::runtime_error(msg.str());
             }
@@ -175,7 +180,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
 
 
-std::string Tree::print(){
+std::string Tree::print() const {
 
     std::ostringstream msg;
 
@@ -198,7 +203,7 @@ std::string Tree::print(){
 
 
 /* Height at which the tree has the given radius */
-double Tree::height(double rad){			// formerly double htd(double d1);
+double Tree::height(double rad) const {			// formerly double htd(double d1);
 
 	std::ostringstream msg;
 
@@ -214,7 +219,7 @@ double Tree::height(double rad){			// formerly double htd(double d1);
 
     // Find the section with first.radius < rad < third.radius
     auto it = std::find_if(sections.begin(), sections.end(),
-		[rad](std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
+		[rad](const std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
 
 
     if (it == sections.end()){
@@ -261,7 +266,7 @@ double Tree::height(double rad){			// formerly double htd(double d1);
 
 /* Calculate the radius of the tree at the given height above ground */
 
-double Tree::radius(double ht){			// formerly double dht(double h1);
+double Tree::radius(double ht) const {			// formerly double dht(double h1);
 
 	std::ostringstream msg;
 
@@ -286,7 +291,7 @@ double Tree::radius(double ht){			// formerly double dht(double h1);
 
         // Find the section containing the given height
         auto jt = std::find_if(sections.begin(), sections.end(),
-                          [ht](std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
+                          [ht](const std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
 
 
         // If a section could not be found, then throw a wobbly.
@@ -322,7 +327,7 @@ double Tree::radius(double ht){			// formerly double dht(double h1);
 
 /* Calculate the volume between the ground and the given height along the stem */
 
-double Tree::volume_to_height(double ht, bool abovestump){      /* previously double volh(double) */
+double Tree::volume_to_height(double ht, bool abovestump) const {      /* previously double volh(double) */
 
 
     double vol = 0.0;
@@ -386,7 +391,7 @@ double Tree::volume_to_height(double ht, bool abovestump){      /* previously do
      */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-                             [ht](std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
+                             [ht](const std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
 
 
     for (auto it = sections.begin(); it != last; it++){
@@ -415,7 +420,7 @@ double Tree::volume_to_height(double ht, bool abovestump){      /* previously do
 
 /* Calculate the volume between the stump and the supplied radius */
 
-double Tree::volume_to_radius(double rad, bool abovestump) {			// formerly double vold(double d1)
+double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly double vold(double d1)
 
 
     double vol = 0.0;
@@ -490,7 +495,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) {			// formerly doubl
      */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-                             [rad](std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
+                             [rad](const std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
 
 
     for (auto it = sections.begin(); it != last; it++){
@@ -514,7 +519,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) {			// formerly doubl
 
 
 
-double Tree::stump_radius(){
+double Tree::stump_radius() const {
 
     return (stump->stump).radius;
 
@@ -522,14 +527,14 @@ double Tree::stump_radius(){
 
 
 
-double Tree::stump_height(){
+double Tree::stump_height() const {
 
     return STUMPHT;
 
 }
 
 
-double Tree::ground_radius(){
+double Tree::ground_radius() const {
 
     return (stump->ground).radius;
 
@@ -538,7 +543,7 @@ double Tree::ground_radius(){
 
 
 
-double Tree::stump_vol(){
+double Tree::stump_vol() const {
 
     return stump->stump_vol();
 
@@ -547,7 +552,7 @@ double Tree::stump_vol(){
 
 
 
-double Tree::vol_to_first_measure(){
+double Tree::vol_to_first_measure() const {
 
     return stump->total_volume();
 
@@ -555,7 +560,7 @@ double Tree::vol_to_first_measure(){
 
 
 
-double Tree::total_volume(){
+double Tree::total_volume() const {
 
     double vol = vol_to_first_measure();
 
@@ -572,7 +577,7 @@ double Tree::total_volume(){
 
 
 
-bool Tree::check_totht(){
+bool Tree::check_totht() const {
 
     /* cos(20.0) was the original volpak value: don't know if they really meant 20 radians, or if they intended 20 degrees.
      as cos(20.0) ~= 0.34 it seems pretty unlikely that this condition would trigger, unlike when using
@@ -590,7 +595,7 @@ bool Tree::check_totht(){
 
 
 
-Point Tree::first_measure(){
+Point Tree::first_measure() const {
 
     return (sections[0])->first;
 
@@ -598,7 +603,7 @@ Point Tree::first_measure(){
 
 
 
-Point Tree::last_measure(){
+Point Tree::last_measure() const {
 
     return (sections.back())->third;
 

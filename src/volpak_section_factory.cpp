@@ -201,20 +201,76 @@ SectionFactory::SectionType SectionFactory::getSectionType(std::unique_ptr<Secti
 
 
 
+/* Create sub-divide existing section */
+
+std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Section> & ptr, const Point & base, const Point & top){
+
+	std::ostringstream msg;
+
+	if(!ptr->contains_height(base.hag) || !ptr->contains_radius(base.radius)){
+
+		msg << "SectionFactory::subdivideSection: 'base' not contained in section" << std::endl;
+		msg << ptr->print() << std::endl;
+		msg << "base: " << base.print() << std::endl;
+
+		throw std::invalid_argument(msg.str());
+
+	}
 
 
-/* Split a section into two sub-sections, each containing two of the original measure points and a new mid-point */
+	if(!ptr->contains_height(top.hag) || !ptr->contains_radius(top.radius)){
 
-/* std::vector<std::unique_ptr<Section>> SectionFactory::splitSection(std::unique_ptr<Section> log){
+		msg << "SectionFactory::subdivideSection: 'top' not contained in section" << std::endl;
+		msg << ptr->print() << std::endl;
+		msg << "top: " << top.print() << std::endl;
 
-	std::vector<std::unique_ptr<Section>> newlogs(2);
+		throw std::invalid_argument(msg.str());
 
-	Point mid12 = log->midpoint(log->first, log->second);
-	Point mid23 = log->midpoint(log->second, log->third);
+	}
 
-	newlogs[0] = createSection(log->first, mid12, log->second);
-	newlogs[1] = createSection(log->second, mid23, log->third);
 
-	return newlogs;
+	/* Copy the section */
 
-} */
+	SectionType type = getSectionType(ptr);
+	std::unique_ptr<Section> newsection;
+
+	switch(type){
+
+        case Paraboloid:
+            newsection = std::make_unique<ParaboloidSection>(*dynamic_cast<ParaboloidSection*>(ptr.get()));
+
+        case Hyperboloid:
+            newsection = std::make_unique<HyperboloidSection>(*dynamic_cast<HyperboloidSection*>(ptr.get()));
+
+        case Cone:
+            newsection = std::make_unique<ConeSection>(*dynamic_cast<ConeSection*>(ptr.get()));
+
+        case Unknown:
+            return nullptr;
+
+        default:
+            return nullptr;
+
+    }
+
+
+	/* Replace the base and top of the section */
+
+	newsection->first = base;
+	newsection->third = top;
+
+
+	/* Calculate the new mid-point */
+
+	newsection->second = newsection->midpoint();
+
+
+	/* Return section (or the pointer anyway) */
+
+	return newsection;
+
+}
+
+
+
+

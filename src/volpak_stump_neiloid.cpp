@@ -18,7 +18,7 @@ Extrapolation of ground radius using newtons' method.
  */
 
 
-NeiloidStump::NeiloidStump(const Point& first, const Point& second){
+NeiloidStump::NeiloidStump(const Point& first, const Point& second) {
 
     /* Can't do radius calc without initialising first and second */
 
@@ -52,7 +52,7 @@ NeiloidStump::NeiloidStump(const Point& first, const Point& second){
 
 
 
-std::string NeiloidStump::print(){
+std::string NeiloidStump::print() const {
 
     std::ostringstream msg;
 
@@ -70,7 +70,7 @@ std::string NeiloidStump::print(){
 
 
 
-double NeiloidStump::radius(double ht){
+double NeiloidStump::radius(double ht) const {
 
     std::ostringstream msg;
 
@@ -103,7 +103,7 @@ double NeiloidStump::radius(double ht){
 
 
 
-double NeiloidStump::height(double rad){
+double NeiloidStump::height(double rad) const {
 
 	std::ostringstream msg;
 
@@ -133,7 +133,7 @@ double NeiloidStump::height(double rad){
 
 /* Calculate the volume for a point below the first measure */
 
-double NeiloidStump::volume(double r1, double r2){              /* Question: does r1 have to be ground.radius? */
+double NeiloidStump::volume(double r1, double r2) const {              /* Question: does r1 have to be ground.radius? */
 
 	double ht = height(r2);
     double twothirds = 2.0 / 3.0;
@@ -155,7 +155,7 @@ double NeiloidStump::volume(double r1, double r2){              /* Question: doe
 
 
 
-double NeiloidStump::total_volume(){
+double NeiloidStump::total_volume() const {
 
     return volume(ground.radius, first.radius);
 
@@ -164,7 +164,7 @@ double NeiloidStump::total_volume(){
 
 
 
-bool NeiloidStump::contains_radius(double rad){
+bool NeiloidStump::contains_radius(double rad) const {
 
 	return ((rad >= first.radius) && (rad <= ground.radius)) || (abs(ground.radius - rad) < RADTOL) || (abs(first.radius - rad) < RADTOL);
 
@@ -173,7 +173,7 @@ bool NeiloidStump::contains_radius(double rad){
 
 
 
-bool NeiloidStump::contains_height(double ht){
+bool NeiloidStump::contains_height(double ht) const {
 
 	return ((ht <= first.hag) && (ht >= ground.hag)) || (abs(first.hag - ht) < HTTOL) || (abs(ground.hag - ht) < HTTOL);
 

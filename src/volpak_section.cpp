@@ -42,7 +42,8 @@ Section::Section(const Point &  first, const Point &  second, const Point &  thi
 
 
 
-double Section::calcx(double ht){
+
+double Section::calcx(double ht) const {
 
 	double length = first.hag + length_above(first.radius);
 	return length - ht;
@@ -52,7 +53,7 @@ double Section::calcx(double ht){
 
 
 
-double Section::total_volume(){
+double Section::total_volume() const {
 
 	double vol = (M_PI / 6.0) *
 		(pow(first.radius, 2.0) + 4.0 * pow(second.radius, 2.0) + pow(third.radius, 2.0)) *
@@ -65,7 +66,7 @@ double Section::total_volume(){
 
 
 
-bool Section::contains_radius(double rad){
+bool Section::contains_radius(double rad) const {
 
 	return ((rad >= third.radius) && (rad <= first.radius)) || (abs(first.radius - rad) < RADTOL) || (abs(third.radius - rad) < RADTOL);
 
@@ -74,7 +75,7 @@ bool Section::contains_radius(double rad){
 
 
 
-bool Section::contains_height(double ht){
+bool Section::contains_height(double ht) const {
 
 	return ((ht <= third.hag) && (ht >= first.hag)) || (abs(third.hag - ht) < HTTOL) || (abs(first.hag - ht) < HTTOL);
 
@@ -83,7 +84,7 @@ bool Section::contains_height(double ht){
 
 
 
-std::string Section::print(){
+std::string Section::print() const {
 
 	std::ostringstream msg;
 
@@ -100,10 +101,10 @@ std::string Section::print(){
 
 
 
-Point Section::midpoint(const Point &  base, const Point &  top){
+Point Section::midpoint() const {
 
-	double midht = average(base.hag, top.hag);
-	double midR = this->radius(midht);
+	double midht = average(first.hag, third.hag);
+	double midR = radius(midht);
 
 	return Point(midht, midR);
 
@@ -112,9 +113,9 @@ Point Section::midpoint(const Point &  base, const Point &  top){
 
 
 
-double Section::discriminant(double ht){
+double Section::discriminant(double ht) const {
 
-	double x = this->calcx(ht);
+	double x = calcx(ht);
 
 	return p * p - 4.0 * q * x;
 

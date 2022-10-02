@@ -25,7 +25,7 @@ Modified:  Eric  04/09/06  Increase max. hts to 100.
 
 
 #define DEBUG
-#define PRINT
+//#define PRINT
 
 #if defined(DEBUG) || defined(PRINT)
 #include <R.h>
@@ -342,7 +342,9 @@ vpakinit( double h[], double d[], double tht, int noelts)
 	param(hr[1],r[1], hr[3],r[3], hr[5],r[5], &p1, &q1, &a1);
 
 #ifdef DEBUG
+	
 	print_section(1, 3, 5);
+
 #endif
 
 	neiloidstump = 0;
@@ -378,6 +380,14 @@ vpakinit( double h[], double d[], double tht, int noelts)
 		nloid();
 		neiloidstump = 1;
 	}
+
+#ifdef DEBUG
+
+	point_str(2, ptbuff0);
+	Rprintf("First midpoint: %s\n", ptbuff0);
+	Rprintf("temp: (%.2f, %.6f)\n", hr[4], temp);
+
+#endif
 
 
 #ifdef PRINT
@@ -420,6 +430,10 @@ vpakinit( double h[], double d[], double tht, int noelts)
 
 		param(hr[i],r[i], hr[i+2],r[i+2], hr[i+4],r[i+4], &p,&q,&a);
 
+#ifdef DEBUG
+	print_section(i, i+2, i+4);
+#endif
+
 		if(a != 0.0)		/* Hyperbolic or parabolic model. */
 		{
 
@@ -437,11 +451,11 @@ vpakinit( double h[], double d[], double tht, int noelts)
 		}
 
 #ifdef DEBUG
-	print_section(i, i+2, i+4);
 
 	point_str(i+1, ptbuff0);
-	Rprintf("first midpoint: %s\n", ptbuff0);
-	Rprintf("second midpoint: (%.2f, %.6f)\n", hr[i+3], temp);
+	Rprintf("first midpoint (new): %s\n", ptbuff0);
+	Rprintf("temp: (%.2f, %.6f)\n", hr[i+3], temp);
+
 #endif
 
 #ifdef PRINT

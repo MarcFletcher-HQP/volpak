@@ -33,26 +33,27 @@ public:
 
 	// Methods shared with derived classes
 
-    double total_volume();
-    double calcx(double ht);
-    bool contains_radius(double rad);
-	bool contains_height(double ht);
-    Point midpoint(const Point &  base, const Point &  top);
-    double discriminant(double ht);
+    double total_volume() const;
+    double calcx(double ht) const;
+    bool contains_radius(double rad) const;
+	bool contains_height(double ht) const;
+    Point midpoint() const;
+    double discriminant(double ht) const;
 
 
 	// Virtual methods, different for each derived class
 
-    virtual std::string print();
-	virtual double radius(double ht) = 0;
-	virtual double height(double radius) = 0;
-    virtual double volume(double r1, double r2) = 0;
-    virtual double length_above(double radius) = 0;
+    virtual std::string print() const;
+	virtual double radius(double ht) const = 0;
+	virtual double height(double radius) const = 0;
+    virtual double volume(double r1, double r2) const = 0;
+    virtual double length_above(double radius) const = 0;
 
 
     // All the ways of making a Section
     Section();
 	Section(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
+    /* Section(const Section & old); */
 
 
     // Destructor must be virtual for the derived class destructors to be called
@@ -77,11 +78,11 @@ class ConeSection : public Section {
 
     public:
 
-        virtual std::string print();
-        virtual double radius(double ht);
-        virtual double height(double radius);
-        virtual double volume(double r1, double r2);
-        virtual double length_above(double radius);
+        virtual std::string print() const;
+        virtual double radius(double ht) const;
+        virtual double height(double radius) const;
+        virtual double volume(double r1, double r2) const;
+        virtual double length_above(double radius) const;
 
 
         // Destructor, apparently required for the derived class destructors to be called
@@ -97,11 +98,11 @@ class ParaboloidSection : public Section {
 
     public:
 
-        virtual std::string print();
-        virtual double volume(double r1, double r2);
-        virtual double radius(double ht);
-        virtual double height(double radius);
-        virtual double length_above(double radius);
+        virtual std::string print() const;
+        virtual double volume(double r1, double r2) const;
+        virtual double radius(double ht) const;
+        virtual double height(double radius) const;
+        virtual double length_above(double radius) const;
 
 
         // Destructor, apparently required for the derived class destructors to be called
@@ -117,11 +118,11 @@ class HyperboloidSection : public Section {
 
     public:
 
-        virtual std::string print();
-        virtual double volume(double r1, double r2);
-        virtual double radius(double ht);
-        virtual double height(double radius);
-        virtual double length_above(double radius);
+        virtual std::string print() const;
+        virtual double volume(double r1, double r2) const;
+        virtual double radius(double ht) const;
+        virtual double height(double radius) const;
+        virtual double length_above(double radius) const;
 
 
         // Destructor, apparently required for the derived class destructors to be called

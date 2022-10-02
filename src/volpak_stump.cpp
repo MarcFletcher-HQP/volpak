@@ -22,19 +22,9 @@ Stump::Stump(const Point & ground, const Point & stump){
 
 
 
-double Stump::stump_vol(){
+double Stump::stump_vol() const {
 
-    return this->volume(ground.radius, stump.radius);
-
-}
-
-
-
-Point Stump::midpoint(const Point &  base, const Point &  top){
-
-	double midht = average(base.hag, top.hag);
-	double midR = radius(midht);
-
-	return Point(midht, midR);
+    return volume(ground.radius, stump.radius);
 
 }
+

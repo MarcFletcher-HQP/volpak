@@ -36,7 +36,7 @@ ParaboloidSection::ParaboloidSection(const Point &  first, const Point &  second
 
 
 
-std::string ParaboloidSection::print(){
+std::string ParaboloidSection::print() const {
 
 	std::ostringstream msg;
 
@@ -50,7 +50,7 @@ std::string ParaboloidSection::print(){
 
 
 
-double ParaboloidSection::length_above(double radius){
+double ParaboloidSection::length_above(double radius) const {
 
 	double x = (p - radius) * radius / q;
 
@@ -65,7 +65,7 @@ double ParaboloidSection::length_above(double radius){
 
 
 
-double ParaboloidSection::height(double radius){
+double ParaboloidSection::height(double radius) const {
 
 	return first.hag + length_above(first.radius) - length_above(radius);
 
@@ -74,7 +74,7 @@ double ParaboloidSection::height(double radius){
 
 
 
-double ParaboloidSection::radius(double ht){
+double ParaboloidSection::radius(double ht) const {
 
 	std::ostringstream msg;
 
@@ -105,7 +105,7 @@ double ParaboloidSection::radius(double ht){
 disk method not feasible in this case as the function expressing
 radius in terms of height is not invertible.
 */
-double ParaboloidSection::volume(double R, double r){
+double ParaboloidSection::volume(double R, double r) const {
 
     std::ostringstream msg;
 

@@ -20,19 +20,19 @@ data(hags)
 
 
 
-neiloidstump <- hags[hags$TreeSeq == 29857, ]
+test <- hags[hags$TreeSeq == 29857, ]
 
 sink(file = "volpak_tree.txt")
-tree <- volpak_tree(neiloidstump$HAG, neiloidstump$DUB, neiloidstump$TreeHt)
+tree <- volpak_tree(test$HAG, test$DUB, test$TreeHt)
 sink()
 
 sink(file = "volpak_vpakinit.txt")
-volpak_vpakinit(neiloidstump$HAG, neiloidstump$DUB, neiloidstump$TreeHt)
+volpak_vpakinit(test$HAG, test$DUB, test$TreeHt)
 sink()
 
 
 volpak_total_vol(tree, TRUE)
-volpak_vtm(neiloidstump$HAG, neiloidstump$DUB, neiloidstump$TreeHt)
+volpak_vtm(test$HAG, test$DUB, test$TreeHt)
 
 
 treeid <- unique(hags$TreeSeq)

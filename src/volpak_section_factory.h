@@ -29,7 +29,7 @@ class SectionFactory {
 
         SectionType getSectionType(std::unique_ptr<Section> & ptr);
         std::unique_ptr<Section> createSection(const Point& first, const Point& second, const Point& third);
-        /* std::vector<std::unique_ptr<Section>> splitSection(std::unique_ptr<Section> log); */
+        std::unique_ptr<Section> subdivideSection(std::unique_ptr<Section> & ptr, const Point & base, const Point & top);
 
 };
 
