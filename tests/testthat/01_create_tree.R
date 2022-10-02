@@ -20,7 +20,7 @@ data(hags)
 
 
 
-test <- hags[hags$TreeSeq == 29857, ]
+test <- hags[hags$TreeSeq == 29740, ]
 
 sink(file = "volpak_tree.txt")
 tree <- volpak_tree(test$HAG, test$DUB, test$TreeHt)
@@ -48,7 +48,7 @@ for(x in treeid){
   tmp <- data.frame(
     TotalVol = volpak_total_vol(tree, TRUE),
     VTM = volpak_vtm(df$HAG, df$DUB, df$TreeHt),
-    TDVOL07 = volpak_vol_to_tdub(7, tree, TRUE),
+    TDVOL07 = volpak_vol_to_tdub(tree, 7, TRUE),
     VOLD07 = volpak_vold(7, df$HAG, df$DUB, df$TreeHt),
     HAG15cm = volpak_get_hag(tree, 15),
     HTD15cm = volpak_htd(15, df$HAG, df$DUB, df$TreeHt)

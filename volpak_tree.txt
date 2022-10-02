@@ -1,0 +1,85 @@
+Tree: 
+NeiloidStump: 
+	ground: (0, 0.244806)
+	stump: (0.15, 0.231409)
+	first: (0.2, 0.227)
+	second: (0.35, 0.213943)
+
+ParaboloidSection: 
+	first:  (0.2, 0.227)
+	second: (0.35, 0.213943)
+	third:  (0.5, 0.2085)
+	p: 0.454165
+	q: 0.00115101
+
+ParaboloidSection: 
+	first:  (0.5, 0.2085)
+	second: (0.9, 0.196885)
+	third:  (1.3, 0.1915)
+	p: 0.420081
+	q: 0.000426713
+
+ParaboloidSection: 
+	first:  (1.3, 0.1915)
+	second: (3.4, 0.179635)
+	third:  (5.5, 0.1725)
+	p: 0.399803
+	q: 0.000161964
+
+HyperboloidSection: 
+	first:  (5.5, 0.1725)
+	second: (6.85, 0.169411)
+	third:  (8.2, 0.166)
+	p: 7.628
+	q: 0.235026
+
+HyperboloidSection: 
+	first:  (8.2, 0.166)
+	second: (9.5, 0.15977)
+	third:  (10.8, 0.1525)
+	p: 5.95705
+	q: 0.246899
+
+HyperboloidSection: 
+	first:  (10.8, 0.1525)
+	second: (12.45, 0.145928)
+	third:  (14.1, 0.139)
+	p: 39.7504
+	q: 0.401292
+
+HyperboloidSection: 
+	first:  (14.1, 0.139)
+	second: (15.7, 0.12974)
+	third:  (17.3, 0.118)
+	p: 5.46239
+	q: 0.217401
+
+HyperboloidSection: 
+	first:  (17.3, 0.118)
+	second: (18.65, 0.10507)
+	third:  (20, 0.0905)
+	p: 15.5289
+	q: 0.334765
+
+HyperboloidSection: 
+	first:  (20, 0.0905)
+	second: (21.5, 0.0751662)
+	third:  (23, 0.059)
+	p: 50.4094
+	q: 0.670839
+
+HyperboloidSection: 
+	first:  (23, 0.059)
+	second: (24.3, 0.0432261)
+	third:  (25.6, 0.0265)
+	p: 41.1564
+	q: 0.597338
+
+HyperboloidSection: 
+	first:  (25.6, 0.0265)
+	second: (26.6, 0.0134206)
+	third:  (27.6, 0)
+	p: 76.6667
+	q: 1.04233
+
+

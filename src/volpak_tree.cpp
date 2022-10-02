@@ -96,8 +96,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     stump = stump_factory.createStump(measpoints[0], measpoints[1], measpoints[2]);
 
 
-
-
     /* Create logs within a tree */
 
     SectionFactory section_factory;
@@ -133,28 +131,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
             log = section_factory.subdivideSection(coarse, coarse->first, coarse->second);
 
-            #ifdef DEBUG
-
-                Rcpp::Rcout << coarse->print() << std::endl;
-                Rcpp::Rcout << "First midpoint: " << (log->second).print() << std::endl;
-
-            #endif
-
-            if(sections.begin() != sections.end()){
-                log->second = average(log->second, mid23);
-            }
-
-            std::unique_ptr<Section> log23 = section_factory.subdivideSection(coarse, coarse->second, coarse->third);
-            mid23 = log23->second;
-
-            #ifdef DEBUG
-
-                Rcpp::Rcout << "First midpoint (updated): " << (log->second).print() << std::endl;
-                Rcpp::Rcout << "temp: " << mid23.print() << std::endl << std::endl;
-
-            #endif
-
-
             if (log == nullptr){
 
                 msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
@@ -162,6 +138,20 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
                 throw std::runtime_error(msg.str());
             }
+
+
+#ifdef DEBUG
+    Rcpp::Rcout << "Tree::Tree: subdivided first section" << std::endl;
+    Rcpp::Rcout << log->print();
+#endif
+
+            if(sections.begin() != sections.end()){
+                log->second = average(log->second, mid23);
+                log = section_factory.createSection(log->first, log->second, log->third);
+            }
+
+            std::unique_ptr<Section> log23 = section_factory.subdivideSection(coarse, coarse->second, coarse->third);
+            mid23 = log23->second;
 
             sections.push_back(std::move(log));
 
@@ -185,7 +175,7 @@ std::string Tree::print() const {
     std::ostringstream msg;
 
     msg << "Tree: " << std::endl;
-    msg << stump->print();
+    msg << stump->print() << std::endl;
 
     for(auto it = sections.begin(); it != sections.end(); it++){
 
@@ -426,7 +416,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
     double vol = 0.0;
 
 
-    if (rad < 0.0 || rad > stump_radius()){
+    if (rad < 0.0 || rad > ground_radius()){
         return -HUGE_VAL;
     }
 

@@ -5,7 +5,7 @@
 
 
 #define DEBUG
-//#undef DEBUG
+#undef DEBUG
 
 
 #ifdef DEBUG

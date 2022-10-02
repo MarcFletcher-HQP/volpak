@@ -70,3 +70,28 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
     }
 
 }
+
+
+
+std::string StumpFactory::printStumpType(StumpFactory::StumpType type){
+
+	switch(type){
+
+		case Neiloid:
+			return "Neiloid";
+		
+		case Paraboloid:
+			return "Paraboloid";
+
+		case Unknown:
+			return "Unknown";
+
+		default:
+			return "No Type Information";
+
+	}
+
+}
+
+
+

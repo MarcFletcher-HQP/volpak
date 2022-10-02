@@ -5,6 +5,14 @@
 #include "volpak_section_factory.h"
 
 
+#define DEBUG
+#undef DEBUG
+
+#ifdef DEBUG
+#include <Rcpp.h>
+#endif
+
+
 
 std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const Point& second, const Point& third){
 
@@ -201,11 +209,74 @@ SectionFactory::SectionType SectionFactory::getSectionType(std::unique_ptr<Secti
 
 
 
+std::string SectionFactory::printSectionType(SectionFactory::SectionType type){
+
+	switch(type){
+
+		case Hyperboloid:
+			return "Hyperboloid";
+
+		case Paraboloid:
+			return "Paraboloid";
+
+		case Cone:
+			return "Cone";
+
+		case Unknown:
+			return "Unknown";
+
+		default:
+			return "No Type Information";
+
+	}
+
+}
+
+
+
+
+/* Copy a Section */
+
+std::unique_ptr<Section> SectionFactory::copySection(std::unique_ptr<Section> & ptr){
+
+	/* Get the type */
+
+	SectionType type = getSectionType(ptr);
+
+	switch(type){
+
+		case Hyperboloid:
+			return std::move(std::make_unique<HyperboloidSection>(*dynamic_cast<HyperboloidSection*>(ptr.get())));
+
+		case Paraboloid:
+			return std::move(std::make_unique<ParaboloidSection>(*dynamic_cast<ParaboloidSection*>(ptr.get())));
+		
+		case Cone:
+			return std::move(std::make_unique<ConeSection>(*dynamic_cast<ConeSection*>(ptr.get())));
+
+		case Unknown:
+			return nullptr;
+		
+		default:
+			return nullptr;
+
+	}
+
+}
+
+
+
+
 /* Create sub-divide existing section */
 
 std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Section> & ptr, const Point & base, const Point & top){
 
 	std::ostringstream msg;
+
+#ifdef DEBUG
+	Rcpp::Rcout << "SectionFactory::subdivideSection: Input section: " << std::endl;
+	Rcpp::Rcout << ptr->print() << std::endl;
+#endif
 
 	if(!ptr->contains_height(base.hag) || !ptr->contains_radius(base.radius)){
 
@@ -232,26 +303,7 @@ std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Sectio
 	/* Copy the section */
 
 	SectionType type = getSectionType(ptr);
-	std::unique_ptr<Section> newsection;
-
-	switch(type){
-
-        case Paraboloid:
-            newsection = std::make_unique<ParaboloidSection>(*dynamic_cast<ParaboloidSection*>(ptr.get()));
-
-        case Hyperboloid:
-            newsection = std::make_unique<HyperboloidSection>(*dynamic_cast<HyperboloidSection*>(ptr.get()));
-
-        case Cone:
-            newsection = std::make_unique<ConeSection>(*dynamic_cast<ConeSection*>(ptr.get()));
-
-        case Unknown:
-            return nullptr;
-
-        default:
-            return nullptr;
-
-    }
+	std::unique_ptr<Section> newsection = copySection(ptr);
 
 
 	/* Replace the base and top of the section */
@@ -265,9 +317,9 @@ std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Sectio
 	newsection->second = newsection->midpoint();
 
 
-	/* Return section (or the pointer anyway) */
+	/* Create (yet another) section */
 
-	return newsection;
+	return createSection(newsection->first, newsection->second, newsection->third);
 
 }
 

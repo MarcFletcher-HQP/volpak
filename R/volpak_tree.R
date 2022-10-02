@@ -92,7 +92,7 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
 
 #' @export
 #' @rdname volpak_tree
-volpak_vol_to_tdub <- function(tdubs, tree, abovestump = FALSE){
+volpak_vol_to_tdub <- function(tree, tdubs, abovestump = FALSE){
 
   if(!inherits(tree, "volpak_tree")){
     stop("Argument 'tree' must inherit from 'volpak_tree'")

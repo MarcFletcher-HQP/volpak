@@ -27,7 +27,9 @@ class SectionFactory {
             Cone
         };
 
+        std::string printSectionType(SectionType type);
         SectionType getSectionType(std::unique_ptr<Section> & ptr);
+        std::unique_ptr<Section> copySection(std::unique_ptr<Section> & ptr);
         std::unique_ptr<Section> createSection(const Point& first, const Point& second, const Point& third);
         std::unique_ptr<Section> subdivideSection(std::unique_ptr<Section> & ptr, const Point & base, const Point & top);
 
