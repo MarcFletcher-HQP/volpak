@@ -139,12 +139,6 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
                 throw std::runtime_error(msg.str());
             }
 
-
-#ifdef DEBUG
-    Rcpp::Rcout << "Tree::Tree: subdivided first section" << std::endl;
-    Rcpp::Rcout << log->print();
-#endif
-
             if(sections.begin() != sections.end()){
                 log->second = average(log->second, mid23);
                 log = section_factory.createSection(log->first, log->second, log->third);
@@ -187,6 +181,29 @@ std::string Tree::print() const {
 
 }
 
+
+
+auto Tree::section_containing_height(double ht) const {
+
+    auto it = std::find_if(sections.begin(), sections.end(), [ht](const std::unique_ptr<Section> &elem){
+        return elem->contains_height(ht);
+    });
+
+    return it;
+
+}
+
+
+
+auto Tree::section_containing_radius(double rad) const {
+
+    auto it = std::find_if(sections.begin(), sections.end(), [rad](const std::unique_ptr<Section> &elem){
+        return elem->contains_radius(rad);
+    });
+
+    return it;
+
+}
 
 
 

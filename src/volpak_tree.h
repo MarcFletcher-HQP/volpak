@@ -48,6 +48,11 @@ public:
 	Point first_measure() const;
 	Point last_measure() const;
 
+	/* std::vector<std::unique_ptr<Section>>::iterator section_containing_height(double ht) const;
+	std::vector<std::unique_ptr<Section>>::iterator section_containing_radius(double rad) const; */
+	auto section_containing_height(double ht) const;
+	auto section_containing_radius(double rad) const;
+
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
 	Tree(const Tree & t) = delete;
 	Tree& operator=(const Tree & t) = delete;

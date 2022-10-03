@@ -92,7 +92,7 @@ double NeiloidStump::radius(double ht) const {
     if (rad < 0.0){
 		msg << "NeiloidStump::radius: stump radius < 0.0;  rad: " << rad << "  ht: " << ht << std::endl;
         msg << "\tdif = " << dif << "  rtrans = " << rtrans << std::endl;
-        msg << this->print();
+        msg << print();
 		throw std::domain_error(msg.str());
     }
 
@@ -120,7 +120,7 @@ double NeiloidStump::height(double rad) const {
 
     if (ht < 0.0){
 		msg << "NeiloidStump::height: stump radius < 0.0;  rad: " << rad << "  ht: " << ht << std::endl;
-        msg << this->print();
+        msg << print();
 		throw std::domain_error(msg.str());
     }
 

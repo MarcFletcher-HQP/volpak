@@ -79,18 +79,9 @@ double ConeSection::radius(double ht) const {
 	double ratio =  (ht - first.hag) * (first.radius - third.radius) / (third.hag - first.hag);
 	double rad = first.radius - ratio;
 
-#ifdef DEBUG
-	
-	Rcpp::Rcout << "ConeSection::radius: " << std::endl;
-	Rcpp::Rcout << this->print() << std::endl;
-	Rcpp::Rcout << "ratio: " << ratio << std::endl;
-	Rcpp::Rcout << "rad: " << rad << std::endl;
-
-#endif
-
 	if (rad < 0.0){
 		msg << "ConeSection::radius: radius < 0.0 for ht: " << ht << std::endl;
-		msg << this->print();
+		msg << print();
 		throw std::domain_error(msg.str());
 	}
 
@@ -116,7 +107,7 @@ double ConeSection::volume(double R, double r) const {
 
 	if (vol < 0.0){
 	    msg << "ConeSection::conic_volume: vol < 0.0  vol: " << vol << std::endl;
-	    msg << this->print();
+	    msg << print();
 		throw std::domain_error(msg.str());
 	}
 

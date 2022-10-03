@@ -26,12 +26,6 @@ ParaboloidSection::ParaboloidSection(const Point &  first, const Point &  second
 		throw std::domain_error("ParaboloidSection not defined for q == 0.0");
 	}
 
-	/* if ( first.radius >= (p / 2) ){
-		msg << "ParaboloidSection: taper is not positive along entire section." << std::endl;
-		msg << print();
-		throw std::domain_error(msg.str());
-	} */
-
 }
 
 
@@ -82,7 +76,7 @@ double ParaboloidSection::radius(double ht) const {
 
 	if(z < 0){
 		msg << "ParaboloidSection::radius: Discriminant < 0.0 for ht: " << ht << std::endl;
-		msg << this->print() << std::endl;
+		msg << print() << std::endl;
 		throw std::domain_error(msg.str());
 	}
 
@@ -91,7 +85,7 @@ double ParaboloidSection::radius(double ht) const {
 
 	if (rad < 0.0){
 		msg << "ParaboloidSection::radius: radius < 0.0 for ht: " << ht << "  rad: " << rad << std::endl;
-		msg << this->print();
+		msg << print();
 		throw std::domain_error(msg.str());
 	}
 
@@ -122,7 +116,7 @@ double ParaboloidSection::volume(double R, double r) const {
 
 	if (vol < 0.0){
 	    msg << "ParaboloidSection::conic_volume: vol < 0.0  vol: " << vol << std::endl;
-	    msg << this->print();
+	    msg << print();
 		throw std::domain_error(msg.str());
 	}
 

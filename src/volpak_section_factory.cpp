@@ -273,11 +273,6 @@ std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Sectio
 
 	std::ostringstream msg;
 
-#ifdef DEBUG
-	Rcpp::Rcout << "SectionFactory::subdivideSection: Input section: " << std::endl;
-	Rcpp::Rcout << ptr->print() << std::endl;
-#endif
-
 	if(!ptr->contains_height(base.hag) || !ptr->contains_radius(base.radius)){
 
 		msg << "SectionFactory::subdivideSection: 'base' not contained in section" << std::endl;
