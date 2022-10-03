@@ -1,7 +1,3 @@
-/* Coming to grips with Volpak
-
- Another painful episode.
- */
 
 
 #include "volpak_tree.h"
@@ -15,6 +11,7 @@
 #endif
 
 
+/* Constructor for 'Tree' Class, does some of what 'volpak::vpakinit' did. */
 
 Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, const double &treeht, double stumpht){
 
@@ -31,25 +28,8 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     }
 
 
-
-    /*
-     Stem measures and interpolated midpoints are stored together in the following pattern:
-     [ground, meas1, mid12, meas2, ..., lastmeas, lastmid, top]
-
-     If no tree height is provided then the lastmid and top are omitted.
-
-     Given two measurements, the below code creates:
-     2 elements (of the vectors) for measures,
-     1 midpoint between measures,
-     1 point below the first measure (ground or stump);
-     for a total of 4 points.
-
-     Each additional measure adds another 2 points, including tree height.
-     */
-
-
 	/* rather than use std::vector::push_back, which potentially copies the existing array to
-	ensure contiguous storage, just allocate up-front.*/
+	ensure contiguous storage, just allocate once.*/
 
 	int numpts = radii.size() + (int) (treeht > 0);
 
@@ -59,9 +39,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     // Set values for measure points
     for (int i = 0; i < radii.size(); i++){
 
-        Point point(hts[i], radii[i]);
-
-        measpoints[i] = point;
+        measpoints[i] = Point(hts[i], radii[i]);
 
     }
 
@@ -74,9 +52,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
         this->treeht = treeht;
 
-        Point top(treeht, 0.0);
-
-        measpoints[numpts-1] = top;
+        measpoints[numpts-1] = Point(treeht, 0.0);;
 
     }
 
@@ -120,20 +96,31 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
         for (int i = 0; i < numpts - 2; i++){
 
-            /* Create mid-points and calculate mid-point radius using the shape of the coarser stem section. */
+            /* Section created from three measure points is used to interpolate the midpoint between each pair of measures 
+            (coarse section). As most midpoints exist in two overlapping coarse sections the values calculated from each
+            are averaged. Finally a new section is created from a pair of measure points, with the interpolated midpoint.
+            Exceptions are the first and final pair of measures, these exist in only one coarse section. */
 
             coarse = section_factory.createSection(measpoints[i], measpoints[i + 1], measpoints[i + 2]);
 
+            if (coarse == nullptr){
 
-            /* Midpoint between the first two measures is initially calculated from the coarse section, then averaged with the
-            midpoint between the same measures on the previous coarse log. Only the section between the first two measures is
-            stored. */
+                msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
+                msg << "measpoints[" << i << "]: " << measpoints[i].print() << std::endl;
+                msg << "measpoints[" << i+1 << "]: " << measpoints[i+1].print() << std::endl;
+                msg << "measpoints[" << i+2 << "]: " << measpoints[i+2].print() << std::endl;
+
+                throw std::runtime_error(msg.str());
+            }
+
+
+            /* Interpolates midpoint between first two measures (of coarse section) */
 
             log = section_factory.subdivideSection(coarse, coarse->first, coarse->second);
 
             if (log == nullptr){
 
-                msg << "Tree::Tree: nullptr returned from createSection." << std::endl;
+                msg << "Tree::Tree: nullptr returned from subdivideSection." << std::endl;
                 msg << coarse->print();
 
                 throw std::runtime_error(msg.str());
@@ -183,33 +170,10 @@ std::string Tree::print() const {
 
 
 
-auto Tree::section_containing_height(double ht) const {
-
-    auto it = std::find_if(sections.begin(), sections.end(), [ht](const std::unique_ptr<Section> &elem){
-        return elem->contains_height(ht);
-    });
-
-    return it;
-
-}
-
-
-
-auto Tree::section_containing_radius(double rad) const {
-
-    auto it = std::find_if(sections.begin(), sections.end(), [rad](const std::unique_ptr<Section> &elem){
-        return elem->contains_radius(rad);
-    });
-
-    return it;
-
-}
-
-
-
 
 
 /* Height at which the tree has the given radius */
+
 double Tree::height(double rad) const {			// formerly double htd(double d1);
 
 	std::ostringstream msg;
@@ -224,9 +188,10 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     }
 
 
-    // Find the section with first.radius < rad < third.radius
+    /* Find the section with first.radius < rad < third.radius */
+
     auto it = std::find_if(sections.begin(), sections.end(),
-		[rad](const std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
+		[rad](const std::unique_ptr<const Section> &elem){return elem->contains_radius(rad); });
 
 
     if (it == sections.end()){
@@ -247,10 +212,12 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
 
 
     // Calculate the height corresponding to the radius in the given section
+
     double ht = (*it)->height(rad);
 
 
     // If the returned height is greater than the tree height, then pitch a fit.
+
     if (ht > treeht){
 		msg << "Tree::height: Calculated height (" << ht << ") exceeds the tree height (" << treeht << ")" << std::endl;
         throw std::domain_error(msg.str());
@@ -258,6 +225,7 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
 
 
     // If the returned height is not in the section, then cry about it.
+
     if (!((*it)->contains_height(ht))){
 		msg << "Tree::height: Calculated height (" << ht << ") does not lie in section: [" <<
         (*it)->first.hag << ", " << (*it)->third.hag << "]" << "  ht = " << ht << std::endl;
@@ -298,7 +266,7 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
 
         // Find the section containing the given height
         auto jt = std::find_if(sections.begin(), sections.end(),
-                          [ht](const std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
+                          [ht](const std::unique_ptr<const Section> &elem){return elem->contains_height(ht); });
 
 
         // If a section could not be found, then throw a wobbly.
@@ -332,7 +300,7 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
 
 
 
-/* Calculate the volume between the ground and the given height along the stem */
+/* Calculate the volume between the ground (or stump) and the given height along the stem */
 
 double Tree::volume_to_height(double ht, bool abovestump) const {      /* previously double volh(double) */
 
@@ -390,15 +358,10 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
 
 
 
-    /* Accumulate volume of all sections below the given height
-
-     Volpak code used Newton's formula for log volumation, despite there being equations for
-     volume of each type of stem section. Code for using hyperboloid/paraboloid/conical volume
-     equations are provided when compiled with DEBUG active.
-     */
+    /* Accumulate volume of all sections below the given height */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-                             [ht](const std::unique_ptr<Section> &elem){return elem->contains_height(ht); });
+                             [ht](const std::unique_ptr<const Section> &elem){return elem->contains_height(ht); });
 
 
     for (auto it = sections.begin(); it != last; it++){
@@ -494,15 +457,10 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
 
 
-    /* Accumulate volume of all sections below the given height
-
-     Volpak code used Newton's formula for log volumation, despite there being equations for
-     volume of each type of stem section. Code for using hyperboloid/paraboloid/conical volume
-     equations are provided when compiled with DEBUG active.
-     */
+    /* Accumulate volume of all sections below the given height */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-                             [rad](const std::unique_ptr<Section> &elem){return elem->contains_radius(rad); });
+                             [rad](const std::unique_ptr<const Section> &elem){return elem->contains_radius(rad); });
 
 
     for (auto it = sections.begin(); it != last; it++){

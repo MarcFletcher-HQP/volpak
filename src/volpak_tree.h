@@ -1,11 +1,14 @@
-/* Storage for all measures associated with a tree
+/* Tree a union of non-overlapping sections, of different shapes, between measured points.
 
-Contains:
-Measure points (measpoints): points of measured radius and height above ground (hag).
-Mid-points (midpoints): points whose radius has been inferred from the shape of the
-surrounding log.
-Sections (sections):	overlapping representations of the stem, defined by three
-consecutive measures.
+Only class that should be used in external code.
+
+C++ Note: After the constructor is called, none of the member functions modify the data 
+	stored in the class. The use of the 'const' keyword following the function declaration
+	indicates such to the compiler, which will throw an error if an attempt at modifying 
+	the members is carried out.
+
+	const is used elsewhere to generate compiler errors. Use of access specifier 'private'
+	is used so that data members of 'Tree' are not accessable elsewhere.
 */
 
 
@@ -48,22 +51,17 @@ public:
 	Point first_measure() const;
 	Point last_measure() const;
 
-	/* std::vector<std::unique_ptr<Section>>::iterator section_containing_height(double ht) const;
-	std::vector<std::unique_ptr<Section>>::iterator section_containing_radius(double rad) const; */
-	auto section_containing_height(double ht) const;
-	auto section_containing_radius(double rad) const;
-
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
-	Tree(const Tree & t) = delete;
-	Tree& operator=(const Tree & t) = delete;
+	Tree(const Tree & t) = delete; 				// Cannot copy tree
+	Tree& operator=(const Tree & t) = delete;	// Cannot copy tree
 	~Tree() = default;
 
-public:
+private:
 
     double treeht;
 
-	std::unique_ptr<Stump> stump;
-	std::vector<std::unique_ptr<Section>> sections;
+	std::unique_ptr<const Stump> stump;  // Cannot modify object pointed to by 'stump' once added to Tree (compiler error).
+	std::vector<std::unique_ptr<const Section>> sections; // Cannot modify Sections, pointed by elements of sections, once added to vector (compiler error).
 
 };
 

@@ -76,6 +76,7 @@ comparison$TotalVolDiff <- with(comparison, TotalVol - VTM)
 comparison$TDVOL07Diff <- with(comparison, TDVOL07 - VOLD07)
 comparison$HAGDiff <- with(comparison, HAG15cm - HTD15cm)
 comparison$VOLHAGDiff <- with(comparison, VOLHAG - VOLH)
+summary(comparison)
 
 
 

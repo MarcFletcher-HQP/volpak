@@ -11,6 +11,15 @@ The stem length is extrapolated using the shape of the curve defining the
 radius of the section, which is not expected to be the same for each
 section.
 
+Volpak code used Newton's formula for log volumation, despite there being 
+equations for volume of each type of stem section. Newton's formula is 
+provided in the 'total_volume' method, while 'volume' provides the equations
+derived for each conic.
+
+C++ Notes: Section is a purely virtual class, obtained in practice by not 
+    implementing methods for all virtual functions. This means that a Section
+    cannot be instantiated.
+
 */
 
 
