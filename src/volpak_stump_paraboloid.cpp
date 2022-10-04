@@ -5,10 +5,10 @@
 
 
 
+/* ParaboloidStump Methods - Mostly just wrapper functions around the ParaboloidSection, stored for the Stump.*/
 
 
-/* ParaboloidStump Methods */
-
+/* C++ note: constructor for pure virtual base class can still be invoked when constructing the derived class */
 
 ParaboloidStump::ParaboloidStump(const Point& ground, const Point& stump, ParaboloidSection & base) : Stump(ground, stump){
 
@@ -84,3 +84,6 @@ bool ParaboloidStump::contains_height(double ht) const {
     return base.contains_height(ht);
 
 }
+
+
+

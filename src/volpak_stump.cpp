@@ -3,6 +3,8 @@
 #include "volpak_stump.h"
 
 
+/* Default constructor only required because NeiloidStump needs 'ground' and 'stump' to
+be initialised...for some reason. */
 
 Stump::Stump(){
 

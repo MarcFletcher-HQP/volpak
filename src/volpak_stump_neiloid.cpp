@@ -28,8 +28,7 @@ NeiloidStump::NeiloidStump(const Point& first, const Point& second) {
 
     double rad = this->radius(0.0);
 
-    Point tmpground(0.0, rad);
-    ground = tmpground;
+    ground = Point(0.0, rad);
 
 
     if (STUMPHT > 0.0){
@@ -44,9 +43,7 @@ NeiloidStump::NeiloidStump(const Point& first, const Point& second) {
 		throw std::domain_error("Tree::set_neiloid_stump: Neiloid model produced a stump radius < 0.0");
     }
 
-    Point tmpstump(STUMPHT, rad);
-    stump = tmpstump;
-
+    stump = Point(STUMPHT, rad);
 
 }
 
@@ -145,7 +142,7 @@ double NeiloidStump::volume(double r1, double r2) const {              /* Questi
 
 
     /* Equation obtained from the volume of revolution of a neiloid, using the shell method (as per the equivalent calculation
-        for a paraboloid and hyperboloid in Section::vpara and Section::vhyper, respectively.
+        for a paraboloid and hyperboloid in 'volume' method of relevant sections.
         */
     double vol = M_PI_4 * ht * (r0Lin * r0Lin + radiLin * radiLin) * (r0Lin + radiLin);
 

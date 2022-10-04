@@ -1,5 +1,16 @@
 /*  */
 
+/* Stump class - extrapolation of the first three measure points to the base of the stem. Can either
+be a ParaboloidSection, or a Neiloid. 
+
+
+C++ Note: Stump is a pure virtual class, i.e. there can be no instances of a Stump, only of the 
+    derived classes.
+
+*/
+
+
+
 
 #include <memory>
 
@@ -7,7 +18,6 @@
 #include "volpak.h"
 #include "volpak_point.h"
 #include "volpak_section.h"
-
 
 
 

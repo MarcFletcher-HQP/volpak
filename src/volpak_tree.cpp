@@ -483,6 +483,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
 
 
+/* Calculated stump radius */
 
 double Tree::stump_radius() const {
 
@@ -492,12 +493,17 @@ double Tree::stump_radius() const {
 
 
 
+/* Height of stump - above ground */
+
 double Tree::stump_height() const {
 
     return STUMPHT;
 
 }
 
+
+
+/* Radius of tree at ground level - maximum radius */
 
 double Tree::ground_radius() const {
 
@@ -507,6 +513,7 @@ double Tree::ground_radius() const {
 
 
 
+/* Volume of stump - ground to stump height */
 
 double Tree::stump_vol() const {
 
@@ -516,6 +523,7 @@ double Tree::stump_vol() const {
 
 
 
+/* Volume above ground to the height of the first measure */
 
 double Tree::vol_to_first_measure() const {
 
@@ -524,6 +532,8 @@ double Tree::vol_to_first_measure() const {
 }
 
 
+
+/* Total volume of a stem - ground to tree height */
 
 double Tree::total_volume() const {
 
@@ -541,6 +551,7 @@ double Tree::total_volume() const {
 
 
 
+/* Verify the total tree height is within the tolerance of the standing tree height */
 
 bool Tree::check_totht() const {
 
