@@ -1,4 +1,11 @@
-/* Storage for a single measure or pseudo-measure (midpoint, ground, stump, or top) */
+/* Storage for a single measure or pseudo-measure (midpoint, ground, stump, or top) 
+
+C++ Note: After the constructor is called, none of the member functions modify the data 
+	stored in the class. The use of the 'const' keyword following the function declaration
+	indicates such to the compiler, which will throw an error if an attempt at modifying 
+	the members is carried out.
+
+*/
 
 
 #ifndef POINT_H
@@ -17,8 +24,6 @@ public:
 
 	Point();
 	Point(double ht, double rad);
-/* 	Point(const Point &rhs);
-	Point& operator=(const Point &rhs); */
 
 	bool is_valid() const;
 

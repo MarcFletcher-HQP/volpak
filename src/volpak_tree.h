@@ -7,8 +7,17 @@ C++ Note: After the constructor is called, none of the member functions modify t
 	indicates such to the compiler, which will throw an error if an attempt at modifying 
 	the members is carried out.
 
-	const is used elsewhere to generate compiler errors. Use of access specifier 'private'
-	is used so that data members of 'Tree' are not accessable elsewhere.
+	Once an instance of a Tree is created there are no operations that should alter the 
+	stump, or any of the sections. Use of const specifier following member function 
+	declaration declares, to the compiler, that the member function will not alter the 
+	class. Further, pointers to the stump and sections are marked with the 'private'
+	access specifier, masking them to non-member functions. Finally, the storage pointed
+	to is declared 'const'; modification results in a compiler error.
+
+	Arguably this code would be simpler in many places if the author used shared_ptr,
+	rather than unique_ptr. However, the challenge of using unique_ptr has hopefully
+	resulted in code that avoids unnecessary copies.
+
 */
 
 

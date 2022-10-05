@@ -1,4 +1,8 @@
-/* Factory for creating relevant Stump. This class replaces much of what was vpakinit() and param() */
+/* Factory for creating relevant Stump. This class replaces much of what was vpakinit() and nloid() 
+
+C++ Note: The 'Factory' design pattern separates the logic involved with creating an object, from 
+    what the object does.
+*/
 
 
 #include <memory>

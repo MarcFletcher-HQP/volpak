@@ -82,7 +82,7 @@ bool Section::contains_height(double ht) const {
 }
 
 
-
+/* Print method, for debugging */
 
 std::string Section::print() const {
 

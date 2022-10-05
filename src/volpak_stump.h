@@ -5,7 +5,15 @@ be a ParaboloidSection, or a Neiloid.
 
 
 C++ Note: Stump is a pure virtual class, i.e. there can be no instances of a Stump, only of the 
-    derived classes.
+    derived classes (NeiloidStump and ParaboloidStump). 
+
+    After the constructor is called, none of the member functions modify the data 
+	stored in the class. The use of the 'const' keyword following the function declaration
+	indicates such to the compiler, which will throw an error if an attempt at modifying 
+	the members is carried out.
+
+    Despite the virtual methods in 'Stump' having no definition, the members still have to be 
+    marked as 'const' in order to match the function signature of the derived class member functions.
 
 */
 
@@ -80,6 +88,13 @@ class NeiloidStump : public Stump {
 
 };
 
+
+
+
+/* ParaboloidStump is used when the section created by the first three measures is a 
+ParaboloidSection satisfying certain conditions. This class is mostly just a wrapper
+around ParaboloidSection, the member functions just call the equivalent member function
+in the ParaboloidSection class. */
 
 
 class ParaboloidStump : public Stump {

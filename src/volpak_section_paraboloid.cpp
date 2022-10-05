@@ -18,6 +18,8 @@
 /* Paraboloid Methods */
 
 
+/* C++ note: constructor for pure virtual base class can still be invoked when constructing the derived class */
+
 ParaboloidSection::ParaboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
 	std::ostringstream msg;
@@ -29,6 +31,8 @@ ParaboloidSection::ParaboloidSection(const Point &  first, const Point &  second
 }
 
 
+
+/* Print method, for debugging */
 
 std::string ParaboloidSection::print() const {
 
@@ -43,6 +47,7 @@ std::string ParaboloidSection::print() const {
 
 
 
+/* length above is a parameter in most of the equations - previously just referred to by a variable 'x'. */
 
 double ParaboloidSection::length_above(double radius) const {
 

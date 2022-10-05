@@ -19,6 +19,7 @@
 /* Hyperboloid Methods */
 
 
+/* C++ note: constructor for pure virtual base class can still be invoked when constructing the derived class */
 
 HyperboloidSection::HyperboloidSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
@@ -29,6 +30,7 @@ HyperboloidSection::HyperboloidSection(const Point &  first, const Point &  seco
 }
 
 
+/* Print method, for debugging */
 
 std::string HyperboloidSection::print() const {
 
@@ -43,6 +45,7 @@ std::string HyperboloidSection::print() const {
 
 
 
+/* length above is a parameter in most of the equations - previously just referred to by a variable 'x'. */
 
 double HyperboloidSection::length_above(double radius) const {
 
@@ -77,7 +80,7 @@ double HyperboloidSection::radius(double ht) const {
 
 	if (rad < 0.0){
 		msg << "HyperboloidSection::radius: radius < 0.0 for ht: " << ht << "  x: " << x << std::endl;
-		msg << this->print();
+		msg << print();
 		throw std::domain_error(msg.str());
 	}
 

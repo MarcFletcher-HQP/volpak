@@ -13,6 +13,7 @@
 #endif
 
 
+/* Functionality largely derived from function param() */
 
 std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const Point& second, const Point& third){
 
@@ -145,19 +146,6 @@ std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const
 	}
 
 
-	/* The taper of a paraboloid switches sign, from increasing to decreasing with height,
-	when r > p/2. In this instance, the original volpak code reverts to a cone for
-	interpolation.*/
-
-/* 	if ((sectiontype == Paraboloid) && (r1 >= p/2)){
-
-		sectiontype = Cone;
-		p = 0.0;
-		q = 0.0;
-
-	} */
-
-
     switch(sectiontype){
 
         case Paraboloid:
@@ -182,7 +170,8 @@ std::unique_ptr<Section> SectionFactory::createSection(const Point& first, const
 
 
 
-
+/* Function for obtaining runtime type information for the given unique_ptr, based on the 
+available derived classes. */
 
 SectionFactory::SectionType SectionFactory::getSectionType(std::unique_ptr<Section> & ptr){
 
@@ -208,6 +197,8 @@ SectionFactory::SectionType SectionFactory::getSectionType(std::unique_ptr<Secti
 
 
 
+
+/* print method for debugging. */
 
 std::string SectionFactory::printSectionType(SectionFactory::SectionType type){
 
@@ -235,7 +226,7 @@ std::string SectionFactory::printSectionType(SectionFactory::SectionType type){
 
 
 
-/* Copy a Section */
+/* Copy a Section - with the intent to modify later. */
 
 std::unique_ptr<Section> SectionFactory::copySection(std::unique_ptr<Section> & ptr){
 

@@ -6,6 +6,8 @@
 #include "volpak_section_factory.h"
 
 
+/* Since the stump may end up being described by a ParaboloidSection at the base of the stem, the SectionFactory
+class is required as well.  */
 
 std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point& second, const Point& third){
 
@@ -72,6 +74,8 @@ std::unique_ptr<Stump> StumpFactory::createStump(const Point& first, const Point
 }
 
 
+
+/* print method used for debugging */
 
 std::string StumpFactory::printStumpType(StumpFactory::StumpType type){
 

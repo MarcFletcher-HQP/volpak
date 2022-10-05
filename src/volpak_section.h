@@ -18,7 +18,15 @@ derived for each conic.
 
 C++ Notes: Section is a purely virtual class, obtained in practice by not 
     implementing methods for all virtual functions. This means that a Section
-    cannot be instantiated.
+    cannot be instantiated. The base class does define a lot of functionality
+    shared by all three derived classes.
+
+    Factory class currently copies and modifies sections, in order to subdivide
+    sections with three measures into subsections containing only two (and a 
+    midpoint). Should strictly provide a method for updating data in class,
+    allowing data to be protected by a 'private' access specifier; I have gone
+    another direction. Member functions do not modify the class though, and are 
+    thus marked as const.
 
 */
 
@@ -62,7 +70,6 @@ public:
     // All the ways of making a Section
     Section();
 	Section(const Point &  first, const Point &  second, const Point &  third, double & p, double & q);
-    /* Section(const Section & old); */
 
 
     // Destructor must be virtual for the derived class destructors to be called

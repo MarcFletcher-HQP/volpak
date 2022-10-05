@@ -19,6 +19,8 @@
 /* Cone Methods */
 
 
+/* C++ note: constructor for pure virtual base class can still be invoked when constructing the derived class */
+
 ConeSection::ConeSection(const Point &  first, const Point &  second, const Point &  third, double & p, double & q) : Section(first, second, third, p, q){
 
 	double taper = (third.hag - first.hag) / (first.radius - third.radius);
@@ -30,6 +32,7 @@ ConeSection::ConeSection(const Point &  first, const Point &  second, const Poin
 }
 
 
+/* Print method, for debugging */
 
 std::string ConeSection::print() const {
 

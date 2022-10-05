@@ -87,6 +87,10 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     }
     else {
 
+        /* C++ Note: Variables declared outside the for-loop persist between iterations and after the loop ends.
+            Variables declared inside the for-loop have their destructor called once they leave scope (end of the 
+            iteration).  */
+
         Point mid23;
         std::unique_ptr<Section> coarse;
         std::unique_ptr<Section> log;
@@ -150,6 +154,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
 
 
+/* Print method, used for debugging. */
 
 std::string Tree::print() const {
 
@@ -188,19 +193,22 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     }
 
 
-    /* Find the section with first.radius < rad < third.radius */
+    /* Find the section with first.radius < rad < third.radius. Okay fine... it's the "iterator" pointing to 
+    the unique_ptr to a section. */
 
     auto it = std::find_if(sections.begin(), sections.end(),
-		[rad](const std::unique_ptr<const Section> &elem){return elem->contains_radius(rad); });
+		[rad](const std::unique_ptr<const Section> &elem){
+            return elem->contains_radius(rad); 
+        });
 
 
-    if (it == sections.end()){
+    if (it == sections.end()){  // Didn't find the radius in any of the sections, so check below the first measure.
 
-        if (stump->contains_radius(rad)){     // Check whether radius is between ground and the first measure
+        if (stump->contains_radius(rad)){ 
 
             return stump->height(rad);
 
-        } else {  // If the radius couldn't be found in the tree, then throw a tantrum
+        } else {  // If the radius couldn't be found in the tree, then complain about it.
 
             msg << "Tree::height: Could not find radius (" << rad << ") in tree: " << std::endl;
             msg << print() << std::endl;
@@ -211,12 +219,15 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     }
 
 
-    // Calculate the height corresponding to the radius in the given section
+    /* Calculate the height corresponding to the radius in the given section
+    C++ Note: output from find_if returned an iterator to the unique_ptr, pointing to the Section containing the radius. 
+        So, '*' dereferences the iterator, so (*it) is a unique_ptr<Section>. Members of the Section are then accessed with
+        `->`.  */
 
     double ht = (*it)->height(rad);
 
 
-    // If the returned height is greater than the tree height, then pitch a fit.
+    // It would be odd if the returned height exceeded the total tree height.
 
     if (ht > treeht){
 		msg << "Tree::height: Calculated height (" << ht << ") exceeds the tree height (" << treeht << ")" << std::endl;
@@ -224,7 +235,7 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     }
 
 
-    // If the returned height is not in the section, then cry about it.
+    // The developer is unaware of what you could do to have found the section and then lost it!
 
     if (!((*it)->contains_height(ht))){
 		msg << "Tree::height: Calculated height (" << ht << ") does not lie in section: [" <<
@@ -264,12 +275,14 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
     }
     else {
 
-        // Find the section containing the given height
-        auto jt = std::find_if(sections.begin(), sections.end(),
-                          [ht](const std::unique_ptr<const Section> &elem){return elem->contains_height(ht); });
+        // Find the section containing the given height (see C++ note in Tree::height)
+        auto jt = std::find_if(sections.begin(), sections.end(), 
+            [ht](const std::unique_ptr<const Section> &elem){
+                return elem->contains_height(ht); 
+            });
 
 
-        // If a section could not be found, then throw a wobbly.
+        // If a section could not be found, then complain about it.
         if (jt == sections.end()){
 
             msg << "Tree::radius: Could not find height (" << ht << ") in tree: " << std::endl;
@@ -279,11 +292,11 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
         }
 
 
-        // Calculate the radius for the corresponding height in the given section
+        // Calculate the radius for the corresponding height in the given section (see C++ note in Tree::height)
         rad = (*jt)->radius(ht);
 
 
-        // If the returned radius is not in the section, then light the beacons and call for aid.
+        // You had a Section! What did you do to it!
         if (!((*jt)->contains_radius(rad))){
 
             msg << "Tree::radius: Calculated radius (" << rad << ") does not lie in section: [" <<
@@ -358,10 +371,12 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
 
 
 
-    /* Accumulate volume of all sections below the given height */
+    /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
-    auto last = std::find_if(sections.begin(), sections.end(),
-                             [ht](const std::unique_ptr<const Section> &elem){return elem->contains_height(ht); });
+    auto last = std::find_if(sections.begin(), sections.end(), 
+        [ht](const std::unique_ptr<const Section> &elem){
+            return elem->contains_height(ht); 
+        });
 
 
     for (auto it = sections.begin(); it != last; it++){
@@ -375,7 +390,8 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
     }
 
 
-    // Both methods use the same process for the final section.
+    /* Final section */
+
     double rad = (*last)->radius(ht);
     double firstrad = ((*last)->first).radius;
 
@@ -426,6 +442,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
 
     // radii greater than the first measure have their own function for volume.
+
     if (stump->contains_radius(rad)){
 
         if(abovestump){
@@ -442,6 +459,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
 
     // Volume between the stump and the first measure
+
     vol = stump->total_volume();
 
     if(abovestump){
@@ -457,10 +475,12 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
 
 
-    /* Accumulate volume of all sections below the given height */
+    /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
-    auto last = std::find_if(sections.begin(), sections.end(),
-                             [rad](const std::unique_ptr<const Section> &elem){return elem->contains_radius(rad); });
+    auto last = std::find_if(sections.begin(), sections.end(), 
+        [rad](const std::unique_ptr<const Section> &elem){
+            return elem->contains_radius(rad); 
+        });
 
 
     for (auto it = sections.begin(); it != last; it++){
@@ -473,7 +493,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
     }
 
 
-    // Both methods use the same process for the final section.
+    /* Final section */
 
     double firstrad = ((*last)->first).radius;
     vol += (*last)->volume(firstrad, rad);

@@ -11,7 +11,7 @@
 Extrapolation of ground radius using newtons' method.
 
  Assuming a neiloid shape for the base of the tree:
- a * r^2 = ht^3
+ a * r^2 = (treeht - ht)^3
 
  Not knowing an appropriate value of 'a', newtons' method is
  used to estimate the rate of change in r^(2/3).
@@ -151,6 +151,8 @@ double NeiloidStump::volume(double r1, double r2) const {              /* Questi
 }
 
 
+
+/* The only total_volume method that doesn't use Newton's method (directly) */
 
 double NeiloidStump::total_volume() const {
 
