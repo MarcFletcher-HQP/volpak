@@ -25,8 +25,9 @@ class StumpFactory {
             Paraboloid
         };
 
-        std::unique_ptr<Stump> createStump(const Point& first, const Point& second, const Point& third);
         std::string printStumpType(StumpType type);
+        StumpType getStumpType(std::unique_ptr<Stump> & ptr);
+        std::unique_ptr<Stump> createStump(const Point& first, const Point& second, const Point& third);
 
 };
 

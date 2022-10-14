@@ -68,7 +68,17 @@ double Section::total_volume() const {
 
 bool Section::contains_radius(double rad) const {
 
-	return ((rad >= third.radius) && (rad <= first.radius)) || (abs(first.radius - rad) < RADTOL) || (abs(third.radius - rad) < RADTOL);
+	double low = third.radius;
+	double high = first.radius;
+
+	/* Occasionally the measured radius did not decrease with height, can still report whether the section 
+	contains the radius. Unfortunately, the next section will likely also contain the radius. */
+
+	if( low > high ){
+		std::swap(low, high);
+	}
+
+	return ((rad >= low) && (rad <= high)) || (abs(high - rad) < RADTOL) || (abs(low - rad) < RADTOL);
 
 }
 
@@ -80,6 +90,8 @@ bool Section::contains_height(double ht) const {
 	return ((ht <= third.hag) && (ht >= first.hag)) || (abs(third.hag - ht) < HTTOL) || (abs(first.hag - ht) < HTTOL);
 
 }
+
+
 
 
 /* Print method, for debugging */

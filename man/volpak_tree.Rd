@@ -6,17 +6,20 @@
 \alias{volpak_vol_to_hag}
 \alias{volpak_total_vol}
 \alias{volpak_get_hag}
+\alias{volpak_get_diam}
 \title{R Interface to Volpak routines}
 \usage{
 volpak_tree(heights, diameters, total.height, stump.height = 0.15)
 
-volpak_vol_to_tdub(tdubs, tree, abovestump = FALSE)
+volpak_vol_to_tdub(tree, tdubs, abovestump = FALSE)
 
-volpak_vol_to_hag(hags, tree, abovestump = FALSE)
+volpak_vol_to_hag(tree, hags, abovestump = FALSE)
 
 volpak_total_vol(tree, abovestump = FALSE)
 
-volpak_get_hag(search.diam, tree)
+volpak_get_hag(tree, search.diam)
+
+volpak_get_diam(tree, search.hag)
 }
 \arguments{
 \item{heights}{The height above ground corresponding to each diameter

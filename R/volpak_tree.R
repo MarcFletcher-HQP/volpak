@@ -1,18 +1,5 @@
-## S4 Class definitions
 ##
-
-
-setClass(
-  Class = "volpak_tree",
-  slots = list(
-    xptr = "externalptr"
-  )
-)
-
-
-
-
-
+##
 
 
 
@@ -86,73 +73,6 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
 }
 
 
-
-
-
-
-#' @export
-#' @rdname volpak_tree
-volpak_vol_to_tdub <- function(tree, tdubs, abovestump = FALSE){
-
-  if(!inherits(tree, "volpak_tree")){
-    stop("Argument 'tree' must inherit from 'volpak_tree'")
-  }
-
-  abovestump <- as.logical(abovestump)
-
-  r_vol_to_tdub(tree, tdubs/200, abovestump)
-
-}
-
-
-
-
-#' @export
-#' @rdname volpak_tree
-volpak_vol_to_hag <- function(tree, hags, abovestump = FALSE){
-
-  if(!inherits(tree, "volpak_tree")){
-    stop("Argument 'tree' must inherit from 'volpak_tree'")
-  }
-
-  abovestump <- as.logical(abovestump)
-
-  r_vol_to_hag(tree, hags, abovestump)
-
-}
-
-
-
-
-
-#' @export
-#' @rdname volpak_tree
-volpak_total_vol <- function(tree, abovestump = FALSE){
-
-  abovestump <- as.logical(abovestump)
-
-  r_total_vol(tree, abovestump)
-
-}
-
-
-
-
-
-#' @export
-#' @rdname volpak_tree
-volpak_get_hag <- function(tree, search.diam){
-
-  search.radii <- search.diam / 200
-
-  hags <- r_get_hag(tree, search.radii)
-
-  if(any(hags < 0)){
-    hags[hags < 0] <- NA_real_
-  }
-
-  return(hags)
-}
 
 
 
