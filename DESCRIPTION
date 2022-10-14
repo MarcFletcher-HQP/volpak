@@ -1,6 +1,6 @@
 Package: volpak
 Title: C++ rewrite of volpak C library
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Marc", "Fletcher", , "Marc.Fletcher@hqplantations.com.au", role = c("aut", "cre"))
 Description: Provides interpolations of tree stem measures, for estimating volume. Original written in Fortran by Vanclay, rewritten in C by QLD DPI staff, rewritten again in C++.
@@ -9,6 +9,8 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LinkingTo: 
@@ -20,3 +22,4 @@ SystemRequirements: C++11
 Depends: 
     R (>= 2.10)
 LazyData: true
+VignetteBuilder: knitr

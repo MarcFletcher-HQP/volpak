@@ -88,7 +88,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
     else {
 
         /* C++ Note: Variables declared outside the for-loop persist between iterations and after the loop ends.
-            Variables declared inside the for-loop have their destructor called once they leave scope (end of the 
+            Variables declared inside the for-loop have their destructor called once they leave scope (end of the
             iteration).  */
 
         Point mid23;
@@ -100,7 +100,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
         for (int i = 0; i < numpts - 2; i++){
 
-            /* Section created from three measure points is used to interpolate the midpoint between each pair of measures 
+            /* Section created from three measure points is used to interpolate the midpoint between each pair of measures
             (coarse section). As most midpoints exist in two overlapping coarse sections the values calculated from each
             are averaged. Finally a new section is created from a pair of measure points, with the interpolated midpoint.
             Exceptions are the first and final pair of measures, these exist in only one coarse section. */
@@ -193,18 +193,18 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     }
 
 
-    /* Find the section with first.radius < rad < third.radius. Okay fine... it's the "iterator" pointing to 
+    /* Find the section with first.radius < rad < third.radius. Okay fine... it's the "iterator" pointing to
     the unique_ptr to a section. */
 
     auto it = std::find_if(sections.begin(), sections.end(),
 		[rad](const std::unique_ptr<const Section> &elem){
-            return elem->contains_radius(rad); 
+            return elem->contains_radius(rad);
         });
 
 
     if (it == sections.end()){  // Didn't find the radius in any of the sections, so check below the first measure.
 
-        if (stump->contains_radius(rad)){ 
+        if (stump->contains_radius(rad)){
 
             return stump->height(rad);
 
@@ -220,7 +220,7 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
 
 
     /* Calculate the height corresponding to the radius in the given section
-    C++ Note: output from find_if returned an iterator to the unique_ptr, pointing to the Section containing the radius. 
+    C++ Note: output from find_if returned an iterator to the unique_ptr, pointing to the Section containing the radius.
         So, '*' dereferences the iterator, so (*it) is a unique_ptr<Section>. Members of the Section are then accessed with
         `->`.  */
 
@@ -276,9 +276,9 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
     else {
 
         // Find the section containing the given height (see C++ note in Tree::height)
-        auto jt = std::find_if(sections.begin(), sections.end(), 
+        auto jt = std::find_if(sections.begin(), sections.end(),
             [ht](const std::unique_ptr<const Section> &elem){
-                return elem->contains_height(ht); 
+                return elem->contains_height(ht);
             });
 
 
@@ -373,9 +373,9 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
 
     /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
-    auto last = std::find_if(sections.begin(), sections.end(), 
+    auto last = std::find_if(sections.begin(), sections.end(),
         [ht](const std::unique_ptr<const Section> &elem){
-            return elem->contains_height(ht); 
+            return elem->contains_height(ht);
         });
 
 
@@ -477,9 +477,9 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
     /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
-    auto last = std::find_if(sections.begin(), sections.end(), 
+    auto last = std::find_if(sections.begin(), sections.end(),
         [rad](const std::unique_ptr<const Section> &elem){
-            return elem->contains_radius(rad); 
+            return elem->contains_radius(rad);
         });
 
 
@@ -604,3 +604,107 @@ Point Tree::last_measure() const {
     return (sections.back())->third;
 
 }
+
+
+
+
+/* int get_numpts() const {
+
+    int numpts = std::distance(sections.begin(), sections.end()) + 2;     // +1 for ground, and +1 for stump.
+
+    if(treeht > 0.0){
+
+        numpts += 1;    // +1 for treeht
+
+    }
+
+    return numpts;
+
+} */
+
+
+
+
+/* std::vector<double> get_section_heights() const {
+
+    int numpts = std::distance(sections.begin(), sections.end()) + 1;
+
+    std::vector<double> heights(numpts);
+
+    for(auto it = sections.begin(); it != sections.end(); it++){
+
+        int i = std::distance(sections.begin(), it);
+
+        heights[i] = ((*it)->first).hag;
+
+    }
+
+    heights[numpts] = (sections.back()->third).hag;
+
+    return heights;
+
+} */
+
+
+
+/* std::vector<double> get_section_radii() const {
+
+    int numpts = std::distance(sections.begin(), sections.end()) + 1;
+
+    std::vector<double> radii(numpts);
+
+    for(auto it = sections.begin(); it != sections.end(); it++){
+
+        int i = std::distance(sections.begin(), it);
+
+        radii[i] = ((*it)->first).radius;
+
+    }
+
+    radii[numpts] = (sections.back()->third).radius;
+
+    return radii;
+
+} */
+
+
+
+
+std::vector<std::unique_ptr<const Section>>::iterator Tree::sections_begin() const {
+
+    return sections.begin();
+
+}
+
+
+
+std::vector<std::unique_ptr<const Section>>::iterator Tree::sections_end() const {
+
+    return sections.end();
+
+}
+
+
+
+
+
+double Tree::get_treeht() const {
+
+    return treeht;
+
+}
+
+
+
+std::string Tree::stump_type() const {
+
+    StumpFactory factory;
+    StumpFactory::StumpType type = factory.getStumpType(stump);
+
+    return factory.printStumpType(type);
+
+}
+
+
+
+

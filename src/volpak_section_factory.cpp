@@ -264,7 +264,10 @@ std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Sectio
 
 	std::ostringstream msg;
 
-	if(!ptr->contains_height(base.hag) || !ptr->contains_radius(base.radius)){
+	/* Decided to abandon checking the radius, some coarse sections will contain a radius that is larger than 
+	either end point; decided to handle this case by sub-dividing the log anyway. */
+
+	if(!ptr->contains_height(base.hag)){
 
 		msg << "SectionFactory::subdivideSection: 'base' not contained in section" << std::endl;
 		msg << ptr->print() << std::endl;
@@ -275,7 +278,7 @@ std::unique_ptr<Section> SectionFactory::subdivideSection(std::unique_ptr<Sectio
 	}
 
 
-	if(!ptr->contains_height(top.hag) || !ptr->contains_radius(top.radius)){
+	if(!ptr->contains_height(top.hag)){
 
 		msg << "SectionFactory::subdivideSection: 'top' not contained in section" << std::endl;
 		msg << ptr->print() << std::endl;

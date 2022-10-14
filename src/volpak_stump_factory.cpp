@@ -99,3 +99,25 @@ std::string StumpFactory::printStumpType(StumpFactory::StumpType type){
 
 
 
+
+
+/* Function for obtaining runtime type information for the given unique_ptr, based on the 
+available derived classes. */
+
+StumpFactory::StumpType StumpFactory::getStumpType(std::unique_ptr<Stump> & ptr){
+
+	StumpType type = Unknown;
+
+	if(dynamic_cast<ParaboloidStump*>(ptr.get()) != NULL){
+
+		type = Paraboloid;
+
+	} else if (dynamic_cast<NeiloidStump*>(ptr.get()) != NULL){
+
+		type = Neiloid;
+
+	}
+
+	return type;
+
+}

@@ -13,12 +13,20 @@ r_get_hag <- function(tree, search_radius) {
     .Call(`_volpak_r_get_hag`, tree, search_radius)
 }
 
+r_get_radius <- function(tree, search_height) {
+    .Call(`_volpak_r_get_radius`, tree, search_height)
+}
+
 r_vol_to_tdub <- function(tree, tdub, abovestump) {
     .Call(`_volpak_r_vol_to_tdub`, tree, tdub, abovestump)
 }
 
 r_vol_to_hag <- function(tree, hag, abovestump) {
     .Call(`_volpak_r_vol_to_hag`, tree, hag, abovestump)
+}
+
+r_display_volpak_tree <- function(tree) {
+    .Call(`_volpak_r_display_volpak_tree`, tree)
 }
 
 r_vpakinit <- function(height, diameter, total_height) {

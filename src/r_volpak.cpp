@@ -26,6 +26,7 @@ public:
 
 
 
+
 // [[Rcpp::export]]
 Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
               Rcpp::NumericVector radius,
@@ -108,6 +109,28 @@ Rcpp::NumericVector r_get_hag(Rcpp::S4 tree, Rcpp::NumericVector search_radius){
 
 
 
+// [[Rcpp::export]]
+Rcpp::NumericVector r_get_radius(Rcpp::S4 tree, Rcpp::NumericVector search_height){
+
+  Rcpp::NumericVector rad(search_height.size());
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  for (auto it = rad.begin(); it != rad.end(); it++){
+
+    int i = std::distance(rad.begin(), it);
+
+    *it = xptr->tree->radius(search_height[i]);
+
+  }
+
+  return rad;
+
+}
+
+
+
+
+
 
 // [[Rcpp::export]]
 Rcpp::NumericVector r_vol_to_tdub(Rcpp::S4 tree, Rcpp::NumericVector tdub, Rcpp::LogicalVector abovestump){
@@ -163,11 +186,58 @@ Rcpp::NumericVector r_vol_to_hag(Rcpp::S4 tree, Rcpp::NumericVector hag, Rcpp::L
 
 
 
+// [[Rcpp::export]]
+Rcpp::DataFrame r_display_volpak_tree(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  int numsections = std::distance(xptr->tree->sections_begin(), xptr->tree->sections_end());
+  int numpts = 2 * numsections + 3;    // first and second for each section, +1 for ground, +1 for stump, +1 for tree height
+
+  Rcpp::NumericVector heights(numpts);
+  Rcpp::NumericVector diams(numpts);
+  Rcpp::CharacterVector labels(numpts);
+
+  heights[0] = 0.0;
+  heights[1] = xptr->tree->stump_height();
+
+  diams[0] = xptr->tree->ground_radius() * 200;
+  diams[1] = xptr->tree->stump_radius() * 200;
+
+  labels[0] = "ground";
+  labels[1] = "stump";
 
 
+  for(auto it = xptr->tree->sections_begin(); it != xptr->tree->sections_end(); it++){
+
+    int i = 2 * std::distance(xptr->tree->sections_begin(), it) + 2;
+
+    heights[i] = ((*it)->first).hag;
+    heights[i+1] = ((*it)->second).hag;
+
+    diams[i] = ((*it)->first).radius * 200;
+    diams[i+1] = ((*it)->second).radius * 200;
+
+    labels[i] = "measure";
+    labels[i+1] = "midpoint";
+
+  }
+
+  heights[numpts-1] = xptr->tree->get_treeht();
+  diams[numpts-1] = 0.0;
+  labels[numpts-1] = "measure";
 
 
+  Rcpp::DataFrame df = Rcpp::DataFrame::create(
+    Rcpp::Named("Height") = heights,
+    Rcpp::Named("Diameter") = diams,
+    Rcpp::Named("Label") = labels
+  );
 
 
+  df.attr("StumpType") = xptr->tree->stump_type();
 
+  return df;
+
+}
 

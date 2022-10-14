@@ -47,6 +47,7 @@ public:
 	double volume_to_height(double ht, bool abovestump) const;
 	double volume_to_radius(double rad, bool abovestump) const;
 	
+	std::string stump_type() const;
 	double stump_vol() const;
 	double stump_radius() const;
 	double stump_height() const;
@@ -59,6 +60,11 @@ public:
 
 	Point first_measure() const;
 	Point last_measure() const;
+
+	std::vector<std::unique_ptr<const Section>>::iterator sections_begin() const;
+	std::vector<std::unique_ptr<const Section>>::iterator sections_end() const;
+	double get_treeht() const;
+	int get_numpts() const;
 
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
 	Tree(const Tree & t) = delete; 				// Cannot copy tree

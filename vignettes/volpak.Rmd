@@ -1,0 +1,67 @@
+---
+title: "volpak: A Library for Interpolation of Tree Stems"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{volpak: A Library for Interpolation of Tree Stems}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(volpak)
+```
+
+
+
+
+
+# Introduction
+
+* Forestry companies collect under-bark diameter measurements to estimate volume of a tree stem.
+* A number of measures are collected from the base of the stem, with measures becoming more spaced out towards the top of the stem.
+* Interpolation occurs between these measures using parameterised curves that could reasonably represent a profile of a section of the stem.
+* a Fortran library was originally written by Vanclay, was ported to C by Gordon, and maintained by Keady. Code was rewritten in C++ and made into an R package, along with original C code, to better understand how the library works.
+
+
+
+
+# Interpolation of Stem Radius
+
+* Each batch of three measures can potentially be made over as much as 6m of stem, in the HQP experience. The taper over these sections is not close enough to constant to simply represent the stem as a frustum of a cone.
+* Interpolation is instead performed by using a quadratic spline, derived from conic sections:
++ Cone,
++ Paraboloid,
++ Hyperboloid,
++ Neiloid (Stump only).
+
+
+## Cone
+
+* Simplest conic, constant taper.
+* Radius (R), height above ground (H), Tree Height (TreeHt), height/diameter measure pairs $(H_0, R_0)$ and $(H_1, R_1)$, where $H_0 < H_1$ and $R_0 > R_1$.
+* Note that in the code the curves are all parameterised in terms of the vertical distance to the top of the tree $(TreeHt - H$.
+
+$$
+\begin{align}
+
+R &= a \times (TreeHt - H) \\
+a &= \left(\frac{R_0 - R_1}{H_1 - H_0}\right) \\
+(R - R_1) &= a \times(TreeHt - H) - a \times(TreeHt - H_1) \\
+&= a \times (H_1 - H) \\
+H &= H_1 - \left(\frac{H_1 - H_0}{R_0 - R_1}\right) \times (R - R_1)   \\
+Vol(R) &= \frac{\pi}{3} (R_0^{\;2} - R^{\;2}) \times (H - H0)
+
+
+\end{align}
+$$
+
+
+
+

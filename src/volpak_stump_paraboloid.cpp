@@ -72,7 +72,7 @@ double ParaboloidStump::total_volume() const {
 
 bool ParaboloidStump::contains_radius(double rad) const {
 
-    return base.contains_radius(rad);
+	return ((rad >= base.first.radius) && (rad <= ground.radius)) || (abs(ground.radius - rad) < RADTOL) || (abs(base.first.radius - rad) < RADTOL);
 
 }
 
@@ -81,7 +81,7 @@ bool ParaboloidStump::contains_radius(double rad) const {
 
 bool ParaboloidStump::contains_height(double ht) const {
 
-    return base.contains_height(ht);
+	return ((ht <= base.first.hag) && (ht >= ground.hag)) || (abs(base.first.hag - ht) < HTTOL) || (abs(ground.hag - ht) < HTTOL);
 
 }
 
