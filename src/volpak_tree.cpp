@@ -197,7 +197,7 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
     the unique_ptr to a section. */
 
     auto it = std::find_if(sections.begin(), sections.end(),
-		[rad](const std::unique_ptr<const Section> &elem){
+		[rad](const std::unique_ptr<Section> &elem){
             return elem->contains_radius(rad);
         });
 
@@ -277,7 +277,7 @@ double Tree::radius(double ht) const {			// formerly double dht(double h1);
 
         // Find the section containing the given height (see C++ note in Tree::height)
         auto jt = std::find_if(sections.begin(), sections.end(),
-            [ht](const std::unique_ptr<const Section> &elem){
+            [ht](const std::unique_ptr<Section> &elem){
                 return elem->contains_height(ht);
             });
 
@@ -374,7 +374,7 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
     /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-        [ht](const std::unique_ptr<const Section> &elem){
+        [ht](const std::unique_ptr<Section> &elem){
             return elem->contains_height(ht);
         });
 
@@ -478,7 +478,7 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
     /* Accumulate volume of all sections below the given height (see C++ note in Tree::height) */
 
     auto last = std::find_if(sections.begin(), sections.end(),
-        [rad](const std::unique_ptr<const Section> &elem){
+        [rad](const std::unique_ptr<Section> &elem){
             return elem->contains_radius(rad);
         });
 
@@ -608,69 +608,7 @@ Point Tree::last_measure() const {
 
 
 
-/* int get_numpts() const {
-
-    int numpts = std::distance(sections.begin(), sections.end()) + 2;     // +1 for ground, and +1 for stump.
-
-    if(treeht > 0.0){
-
-        numpts += 1;    // +1 for treeht
-
-    }
-
-    return numpts;
-
-} */
-
-
-
-
-/* std::vector<double> get_section_heights() const {
-
-    int numpts = std::distance(sections.begin(), sections.end()) + 1;
-
-    std::vector<double> heights(numpts);
-
-    for(auto it = sections.begin(); it != sections.end(); it++){
-
-        int i = std::distance(sections.begin(), it);
-
-        heights[i] = ((*it)->first).hag;
-
-    }
-
-    heights[numpts] = (sections.back()->third).hag;
-
-    return heights;
-
-} */
-
-
-
-/* std::vector<double> get_section_radii() const {
-
-    int numpts = std::distance(sections.begin(), sections.end()) + 1;
-
-    std::vector<double> radii(numpts);
-
-    for(auto it = sections.begin(); it != sections.end(); it++){
-
-        int i = std::distance(sections.begin(), it);
-
-        radii[i] = ((*it)->first).radius;
-
-    }
-
-    radii[numpts] = (sections.back()->third).radius;
-
-    return radii;
-
-} */
-
-
-
-
-std::vector<std::unique_ptr<const Section>>::iterator Tree::sections_begin() const {
+std::vector<std::unique_ptr<Section>>::const_iterator Tree::sections_begin() const {
 
     return sections.begin();
 
@@ -678,7 +616,7 @@ std::vector<std::unique_ptr<const Section>>::iterator Tree::sections_begin() con
 
 
 
-std::vector<std::unique_ptr<const Section>>::iterator Tree::sections_end() const {
+std::vector<std::unique_ptr<Section>>::const_iterator Tree::sections_end() const {
 
     return sections.end();
 

@@ -85,17 +85,42 @@ volpak_get_diam <- function(tree, search.hag){
 
 
 
-#' @export
-#' @rdname volpak_tree
-volpak_display_tree <- function(tree){
+
+volpak_list_measures <- function(tree){
 
   if(!inherits(tree, "volpak_tree")){
     stop("`tree` must inherit from class 'volpak_tree'")
   }
 
-  r_volpak_display_tree(tree)
+  r_list_measures(tree)
 
 }
 
 
 
+
+
+
+volpak_list_sections <- function(tree){
+
+  if(!inherits(tree, "volpak_tree")){
+    stop("`tree` must inherit from class 'volpak_tree'")
+  }
+
+  r_list_sections(tree)
+
+}
+
+
+
+
+
+volpak_list_stump <- function(tree){
+
+  if(!inherits(tree, "volpak_tree")){
+    stop("`tree` must inherit from class 'volpak_tree'")
+  }
+
+  r_list_stump(tree)
+
+}

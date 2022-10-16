@@ -83,7 +83,7 @@ std::string StumpFactory::printStumpType(StumpFactory::StumpType type){
 
 		case Neiloid:
 			return "Neiloid";
-		
+
 		case Paraboloid:
 			return "Paraboloid";
 
@@ -101,10 +101,10 @@ std::string StumpFactory::printStumpType(StumpFactory::StumpType type){
 
 
 
-/* Function for obtaining runtime type information for the given unique_ptr, based on the 
+/* Function for obtaining runtime type information for the given unique_ptr, based on the
 available derived classes. */
 
-StumpFactory::StumpType StumpFactory::getStumpType(std::unique_ptr<Stump> & ptr){
+StumpFactory::StumpType StumpFactory::getStumpType(const std::unique_ptr<Stump> & ptr){
 
 	StumpType type = Unknown;
 

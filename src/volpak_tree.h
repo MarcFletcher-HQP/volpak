@@ -11,8 +11,13 @@ C++ Note: After the constructor is called, none of the member functions modify t
 	stump, or any of the sections. Use of const specifier following member function 
 	declaration declares, to the compiler, that the member function will not alter the 
 	class. Further, pointers to the stump and sections are marked with the 'private'
-	access specifier, masking them to non-member functions. Finally, the storage pointed
-	to is declared 'const'; modification results in a compiler error.
+	access specifier, masking them to non-member functions. Unfortunately, the storage 
+	pointed to can still be modified, this could be fixed by marking it as 'const' as 
+	well, but this caused a lot of other problems.
+
+	Marking a member function as const results in 'const this' rather than 'this' being
+	passed to the member function, which may cause problems if the input is passed to
+	subsequent non-const functions.
 
 	Arguably this code would be simpler in many places if the author used shared_ptr,
 	rather than unique_ptr. However, the challenge of using unique_ptr has hopefully
@@ -57,14 +62,13 @@ public:
 	double total_volume() const;
 
 	bool check_totht() const;
+	double get_treeht() const;
 
 	Point first_measure() const;
 	Point last_measure() const;
 
-	std::vector<std::unique_ptr<const Section>>::iterator sections_begin() const;
-	std::vector<std::unique_ptr<const Section>>::iterator sections_end() const;
-	double get_treeht() const;
-	int get_numpts() const;
+	std::vector<std::unique_ptr<Section>>::const_iterator sections_begin() const;
+	std::vector<std::unique_ptr<Section>>::const_iterator sections_end() const;
 
 	Tree(const std::vector<double> &diams, const std::vector<double> &hts, const double &treeht, double stumpht);
 	Tree(const Tree & t) = delete; 				// Cannot copy tree
@@ -75,8 +79,8 @@ private:
 
     double treeht;
 
-	std::unique_ptr<const Stump> stump;  // Cannot modify object pointed to by 'stump' once added to Tree (compiler error).
-	std::vector<std::unique_ptr<const Section>> sections; // Cannot modify Sections, pointed by elements of sections, once added to vector (compiler error).
+	std::unique_ptr<Stump> stump; 
+	std::vector<std::unique_ptr<Section>> sections;
 
 };
 
