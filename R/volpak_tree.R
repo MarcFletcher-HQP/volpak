@@ -67,8 +67,17 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
     stop("stump.height must be unique")
   }
 
+
   idx <- order(heights, decreasing = FALSE)
-  r_volpak_tree(heights[idx], radius[idx], total.height[1], stump.height[1])
+  tree <- r_volpak_tree(heights[idx], radius[idx], total.height[1], stump.height[1])
+
+
+  tree@points <- volpak_list_measures(tree)
+  tree@stump  <- volpak_list_stump(tree)
+  tree@sections <- volpak_list_sections(tree)
+
+
+  return(tree)
 
 }
 

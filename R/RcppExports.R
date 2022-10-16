@@ -25,8 +25,16 @@ r_vol_to_hag <- function(tree, hag, abovestump) {
     .Call(`_volpak_r_vol_to_hag`, tree, hag, abovestump)
 }
 
-r_display_volpak_tree <- function(tree) {
-    .Call(`_volpak_r_display_volpak_tree`, tree)
+r_list_measures <- function(tree) {
+    .Call(`_volpak_r_list_measures`, tree)
+}
+
+r_list_sections <- function(tree) {
+    .Call(`_volpak_r_list_sections`, tree)
+}
+
+r_list_stump <- function(tree) {
+    .Call(`_volpak_r_list_stump`, tree)
 }
 
 r_vpakinit <- function(height, diameter, total_height) {

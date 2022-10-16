@@ -26,7 +26,7 @@ class StumpFactory {
         };
 
         std::string printStumpType(StumpType type);
-        StumpType getStumpType(std::unique_ptr<Stump> & ptr);
+        StumpType getStumpType(const std::unique_ptr<Stump> & ptr);
         std::unique_ptr<Stump> createStump(const Point& first, const Point& second, const Point& third);
 
 };
