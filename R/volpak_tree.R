@@ -51,7 +51,7 @@ volpak_tree <- function(heights, diameters, total.height, stump.height = 0.15){
   radius <- diameters / 200
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height[1] > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 

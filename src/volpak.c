@@ -857,6 +857,12 @@ volh( double htl)
 		The volume in cubic metres
 		or
 		-HUGE if an error occurs.
+
+	fletchm: note that when no tree height is provided, and the supplied
+		diameter is above the final measure, the code just calculates
+		the total volume of the measured sections. The output in this case
+		departs from that of vtm(), as the final section is volumated using
+		vpara/vhyper, rather than newton's formula.
 */
 double
 vold( double dl )

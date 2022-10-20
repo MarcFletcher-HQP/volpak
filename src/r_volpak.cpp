@@ -59,7 +59,7 @@ Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump){
+Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump, Rcpp::LogicalVector abovetop){
 
   if(!tree.hasSlot("xptr")){
       Rcpp::stop("Argument 'tree' does not have slot 'xptr'");
@@ -74,9 +74,23 @@ Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump){
 
   }
 
+  if(abovetop.size() > 1){
+
+    Rcpp::warning("Argument 'abovetop' contains more than one element, using first only.");
+
+  }
+
 
   Rcpp::NumericVector vol(1);
-  vol[0] = xptr->tree->total_volume() - xptr->tree->stump_vol();
+  vol[0] = xptr->tree->total_volume();
+
+  if(abovestump[0]){
+    vol[0] -= xptr->tree->stump_vol();
+  }
+
+  if(abovetop[0]){
+    vol[0] += xptr->tree->vol_above_top();
+  }
 
   return vol;
 
@@ -191,8 +205,9 @@ Rcpp::DataFrame r_list_measures(Rcpp::S4 tree){
 
   Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
 
+  bool treehtused = xptr->tree->get_treeht() > 0.0;
   int numsections = std::distance(xptr->tree->sections_begin(), xptr->tree->sections_end());
-  int numpts = 2 * numsections + 3;    // first and second for each section, +1 for ground, +1 for stump, +1 for tree height
+  int numpts = 2 * numsections + ((int) treehtused) + 2;    // first and second for each section, treeht (if used), +1 for ground, and +1 for stump.
 
   Rcpp::NumericVector heights(numpts);
   Rcpp::NumericVector diams(numpts);
@@ -223,9 +238,24 @@ Rcpp::DataFrame r_list_measures(Rcpp::S4 tree){
 
   }
 
-  heights[numpts-1] = xptr->tree->get_treeht();
-  diams[numpts-1] = 0.0;
-  labels[numpts-1] = "measure";
+
+  if(treehtused){
+
+    double treeht = xptr->tree->get_treeht();
+
+    heights[numpts-1] = treeht;
+    diams[numpts-1] = 0.0;
+    labels[numpts-1] = "measure";
+
+  } else {
+
+    auto it = xptr->tree->sections_end() - 1;
+
+    heights[numpts-1] = ((*it)->third).hag;
+    diams[numpts-1] = ((*it)->third).radius * 200;
+    labels[numpts-1] = "measure";
+
+  }
 
 
   Rcpp::DataFrame df = Rcpp::DataFrame::create(
@@ -343,5 +373,79 @@ Rcpp::S4 r_list_stump(Rcpp::S4 tree){
 
 
   return stump;
+
+}
+
+
+
+// [[Rcpp::export]]
+Rcpp::NumericVector r_volpak_tree_height(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::NumericVector tht(1);
+
+  tht[0] = xptr->tree->tree_height();
+
+  return tht;
+
+}
+
+
+
+
+// [[Rcpp::export]]
+Rcpp::NumericVector r_volpak_stump_radius(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::NumericVector stumprad(1);
+
+  stumprad[0] = xptr->tree->stump_radius();
+
+  return stumprad;
+
+}
+
+
+
+// [[Rcpp::export]]
+Rcpp::NumericVector r_volpak_stump_vol(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::NumericVector stumpvol(1);
+
+  stumpvol[0] = xptr->tree->stump_vol();
+
+  return stumpvol;
+
+}
+
+
+
+// [[Rcpp::export]]
+Rcpp::NumericVector r_volpak_ground_radius(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::NumericVector groundrad(1);
+
+  groundrad[0] = xptr->tree->ground_radius();
+
+  return groundrad;
+
+}
+
+
+
+// [[Rcpp::export]]
+void r_volpak_print(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::Rcout << xptr->tree->print() << std::endl;
+
+  return;
 
 }

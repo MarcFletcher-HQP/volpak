@@ -59,10 +59,12 @@ public:
 	double ground_radius() const;
 
     double vol_to_first_measure() const;
+	double vol_above_top() const;
 	double total_volume() const;
 
 	bool check_totht() const;
 	double get_treeht() const;
+	double tree_height() const;
 
 	Point first_measure() const;
 	Point last_measure() const;

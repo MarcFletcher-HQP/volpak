@@ -25,14 +25,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // r_total_vol
-Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump);
-RcppExport SEXP _volpak_r_total_vol(SEXP treeSEXP, SEXP abovestumpSEXP) {
+Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump, Rcpp::LogicalVector abovetop);
+RcppExport SEXP _volpak_r_total_vol(SEXP treeSEXP, SEXP abovestumpSEXP, SEXP abovetopSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovestump(abovestumpSEXP);
-    rcpp_result_gen = Rcpp::wrap(r_total_vol(tree, abovestump));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type abovetop(abovetopSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_total_vol(tree, abovestump, abovetop));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -119,6 +120,60 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// r_volpak_tree_height
+Rcpp::NumericVector r_volpak_tree_height(Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_volpak_tree_height(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_volpak_tree_height(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_volpak_stump_radius
+Rcpp::NumericVector r_volpak_stump_radius(Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_volpak_stump_radius(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_volpak_stump_radius(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_volpak_stump_vol
+Rcpp::NumericVector r_volpak_stump_vol(Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_volpak_stump_vol(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_volpak_stump_vol(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_volpak_ground_radius
+Rcpp::NumericVector r_volpak_ground_radius(Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_volpak_ground_radius(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_volpak_ground_radius(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// r_volpak_print
+void r_volpak_print(Rcpp::S4 tree);
+RcppExport SEXP _volpak_r_volpak_print(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::S4 >::type tree(treeSEXP);
+    r_volpak_print(tree);
+    return R_NilValue;
+END_RCPP
+}
 // r_vpakinit
 void r_vpakinit(Rcpp::NumericVector height, Rcpp::NumericVector diameter, Rcpp::NumericVector total_height);
 RcppExport SEXP _volpak_r_vpakinit(SEXP heightSEXP, SEXP diameterSEXP, SEXP total_heightSEXP) {
@@ -189,7 +244,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_volpak_r_volpak_tree", (DL_FUNC) &_volpak_r_volpak_tree, 4},
-    {"_volpak_r_total_vol", (DL_FUNC) &_volpak_r_total_vol, 2},
+    {"_volpak_r_total_vol", (DL_FUNC) &_volpak_r_total_vol, 3},
     {"_volpak_r_get_hag", (DL_FUNC) &_volpak_r_get_hag, 2},
     {"_volpak_r_get_radius", (DL_FUNC) &_volpak_r_get_radius, 2},
     {"_volpak_r_vol_to_tdub", (DL_FUNC) &_volpak_r_vol_to_tdub, 3},
@@ -197,6 +252,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_volpak_r_list_measures", (DL_FUNC) &_volpak_r_list_measures, 1},
     {"_volpak_r_list_sections", (DL_FUNC) &_volpak_r_list_sections, 1},
     {"_volpak_r_list_stump", (DL_FUNC) &_volpak_r_list_stump, 1},
+    {"_volpak_r_volpak_tree_height", (DL_FUNC) &_volpak_r_volpak_tree_height, 1},
+    {"_volpak_r_volpak_stump_radius", (DL_FUNC) &_volpak_r_volpak_stump_radius, 1},
+    {"_volpak_r_volpak_stump_vol", (DL_FUNC) &_volpak_r_volpak_stump_vol, 1},
+    {"_volpak_r_volpak_ground_radius", (DL_FUNC) &_volpak_r_volpak_ground_radius, 1},
+    {"_volpak_r_volpak_print", (DL_FUNC) &_volpak_r_volpak_print, 1},
     {"_volpak_r_vpakinit", (DL_FUNC) &_volpak_r_vpakinit, 3},
     {"_volpak_r_vtm", (DL_FUNC) &_volpak_r_vtm, 3},
     {"_volpak_r_htd", (DL_FUNC) &_volpak_r_htd, 4},

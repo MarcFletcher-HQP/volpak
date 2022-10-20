@@ -9,7 +9,7 @@ volpak_vpakinit <- function(heights, diameters, total.height){
 
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 
@@ -33,7 +33,7 @@ volpak_vtm <- function(heights, diameters, total.height){
 
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 
@@ -57,7 +57,7 @@ volpak_vold <- function(vol.to.diam, heights, diameters, total.height){
 
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 
@@ -81,7 +81,7 @@ volpak_volh <- function(vol.to.hag, heights, diameters, total.height){
 
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 
@@ -105,7 +105,7 @@ volpak_htd <- function(search.diameters, heights, diameters, total.height){
 
   total.height <- unique(total.height)
 
-  if(any(heights > total.height[1])){
+  if(total.height > 0 && any(heights > total.height[1])){
     warning("heights in excess of total tree height in data")
   }
 

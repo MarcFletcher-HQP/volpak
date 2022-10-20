@@ -31,7 +31,9 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 	/* rather than use std::vector::push_back, which potentially copies the existing array to
 	ensure contiguous storage, just allocate once.*/
 
-	int numpts = radii.size() + (int) (treeht > 0);
+    bool usetreeht = (treeht > 0) && (treeht >= hts.back());
+
+	int numpts = radii.size() + (int) usetreeht;
 
     std::vector<Point> measpoints(numpts);
 
@@ -48,7 +50,7 @@ Tree::Tree(const std::vector<double> &radii, const std::vector<double> &hts, con
 
     this->treeht = 0.0;
 
-    if (treeht > 0.0){
+    if (usetreeht){
 
         this->treeht = treeht;
 
@@ -229,7 +231,7 @@ double Tree::height(double rad) const {			// formerly double htd(double d1);
 
     // It would be odd if the returned height exceeded the total tree height.
 
-    if (ht > treeht){
+    if ((treeht > 0) && (ht > treeht)){
 		msg << "Tree::height: Calculated height (" << ht << ") exceeds the tree height (" << treeht << ")" << std::endl;
         throw std::domain_error(msg.str());
     }
@@ -321,7 +323,7 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
     double vol = 0.0;
 
 
-    if (ht < 0.0 || ht > (treeht)){
+    if (ht < 0.0 || ht > tree_height()){    // If treeht = 0.0, tree_height takes a guess based on the final section.
         return -HUGE_VAL;
     }
 
@@ -392,9 +394,17 @@ double Tree::volume_to_height(double ht, bool abovestump) const {      /* previo
 
     /* Final section */
 
-    double rad = (*last)->radius(ht);
-    double firstrad = ((*last)->first).radius;
+    double firstrad = ((*last)->first).radius;;
 
+    if(last == sections.end()){     // tree height not provided and radius is in section above last measure
+        
+        --last;
+
+        firstrad = ((*last)->third).radius;
+
+    }
+
+    double rad = (*last)->radius(ht);
     vol += (*last)->volume(firstrad, rad);
 
     return vol;
@@ -495,10 +505,49 @@ double Tree::volume_to_radius(double rad, bool abovestump) const {			// formerly
 
     /* Final section */
 
-    double firstrad = ((*last)->first).radius;
-    vol += (*last)->volume(firstrad, rad);
+    if(last == sections.end()){     // tree height not provided and radius is in section above last measure
+        
+        --last;
+
+        double thirdrad = ((*last)->third).radius;
+        vol += (*last)->volume(thirdrad, rad);
+
+    } else {
+
+        double firstrad = ((*last)->first).radius;
+        vol += (*last)->volume(firstrad, rad);
+
+    }
 
     return vol;
+}
+
+
+
+
+/* If a tree height wasn't provided then Tree::total_volume will only calculate the volume to
+    the last measure, to align with volpak::vtm. This function estimates the volume above the
+    last measure, in the even the user wants an extrapolation to be made. Arguably 
+    Tree::total_volume should do this anyway, and alignment with volpak be damned.
+ */
+
+double Tree::vol_above_top() const {
+
+    if(treeht > 0.0){      // treeht provided, means no section of the tree is missing.
+        return 0.0;
+    }
+
+    auto last = sections.end() - 1;
+
+    double firstrad = ((*last)->third).radius;
+    double vol = (*last)->volume(firstrad, 0.0);
+
+    if(vol < 0.0){
+        vol = -HUGE_VAL;
+    }
+
+    return vol;
+
 }
 
 
@@ -644,5 +693,22 @@ std::string Tree::stump_type() const {
 }
 
 
+
+/* Estimate the tree height, if none was provided. */
+
+double Tree::tree_height() const {
+
+    if (treeht > 0){
+        return treeht;
+    }
+
+    auto last = sections.end() - 1;
+
+    Point top = (*last)->third;
+    double totht = top.hag + (*last)->length_above(top.radius);
+
+    return totht;
+
+}
 
 

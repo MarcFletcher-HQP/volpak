@@ -7,7 +7,7 @@
 
 VolpakTreeTXT <- "tests/testthat/volpak_tree.txt"
 VpakinitTXT <- "tests/testthat/vpakinit.txt"
-TreeSeq <- 29740
+TreeSeq <- 29700
 
 
 
@@ -36,7 +36,8 @@ test <- hags[hags$TreeSeq == TreeSeq, ]
 
 sink(file = VolpakTreeTXT)
 
-tree <- volpak_tree(test$HAG, test$DUB, test$TreeHt)
+# tree <- volpak_tree(test$HAG, test$DUB, test$TreeHt)
+tree <- volpak_tree(test$HAG, test$DUB, 0)
 
 sink()
 

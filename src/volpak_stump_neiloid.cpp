@@ -104,9 +104,10 @@ double NeiloidStump::height(double rad) const {
 
 	std::ostringstream msg;
 
-    if (rad < second.radius){
+    /* Removed this code, again to robustly handle stems where the diameter doesn't strictly decrease */
+/*     if (rad < second.radius){
         throw std::invalid_argument("NeiloidStump::height: Neiloid model is not appropriate for points above the second measure\n");
-    }
+    } */
 
     // For a neiloid, the height is proportional to radius^(2/3)
     double twothirds = 2.0 / 3.0;
