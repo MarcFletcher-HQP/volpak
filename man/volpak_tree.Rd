@@ -12,6 +12,7 @@
 \alias{volpak_stump_vol}
 \alias{volpak_ground_radius}
 \alias{volpak_print}
+\alias{volpak_vol_above_top}
 \title{R Interface to Volpak routines}
 \usage{
 volpak_tree(heights, diameters, total.height, stump.height = 0.15)
@@ -20,7 +21,7 @@ volpak_vol_to_tdub(tree, tdubs, abovestump = FALSE)
 
 volpak_vol_to_hag(tree, hags, abovestump = FALSE)
 
-volpak_total_vol(tree, abovestump = FALSE, abovetop = FALSE)
+volpak_total_vol(tree, abovestump = FALSE)
 
 volpak_get_hag(tree, search.diam)
 
@@ -35,6 +36,8 @@ volpak_stump_vol(tree)
 volpak_ground_radius(tree)
 
 volpak_print(tree)
+
+volpak_vol_above_top(tree)
 }
 \arguments{
 \item{heights}{The height above ground corresponding to each diameter

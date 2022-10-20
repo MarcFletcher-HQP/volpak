@@ -5,8 +5,8 @@ r_volpak_tree <- function(height, radius, total_height, stump_height) {
     .Call(`_volpak_r_volpak_tree`, height, radius, total_height, stump_height)
 }
 
-r_total_vol <- function(tree, abovestump, abovetop) {
-    .Call(`_volpak_r_total_vol`, tree, abovestump, abovetop)
+r_total_vol <- function(tree, abovestump) {
+    .Call(`_volpak_r_total_vol`, tree, abovestump)
 }
 
 r_get_hag <- function(tree, search_radius) {
@@ -55,6 +55,10 @@ r_volpak_ground_radius <- function(tree) {
 
 r_volpak_print <- function(tree) {
     invisible(.Call(`_volpak_r_volpak_print`, tree))
+}
+
+r_volpak_vol_above_top <- function(tree) {
+    .Call(`_volpak_r_volpak_vol_above_top`, tree)
 }
 
 r_vpakinit <- function(height, diameter, total_height) {

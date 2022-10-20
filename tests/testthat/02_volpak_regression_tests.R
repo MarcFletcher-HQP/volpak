@@ -7,7 +7,7 @@
 
 ## User defined
 
-Tol <- 5e-5
+Tol <- 5e-3
 
 
 
@@ -36,6 +36,10 @@ names(comparison) <- as.character(treeid)
 for(x in treeid){
 
   df <- hags[hags$TreeSeq == x, ]
+
+  if(any(df$HAG >= df$TreeHt)){
+    next
+  }
 
   tree <- volpak_tree(df$HAG, df$DUB, df$TreeHt)
 
@@ -67,8 +71,7 @@ comparison$TotalVolDiff <- with(comparison, TotalVol - VTM)
 comparison$TDVOL07Diff <- with(comparison, TDVOL07 - VOLD07)
 comparison$HAGDiff <- with(comparison, HAG15cm - HTD15cm)
 comparison$VOLHAGDiff <- with(comparison, VOLHAG - VOLH)
-
-
+comparison <- na.omit(comparison)
 
 
 

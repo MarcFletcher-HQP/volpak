@@ -59,7 +59,7 @@ Rcpp::S4 r_volpak_tree(Rcpp::NumericVector height,
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump, Rcpp::LogicalVector abovetop){
+Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump){
 
   if(!tree.hasSlot("xptr")){
       Rcpp::stop("Argument 'tree' does not have slot 'xptr'");
@@ -74,22 +74,12 @@ Rcpp::NumericVector r_total_vol(Rcpp::S4 tree, Rcpp::LogicalVector abovestump, R
 
   }
 
-  if(abovetop.size() > 1){
-
-    Rcpp::warning("Argument 'abovetop' contains more than one element, using first only.");
-
-  }
-
 
   Rcpp::NumericVector vol(1);
   vol[0] = xptr->tree->total_volume();
 
   if(abovestump[0]){
     vol[0] -= xptr->tree->stump_vol();
-  }
-
-  if(abovetop[0]){
-    vol[0] += xptr->tree->vol_above_top();
   }
 
   return vol;
@@ -447,5 +437,20 @@ void r_volpak_print(Rcpp::S4 tree){
   Rcpp::Rcout << xptr->tree->print() << std::endl;
 
   return;
+
+}
+
+
+
+// [[Rcpp::export]]
+Rcpp::NumericVector r_volpak_vol_above_top(Rcpp::S4 tree){
+
+  Rcpp::XPtr<TreeContainer> xptr = tree.slot("xptr");
+
+  Rcpp::NumericVector vol(1);
+
+  vol[0] = xptr->tree->vol_above_top();
+
+  return vol;
 
 }

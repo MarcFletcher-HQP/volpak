@@ -7,7 +7,7 @@
 
 VolpakTreeTXT <- "tests/testthat/volpak_tree.txt"
 VpakinitTXT <- "tests/testthat/vpakinit.txt"
-TreeSeq <- 29700
+TreeSeq <- 30861
 
 
 

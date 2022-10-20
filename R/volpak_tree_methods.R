@@ -39,6 +39,12 @@ volpak_vol_to_hag <- function(tree, hags, abovestump = FALSE){
     stop("Argument 'tree' must inherit from 'volpak_tree'")
   }
 
+  if(all(is.na(hags))){
+    return(NA)
+  } else if (any(is.na(hags))){
+    hags <- hags[!is.na(hags)]
+  }
+
   if(any(hags > volpak_tree_height(tree))){
     warning("Requested 'hags' exceed tree height, returning NA")
   }
@@ -61,12 +67,11 @@ volpak_vol_to_hag <- function(tree, hags, abovestump = FALSE){
 
 #' @export
 #' @rdname volpak_tree
-volpak_total_vol <- function(tree, abovestump = FALSE, abovetop = FALSE){
+volpak_total_vol <- function(tree, abovestump = FALSE){
 
   abovestump <- as.logical(abovestump)
-  abovetop <- as.logical(abovetop)
 
-  vol <- r_total_vol(tree, abovestump, abovetop)
+  vol <- r_total_vol(tree, abovestump)
 
   if(is.infinite(vol)){
     vol <- NA
@@ -235,7 +240,23 @@ volpak_print <- function(tree){
 
 
 
+#' @export
+#' @rdname volpak_tree
+volpak_vol_above_top <- function(tree){
 
+  if(!inherits(tree, "volpak_tree")){
+    stop("`tree` must inherit from class 'volpak_tree'")
+  }
+
+  vol <- r_volpak_vol_above_top(tree)
+
+  if(any(is.infinite(vol))){
+    vol <- ifelse(is.infinite(vol), NA, vol)
+  }
+
+  return(vol)
+
+}
 
 
 

@@ -614,6 +614,12 @@ double Tree::total_volume() const {
 
     }
 
+    if(treeht == 0.0){
+
+        vol += vol_above_top();
+
+    }
+
     return vol;
 
 }

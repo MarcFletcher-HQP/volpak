@@ -45,16 +45,11 @@ for(x in treeid){
   tree <- volpak_tree(df$HAG, df$DUB, df$TreeHt)
 
   tmp <- data.frame(
-    TotalVol = volpak_total_vol(tree, TRUE),
+    TotalVol = volpak_total_vol(tree, TRUE) - volpak_vol_above_top(tree),
     VTM = volpak_vtm(df$HAG, df$DUB, df$TreeHt),
-    # TDVOL07 = volpak_vol_to_tdub(tree, 7, TRUE),
-    # VOLD07 = volpak_vold(7, df$HAG, df$DUB, df$TreeHt),
     HAG15cm = volpak_get_hag(tree, 15),
     HTD15cm = volpak_htd(15, df$HAG, df$DUB, df$TreeHt)
   )
-
-  tmp$VOLHAG <- volpak_vol_to_hag(tree, tmp$HAG15cm, TRUE)
-  tmp$VOLH <- volpak_volh(tmp$HAG15cm, df$HAG, df$DUB, df$TreeHt)
 
   comparison[[as.character(x)]] <- tmp
 
@@ -69,9 +64,8 @@ comparison <- do.call("rbind", comparison)
 ## Calculate differences, between test values and original volpak
 
 comparison$TotalVolDiff <- with(comparison, TotalVol - VTM)
-# comparison$TDVOL07Diff <- with(comparison, TDVOL07 - VOLD07)
 comparison$HAGDiff <- with(comparison, HAG15cm - HTD15cm)
-comparison$VOLHAGDiff <- with(comparison, VOLHAG - VOLH)
+comparison <- na.omit(comparison)
 
 
 
@@ -92,19 +86,6 @@ test_that("Consistency test: Total volume (above stump)", {
 
 
 
-# test_that("Consistency test: Volume (above stump) to 7cm SED", {
-#
-#   expect_false(any(comparison$TDVOL07 < 0))
-#
-#   expect_false(any(is.na(comparison$TDVOL07)))
-#
-#   expect_true(max(abs(comparison$TDVOL07Diff), na.rm = TRUE) < Tol)
-#
-# })
-
-
-
-
 test_that("Consistency test: Height (above ground) to 15cm SED", {
 
   expect_false(any(comparison$HAG15cm < 0))
@@ -115,18 +96,6 @@ test_that("Consistency test: Height (above ground) to 15cm SED", {
 
 })
 
-
-
-
-test_that("Consistency test: Volume (above stump) to height of 15cm SED point", {
-
-  expect_false(any(comparison$VOLHAG < 0))
-
-  expect_false(any(is.na(comparison$VOLHAG)))
-
-  expect_true(max(abs(comparison$VOLHAGDiff), na.rm = TRUE) < Tol)
-
-})
 
 
 
